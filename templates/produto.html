@@ -1,0 +1,59 @@
+<!--
+title: {{nome}} · AgenticaLab
+description: {{resumo}}
+nav: solucoes
+-->
+<main>
+  <section class="page-hero">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap split">
+      <div>
+        <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a><span aria-hidden="true">/</span><a href="/solucoes/">Soluções</a><span aria-hidden="true">/</span><span aria-current="page">{{nome}}</span></nav>
+        <span class="kicker">{{categoria}}</span>
+        <h1>{{{titulo}}}</h1>
+        <p class="lead">{{lead}}</p>
+        <div class="hero-actions">
+          <a class="btn" href="/#contato">Quero um diagnóstico gratuito <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="/solucoes/">Ver outras soluções</a>
+        </div>
+      </div>
+      <div class="shots">{{{imagens_html}}}</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap split" style="align-items:start">
+      <div><span class="kicker">O problema</span><h2 style="font-size:clamp(32px,4vw,52px);line-height:1.05;letter-spacing:-.04em;margin-top:14px">O que acontece hoje, sem o agente.</h2></div>
+      <div class="prose">{{{problema_html}}}</div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><div><span class="kicker">Como funciona</span><h2>Processos. Agentes. Resultados.</h2></div><p>O mesmo método do Vértice, aplicado a esta tarefa.</p></div>
+      <div class="steps">
+        <article class="step p"><span class="tag">01 · Processos</span><h3>Combinamos as regras</h3><p>{{processos}}</p></article>
+        <article class="step a"><span class="tag">02 · Agentes</span><h3>O agente executa</h3><p>{{agentes}}</p></article>
+        <article class="step r"><span class="tag">03 · Resultados</span><h3>Medimos e ajustamos</h3><p>{{resultados}}</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><div><span class="kicker">O que entrega</span><h2>Funcionando na sua operação.</h2></div></div>
+      <ul class="feature-list">{{{entregas_html}}}</ul>
+      <div class="proof" style="margin-top:48px"><strong>{{prova}}</strong><small>{{prova_nota}}</small></div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="wrap">
+      <span class="kicker">Diagnóstico gratuito</span>
+      <h2 style="margin-top:14px">Tem uma tarefa parecida na sua empresa?</h2>
+      <p>Conte o processo que mais pesa hoje. Em 30 minutos mostramos o que dá para automatizar e quantas horas isso devolve.</p>
+      <div class="hero-actions"><a class="btn" href="/#contato">Quero um diagnóstico gratuito <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+</main>
