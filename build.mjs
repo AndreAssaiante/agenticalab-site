@@ -15,7 +15,7 @@ const fill = (tpl, v) => tpl
 const partial = { head: read('partials/head.html'), header: read('partials/header.html'), footer: read('partials/footer.html') };
 const produtos = JSON.parse(read('data/produtos.json')).sort((a, b) => a.ordem - b.ordem);
 const footer_produtos = produtos.map(p => `<a href="/solucoes/${p.slug}/">${esc(p.nome)}</a>`).join('\n      ');
-const produtos_cards = produtos.map(p => `<a class="app" href="/solucoes/${p.slug}/"><div class="art shot"><img class="s1" src="${p.imagens[0].src}" alt="${esc(p.imagens[0].alt)}" loading="lazy"></div><div class="app-copy"><span class="kicker">${esc(p.categoria)}</span><h3>${esc(p.nome)}</h3><p>${esc(p.resumo)}</p><p class="stat">${esc(p.prova)}</p><span class="more">Ver solução →</span></div></a>`).join('\n');
+const produtos_cards = produtos.map(p => `<a class="app" href="/solucoes/${p.slug}/"><div class="art shot"><img class="s1" src="${p.imagens[0].src}" alt="${esc(p.imagens[0].alt)}" loading="lazy"></div><div class="app-copy"><span class="kicker">${esc(p.categoria)}</span><h3>${esc(p.nome)}</h3><p>${esc(p.resumo)}</p>${p.prova ? `<p class="stat">${esc(p.prova)}</p>` : ''}<span class="more">Ver solução →</span></div></a>`).join('\n');
 
 // Lê o bloco de configuração no topo da página: <!-- title: … description: … nav: … -->
 function frontMatter(html) {
@@ -56,6 +56,7 @@ for (const p of produtos) {
     imagens_html: p.imagens.map(i => `<img class="${i.classe}" src="${i.src}" alt="${esc(i.alt)}">`).join(''),
     problema_html: p.problema.map(t => `<p>${esc(t)}</p>`).join(''),
     entregas_html: p.entregas.map(t => `<li>${esc(t)}</li>`).join(''),
+    proof_html: p.prova ? `<div class="proof" style="margin-top:48px"><strong>${esc(p.prova)}</strong><small>${esc(p.prova_nota)}</small></div>` : '',
   };
   const out = join(DIST, 'solucoes', p.slug, 'index.html');
   mkdirSync(dirname(out), { recursive: true });

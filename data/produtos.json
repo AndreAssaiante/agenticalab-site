@@ -4,86 +4,110 @@
     "ordem": 1,
     "nome": "Automação de WhatsApp",
     "categoria": "Atendimento",
-    "resumo": "O cliente faz o pedido e recebe na hora a confirmação no WhatsApp. Depois, mensagens personalizadas acompanham cada status até a entrega e o pós-venda.",
-    "titulo": "Seu cliente sabe onde está o pedido <span>sem precisar perguntar.</span>",
-    "lead": "Um agente acompanha cada pedido e avisa o cliente no WhatsApp em todas as etapas, da confirmação ao pós-venda. Sua equipe para de responder \"cadê meu pedido?\" um por um.",
+    "resumo": "A proposta: o agente acompanha o pedido e organiza os avisos no WhatsApp. Você confere e aprova o resultado; exceções seguem para revisão humana.",
+    "titulo": "O agente cuida dos avisos do pedido; <span>você confere o resultado</span>",
+    "lead": "Para o Dono de Negócio que ainda precisa buscar o status do pedido e repetir a atualização ao cliente. A AgenticaLab propõe um agente para assumir essa rotina, da consulta ao status à organização do aviso. Você confere e aprova o resultado; o que fugir das regras passa por revisão humana. No diagnóstico, definimos o que cabe na sua operação.",
     "imagens": [
-      {"src": "/assets/img/minimalista-pedido.jpg", "alt": "Formulário de pedido na loja", "classe": "s1"},
-      {"src": "/assets/img/minimalista-whatsapp.jpg", "alt": "Confirmação automática do pedido no WhatsApp", "classe": "s2 phone"}
+      {
+        "src": "/assets/img/minimalista-pedido.jpg",
+        "alt": "Formulário de pedido na loja",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/minimalista-whatsapp.jpg",
+        "alt": "Confirmação automática do pedido no WhatsApp",
+        "classe": "s2 phone"
+      }
     ],
     "problema": [
-      "Depois da compra, o cliente fica sem notícia e abre o WhatsApp para perguntar. A equipe responde a mesma pergunta dezenas de vezes por dia, copiando código de rastreio e status de outro sistema.",
-      "Quando a resposta demora, o cliente desconfia, cancela ou não volta a comprar."
+      "O cliente pergunta pelo pedido no WhatsApp. Para responder, alguém procura a informação, entende a etapa e prepara a atualização. A rotina volta a cada mudança de status.",
+      "Nem todo caso cabe num aviso previsto. Mudança de endereço, dúvida sobre pagamento ou informação faltando pedem revisão de uma pessoa antes de seguir."
     ],
-    "processos": "Mapeamos as etapas do pedido (confirmado, pago, enviado, entregue) e escrevemos com você a mensagem de cada uma.",
-    "agentes": "O agente lê o status do pedido e envia a mensagem certa na hora, com o nome do cliente, os itens e o rastreio.",
-    "resultados": "Acompanhamos perguntas repetidas no atendimento e a taxa de recompra para ajustar as mensagens.",
+    "processos": "No diagnóstico, mapeamos com você onde consultar o status, quais etapas pedem aviso, o que precisa de aprovação antes de qualquer envio e quais casos devem ir para revisão humana.",
+    "agentes": "A proposta é que o agente assuma a rotina de ponta a ponta: consulte o status na fonte definida com o negócio, identifique a etapa, organize o aviso correspondente e separe o que fugir das regras para revisão humana. Em vez de operar cada atualização, você confere e aprova os resultados. O envio depende das regras combinadas para a sua operação.",
+    "resultados": "A proposta é acompanhar o tempo gasto com atualizações e as perguntas repetidas antes e depois. Você confere o que o agente organizou e aprova os ajustes; casos fora das regras continuam com revisão humana. Não há ganho medido apresentado aqui.",
     "entregas": [
-      "Confirmação do pedido no WhatsApp segundos depois da compra",
-      "Aviso automático a cada mudança de status",
-      "Mensagens com nome, itens e código de rastreio",
-      "Mensagem de pós-venda e convite para recompra",
-      "Exceções (endereço errado, pagamento recusado) encaminhadas para a equipe"
+      "Mapa proposto da fonte dos status, das etapas do pedido e dos avisos correspondentes",
+      "Rotina proposta para o agente consultar o status e organizar o aviso segundo as regras combinadas",
+      "Critérios para separar exceções e encaminhá-las à revisão humana",
+      "Ponto de conferência e aprovação dos resultados pelo Dono de Negócio",
+      "Acompanhamento proposto do tempo gasto e das perguntas repetidas para orientar ajustes"
     ],
-    "prova": "Mais segurança para o cliente e maior taxa de recompra para a loja",
-    "prova_nota": "Objetivo da automação na loja Minimalista"
+    "prova": "",
+    "prova_nota": ""
   },
   {
     "slug": "discover-launch",
     "ordem": 2,
     "nome": "Discover Launch",
     "categoria": "Inteligência de mercado",
-    "resumo": "Radar de lançamentos no YouTube e na Meta. Coleta vídeos e anúncios todo dia, a IA classifica os sinais de lançamento e um vigia avisa por e-mail quando um concorrente se mexe.",
-    "titulo": "Saiba que o concorrente vai lançar <span>antes do lançamento.</span>",
-    "lead": "Agentes coletam vídeos e anúncios todos os dias, a IA separa o que é sinal de lançamento e você recebe um e-mail quando um concorrente monitorado se mexe.",
+    "resumo": "Proposta para tirar da rotina do Dono de Negócio a checagem repetitiva dos concorrentes. Agentes organizam os movimentos observados e entregam uma análise para ele conferir e decidir.",
+    "titulo": "Deixe a checagem dos concorrentes com agentes <span>e receba a análise para decidir</span>",
+    "lead": "Você acompanha concorrentes, mas não precisa viver abrindo fontes e reunindo anotações. Na proposta da AgenticaLab, agentes assumem essa rotina de ponta a ponta e entregam uma análise para você conferir e aprovar os próximos passos.",
     "imagens": [
-      {"src": "/assets/img/discover-ads.jpg", "alt": "Discover Launch: anúncios ativos e anunciantes monitorados", "classe": "s1"},
-      {"src": "/assets/img/discover-ads-2.jpg", "alt": "Discover Launch: fontes de dados e pipeline de coleta", "classe": "s2"}
+      {
+        "src": "/assets/img/discover-ads.jpg",
+        "alt": "Discover Launch: anúncios ativos e anunciantes monitorados",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/discover-ads-2.jpg",
+        "alt": "Discover Launch: fontes de dados e pipeline de coleta",
+        "classe": "s2"
+      }
     ],
     "problema": [
-      "Acompanhar concorrentes no YouTube e na biblioteca de anúncios da Meta é trabalho manual: abrir canal por canal, anúncio por anúncio, e anotar numa planilha.",
-      "Quando alguém percebe o movimento, o lançamento já está no ar."
+      "Um movimento aqui, outro ali. Você abre fontes diferentes, anota o que mudou e depois tenta juntar as peças para entender o que merece atenção.",
+      "Quando a checagem depende só da sua memória, sobra menos tempo para analisar o que fazer com a informação."
     ],
-    "processos": "Definimos com você quais concorrentes, canais e palavras indicam que um lançamento está chegando.",
-    "agentes": "Os agentes coletam vídeos e anúncios todo dia, a IA classifica os sinais e um vigia dispara o alerta por e-mail.",
-    "resultados": "Você recebe os alertas no dia e um histórico pesquisável de tudo o que foi coletado.",
+    "processos": "Combinamos quais concorrentes e fontes acompanhar, o que conta como mudança relevante e quais casos precisam de revisão humana.",
+    "agentes": "Na solução proposta, os agentes assumem a checagem repetitiva, organizam as mudanças pelos critérios combinados e preparam a análise para você conferir. Fonte indisponível ou informação ambígua segue para revisão humana.",
+    "resultados": "Você confere a análise e aprova os próximos passos. Medimos tempo e retrabalho antes e depois para ajustar o processo, sem tratar essa medição como ganho já obtido.",
     "entregas": [
-      "Coleta diária de vídeos no YouTube e anúncios na Meta",
-      "Classificação dos sinais de lançamento por IA",
-      "Alerta por e-mail quando um concorrente monitorado se mexe",
-      "Painel com anunciantes, anúncios ativos e histórico",
-      "Lista de concorrentes e critérios ajustáveis"
+      "Mapa dos concorrentes e das fontes acordadas para o acompanhamento",
+      "Critérios para separar mudanças relevantes do restante da checagem",
+      "Rotina proposta de checagem e organização das mudanças pelos agentes",
+      "Análise para o Dono de Negócio conferir e aprovar os próximos passos",
+      "Encaminhamento de fontes indisponíveis e informações ambíguas para revisão humana"
     ],
-    "prova": "22 mil vídeos e 926 anúncios analisados",
-    "prova_nota": "Volume coletado pelo sistema em operação"
+    "prova": "O que será avaliado: tempo e retrabalho",
+    "prova_nota": "Critério de medição antes e depois, não resultado obtido"
   },
   {
     "slug": "discover-ads-cod",
     "ordem": 3,
     "nome": "Discover Ads COD",
     "categoria": "E-commerce",
-    "resumo": "Garimpo de produtos físicos que estão escalando com pagamento na entrega em 7 países da América Latina, ranqueados por crescimento de anúncios.",
-    "titulo": "Os produtos que estão escalando, <span>ranqueados todo dia.</span>",
-    "lead": "Agentes varrem os anúncios de produtos com pagamento na entrega em 7 países da América Latina, ranqueiam pelo crescimento e organizam os testes numa esteira.",
+    "resumo": "Para o Dono de Negócio que avalia produtos com pagamento na entrega: propomos agentes para reunir anúncios, separar candidatos e entregar uma análise para sua decisão.",
+    "titulo": "Dono de Negócio, receba a análise de produtos COD <span>sem fazer a triagem</span>",
+    "lead": "Você define com a AgenticaLab o que observar. Na solução proposta, agentes assumem a coleta e a triagem dos anúncios e entregam a análise para você conferir. A decisão sobre testes continua com você. Comece pelo diagnóstico gratuito.",
     "imagens": [
-      {"src": "/assets/img/discover-ads-cod.jpg", "alt": "Discover Ads COD: produtos escalando por país", "classe": "s1"},
-      {"src": "/assets/img/discover-ads-cod-2.jpg", "alt": "Discover Ads COD: vitrine de produtos com crescimento de anúncios", "classe": "s2"}
+      {
+        "src": "/assets/img/discover-ads-cod.jpg",
+        "alt": "Discover Ads COD: produtos escalando por país",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/discover-ads-cod-2.jpg",
+        "alt": "Discover Ads COD: vitrine de produtos com crescimento de anúncios",
+        "classe": "s2"
+      }
     ],
     "problema": [
-      "Encontrar produto vencedor para pagamento na entrega significa horas na biblioteca de anúncios, país por país, tentando adivinhar o que está crescendo de verdade.",
-      "Sem critério, os testes viram aposta e o dinheiro de tráfego vai embora."
+      "Para avaliar produtos com pagamento na entrega, você procura anúncios, compara opções e tenta lembrar de onde veio cada informação. A checagem manual toma espaço na rotina.",
+      "Quando uma informação está incompleta ou parece repetida, a análise volta para suas mãos antes de você sequer decidir o que merece um teste."
     ],
-    "processos": "Definimos países, critérios de crescimento e o que faz um produto entrar na esteira de testes.",
-    "agentes": "Os agentes coletam os anúncios, medem o crescimento de cada produto e montam o ranking diário.",
-    "resultados": "Você testa primeiro o que mais cresce e acompanha cada teste na mesma esteira.",
+    "processos": "No diagnóstico, combinamos com você os critérios para observar anúncios, separar candidatos e levar dúvidas à revisão humana. Também definimos o que depende da sua aprovação.",
+    "agentes": "Na rotina proposta, agentes fazem a coleta nas fontes acordadas, organizam os anúncios, separam candidatos pelos critérios combinados e entregam a análise. Anúncio ambíguo, dado incompleto ou possível duplicidade segue para revisão humana. Você confere o resultado e aprova o que entra na fila de testes.",
+    "resultados": "Depois da implantação, a proposta é comparar tempo de análise e retrabalho antes e depois, ajustar os critérios e apresentar o resultado para sua conferência. A decisão de testar continua com você.",
     "entregas": [
-      "Varredura de anúncios COD em 7 países da América Latina",
-      "Ranking diário por crescimento de anúncios",
-      "Vitrine de produtos com histórico de cada um",
-      "Esteira para organizar e acompanhar os testes",
-      "Filtros por país e categoria"
+      "Mapa da rotina de análise de produtos com pagamento na entrega",
+      "Critérios combinados para coletar anúncios e separar candidatos",
+      "Proposta de fluxo em que agentes fazem coleta, triagem e entrega da análise para conferência do dono",
+      "Encaminhamento de anúncios ambíguos, dados incompletos e possíveis duplicidades à revisão humana",
+      "Proposta de acompanhamento do tempo de análise e do retrabalho para orientar ajustes"
     ],
-    "prova": "922 produtos mapeados na Colômbia",
-    "prova_nota": "Volume coletado pelo sistema em operação"
+    "prova": "",
+    "prova_nota": ""
   }
 ]
