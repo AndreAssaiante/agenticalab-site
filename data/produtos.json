@@ -4,9 +4,9 @@
     "ordem": 1,
     "nome": "Automação de WhatsApp",
     "categoria": "Atendimento",
-    "resumo": "Cansou de procurar onde está cada pedido para responder no WhatsApp? O agente consulta a etapa e prepara o aviso. Você confere e aprova.",
-    "titulo": "Seu agente acompanha os pedidos <span>e prepara os avisos no WhatsApp</span>",
-    "lead": "O cliente pergunta onde está o pedido. Em vez de procurar a resposta e escrever o aviso toda vez, deixe o agente cuidar dessa parte. Ele consulta a etapa do pedido e prepara a mensagem. Você confere e aprova antes de enviar. No diagnóstico gratuito, vemos como isso pode funcionar no seu negócio.",
+    "resumo": "Seu cliente quer saber do pedido. Deixe o agente buscar a etapa e preparar o aviso no WhatsApp, sem escrever a mesma resposta toda vez.",
+    "titulo": "Responda sobre cada pedido <span>sem escrever o mesmo aviso no WhatsApp</span>",
+    "lead": "O cliente pergunta pelo pedido bem na hora em que você está cuidando da loja. Em vez de parar para buscar a etapa e escrever mais um aviso, deixe essa parte com o agente. Ele prepara a mensagem; você decide o envio. Comece com um diagnóstico gratuito.",
     "imagens": [
       {
         "src": "/assets/img/minimalista-pedido.jpg",
@@ -20,18 +20,18 @@
       }
     ],
     "problema": [
-      "O cliente pergunta pelo pedido. Você procura a etapa, escreve a resposta e depois faz tudo de novo quando o pedido muda.",
-      "Mudou o endereço? Faltou uma informação? Essa conversa precisa passar por uma pessoa antes de seguir."
+      "Você abre o pedido, procura em que etapa ele está e volta ao WhatsApp para responder. Chega outra pergunta, e a busca começa de novo.",
+      "Enquanto você escreve avisos parecidos, os outros pedidos e o trabalho da loja continuam esperando."
     ],
-    "processos": "No diagnóstico, você mostra onde estão as etapas do pedido. Juntos, definimos quando preparar um aviso, quando pedir sua aprovação e quando chamar uma pessoa para revisar.",
-    "agentes": "O agente consulta a etapa do pedido e prepara o aviso no WhatsApp. Se faltar informação ou surgir uma dúvida fora do combinado, ele separa o caso para uma pessoa olhar. Você confere e aprova antes de qualquer envio.",
-    "resultados": "Você deixa de preparar cada aviso do zero. Confere o que o agente fez e aprova o envio. Depois, podemos comparar quanto tempo essa tarefa tomava antes e quanto toma com o agente.",
+    "processos": "Você mostra onde consulta os pedidos e quais avisos costuma mandar. A partir daí, combinamos o que o agente prepara e o que fica com a sua equipe.",
+    "agentes": "O agente busca a etapa do pedido e prepara o aviso para o WhatsApp. Quando aparece uma dúvida fora do combinado, deixa a conversa para uma pessoa cuidar. O envio fica com sua aprovação.",
+    "resultados": "Os avisos ficam preparados para você usar sem começar cada resposta do zero. Assim, sobra mais tempo para cuidar dos pedidos e das pessoas na loja.",
     "entregas": [
-      "Onde consultar a etapa de cada pedido e quando preparar um aviso",
-      "Agente que consulta a etapa e prepara a mensagem para sua conferência",
-      "Dúvidas e informações faltando separadas para uma pessoa revisar",
-      "Sua conferência e aprovação antes de enviar",
-      "Comparação do tempo gasto com os avisos antes e depois"
+      "Avisos sobre pedidos preparados para o WhatsApp",
+      "Etapa do pedido consultada pelo agente antes de preparar a resposta",
+      "Conversas fora do combinado encaminhadas para sua equipe",
+      "Mensagens prontas para você aprovar antes do envio",
+      "Menos respostas escritas do zero na rotina da loja"
     ],
     "prova": "",
     "prova_nota": ""
@@ -41,9 +41,9 @@
     "ordem": 2,
     "nome": "Discover Launch",
     "categoria": "Inteligência de mercado",
-    "resumo": "Quer saber o que os concorrentes estão preparando sem procurar anúncio por anúncio? Os agentes fazem a busca. Você confere o que encontraram.",
-    "titulo": "Veja possíveis lançamentos <span>sem procurar anúncios o dia inteiro</span>",
-    "lead": "Ficar abrindo anúncios dos concorrentes toma tempo. O Discover Launch põe agentes para acompanhar os concorrentes que você escolher e reunir o que pode indicar um lançamento. Eles preparam o que encontraram para você conferir. Você decide se vale investigar mais.",
+    "resumo": "Para quem trabalha com lançamentos: os agentes buscam anúncios dos concorrentes que você escolher e reúnem o que encontrar em um lugar só.",
+    "titulo": "Ache pistas de lançamentos <span>sem abrir anúncio por anúncio</span>",
+    "lead": "Se você é afiliado, coprodutor ou infoprodutor, sabe quanto tempo vai embora abrindo anúncios para ver o que os concorrentes estão preparando. No Discover Launch, os agentes fazem essa busca e juntam os achados para você olhar. Você escolhe onde vale prestar atenção. Comece pelo diagnóstico gratuito.",
     "imagens": [
       {
         "src": "/assets/img/discover-ads.jpg",
@@ -57,30 +57,30 @@
       }
     ],
     "problema": [
-      "Você abre anúncios, volta aos perfis dos concorrentes e tenta lembrar o que mudou. No dia seguinte, precisa procurar tudo outra vez.",
-      "Ver um anúncio novo não quer dizer que haverá lançamento. Alguém ainda precisa conferir o que apareceu antes de decidir o próximo passo."
+      "Você abre o anúncio de um concorrente, volta para procurar outro e perde o fio do que já viu. O tempo de estudar uma oportunidade vai embora na busca.",
+      "Para quem vive de lançamentos, ficar preso a essa procura significa menos tempo para pensar na próxima campanha."
     ],
-    "processos": "No diagnóstico, você escolhe quais concorrentes quer acompanhar e onde procurar. Também combinamos quando uma informação precisa de uma pessoa para conferir.",
-    "agentes": "Os agentes procuram anúncios dos concorrentes escolhidos, reúnem o que mudou e preparam o que encontraram para você olhar. Se não conseguirem acessar um lugar ou tiverem dúvida, passam o caso para uma pessoa revisar.",
-    "resultados": "Você confere o que os agentes encontraram e decide o que merece uma busca mais a fundo. Depois, podemos comparar o tempo que você gastava procurando anúncios antes e depois. Um anúncio novo não confirma um lançamento.",
+    "processos": "Você escolhe os concorrentes e os anúncios que quer observar. Combinamos o que os agentes devem trazer para sua análise.",
+    "agentes": "Os agentes buscam os anúncios escolhidos e juntam o que encontraram. A parte de abrir um anúncio atrás do outro fica com eles; a escolha do que investigar fica com você.",
+    "resultados": "Em vez de começar pela busca, você começa pelos anúncios reunidos. Use seu tempo para estudar o que chamou atenção e pensar na próxima campanha.",
     "entregas": [
-      "Concorrentes escolhidos por você e lugares onde procurar anúncios",
-      "O que observar nos anúncios para levantar possíveis lançamentos",
-      "Agentes que procuram anúncios e reúnem o que mudou",
-      "O que foi encontrado para você conferir e decidir se vale investigar",
-      "Dúvidas e lugares indisponíveis separados para uma pessoa revisar"
+      "Anúncios dos concorrentes que você escolheu, reunidos para olhar",
+      "Achados que ajudam você a investigar possíveis lançamentos",
+      "Agentes encarregados da busca que antes tomava seu tempo",
+      "Material reunido para você escolher o que investigar",
+      "Mais tempo para estudar a próxima campanha, em vez de abrir anúncios"
     ],
-    "prova": "Podemos comparar quanto tempo a busca tomava antes e depois",
-    "prova_nota": "Essa comparação ainda não foi feita"
+    "prova": "",
+    "prova_nota": ""
   },
   {
     "slug": "discover-ads-cod",
     "ordem": 3,
     "nome": "Discover Ads COD",
     "categoria": "E-commerce",
-    "resumo": "Procura produtos com pagamento na entrega? Os agentes buscam anúncios e separam os produtos para você conferir antes de decidir o que testar.",
-    "titulo": "Encontre produtos com pagamento na entrega <span>sem procurar anúncio por anúncio</span>",
-    "lead": "Você passa tempo abrindo anúncios para achar produtos com pagamento na entrega. Com o Discover Ads COD, os agentes fazem a busca e separam os produtos para você conferir. Você aprova o que vale investigar ou testar. Comece pelo diagnóstico gratuito.",
+    "resumo": "Vende com pagamento na entrega? Os agentes buscam anúncios e separam produtos para você estudar, sem fazer toda a procura na mão.",
+    "titulo": "Ache produtos para pagamento na entrega <span>sem garimpar anúncios na mão</span>",
+    "lead": "Você vende com pagamento na entrega e quer achar produtos para estudar. Mas acaba abrindo anúncios, anotando nomes e voltando para descobrir onde viu cada um. No Discover Ads COD, os agentes fazem a busca e separam os achados. Você escolhe o que vale testar. Comece pelo diagnóstico gratuito.",
     "imagens": [
       {
         "src": "/assets/img/discover-ads-cod.jpg",
@@ -94,18 +94,18 @@
       }
     ],
     "problema": [
-      "Você abre anúncios, anota produtos e compara o que encontrou. Depois precisa voltar para descobrir de onde veio cada um.",
-      "Às vezes falta uma informação ou o mesmo anúncio aparece de novo. Antes de escolher o que testar, alguém precisa conferir isso."
+      "Você abre um anúncio, anota o produto, passa ao seguinte e depois tenta lembrar qual deles queria olhar de novo.",
+      "A busca toma o tempo que você poderia usar para estudar os produtos e decidir o próximo teste."
     ],
-    "processos": "No diagnóstico, você conta que tipo de produto procura e onde costuma olhar anúncios. Combinamos o que os agentes devem separar e o que uma pessoa precisa revisar.",
-    "agentes": "Os agentes procuram anúncios, juntam os produtos que atendem ao que você escolheu e preparam o que acharam para sua conferência. Se faltar informação ou um anúncio parecer repetido, passam para uma pessoa revisar. Você aprova o que entra na lista para testar.",
-    "resultados": "Você recebe os produtos separados para conferir, sem ter que fazer toda a busca na mão. Depois, podemos comparar quanto tempo gastava nessa busca antes e depois. Só você decide o que testar.",
+    "processos": "Você conta que tipo de produto procura e onde costuma buscar anúncios. Combinamos o que os agentes devem separar para você olhar.",
+    "agentes": "Os agentes buscam anúncios e juntam os produtos que seguem o que você escolheu. Eles fazem a procura; você decide quais produtos quer estudar para testar.",
+    "resultados": "Você recebe os produtos reunidos para estudar, sem abrir cada anúncio por conta própria. Seu tempo fica para avaliar o próximo teste.",
     "entregas": [
-      "Tipo de produto que você procura e lugares onde olhar anúncios",
-      "O que os agentes devem observar antes de separar um produto",
-      "Agentes que buscam anúncios e preparam os produtos para sua conferência",
-      "Anúncios repetidos ou sem informação separados para uma pessoa revisar",
-      "Comparação do tempo gasto com a busca antes e depois"
+      "Produtos encontrados nos anúncios, reunidos para você estudar",
+      "Busca feita a partir do tipo de produto que você procura",
+      "Agentes encarregados de abrir e separar os anúncios",
+      "Achados prontos para você escolher o próximo teste",
+      "Menos tempo anotando produtos e procurando o mesmo anúncio de novo"
     ],
     "prova": "",
     "prova_nota": ""
