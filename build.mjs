@@ -49,7 +49,7 @@ for (const file of walk(DIST)) {
   if (!rel.endsWith('404.html')) urls.push(path);
 }
 
-const tpl = read('templates/produto.html');
+const tplDefault = read('templates/produto.html');
 for (const p of produtos) {
   const v = {
     ...p,
@@ -57,6 +57,7 @@ for (const p of produtos) {
     problema_html: p.problema.map(t => `<p>${esc(t)}</p>`).join(''),
     entregas_html: p.entregas.map(t => `<li>${esc(t)}</li>`).join(''),
   };
+  const tpl = existsSync(join(ROOT, `templates/${p.slug}.html`)) ? read(`templates/${p.slug}.html`) : tplDefault; // página própria, se existir templates/<slug>.html
   const out = join(DIST, 'solucoes', p.slug, 'index.html');
   mkdirSync(dirname(out), { recursive: true });
   const path = `/solucoes/${p.slug}/`;
