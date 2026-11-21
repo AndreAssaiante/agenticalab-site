@@ -4,86 +4,108 @@
     "ordem": 1,
     "nome": "Automação de WhatsApp",
     "categoria": "Atendimento",
-    "resumo": "O cliente faz o pedido e recebe na hora a confirmação no WhatsApp. Depois, mensagens personalizadas acompanham cada status até a entrega e o pós-venda.",
-    "titulo": "Seu cliente sabe onde está o pedido <span>sem precisar perguntar.</span>",
-    "lead": "Um agente acompanha cada pedido e avisa o cliente no WhatsApp em todas as etapas, da confirmação ao pós-venda. Sua equipe para de responder \"cadê meu pedido?\" um por um.",
+    "resumo": "Organize os avisos do pedido no WhatsApp, da confirmação à entrega, e encaminhe as exceções para a equipe revisar.",
+    "titulo": "Seu cliente pergunta pelo pedido? <span>Organize os avisos no WhatsApp</span>",
+    "lead": "Para o Dono de Negócio que precisa acompanhar pedidos sem repetir a mesma atualização no atendimento: mapeamos os status, combinamos as mensagens e definimos quando a equipe entra. No diagnóstico, vemos como isso se encaixa na sua operação.",
     "imagens": [
-      {"src": "/assets/img/minimalista-pedido.jpg", "alt": "Formulário de pedido na loja", "classe": "s1"},
-      {"src": "/assets/img/minimalista-whatsapp.jpg", "alt": "Confirmação automática do pedido no WhatsApp", "classe": "s2 phone"}
+      {
+        "src": "/assets/img/minimalista-pedido.jpg",
+        "alt": "Formulário de pedido na loja",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/minimalista-whatsapp.jpg",
+        "alt": "Confirmação automática do pedido no WhatsApp",
+        "classe": "s2 phone"
+      }
     ],
     "problema": [
-      "Depois da compra, o cliente fica sem notícia e abre o WhatsApp para perguntar. A equipe responde a mesma pergunta dezenas de vezes por dia, copiando código de rastreio e status de outro sistema.",
-      "Quando a resposta demora, o cliente desconfia, cancela ou não volta a comprar."
+      "O cliente quer saber se o pedido foi confirmado, enviado ou entregue. Quando essa informação fica espalhada, ele pergunta no WhatsApp e a equipe precisa consultar o status antes de responder.",
+      "Cada atualização pede atenção de alguém. Também há casos que uma mensagem automática não resolve, como uma mudança de endereço ou uma dúvida sobre o pagamento."
     ],
-    "processos": "Mapeamos as etapas do pedido (confirmado, pago, enviado, entregue) e escrevemos com você a mensagem de cada uma.",
-    "agentes": "O agente lê o status do pedido e envia a mensagem certa na hora, com o nome do cliente, os itens e o rastreio.",
-    "resultados": "Acompanhamos perguntas repetidas no atendimento e a taxa de recompra para ajustar as mensagens.",
+    "processos": "Mapeamos de onde vem o status do pedido, quais avisos fazem sentido e em que situações a equipe precisa revisar antes de responder.",
+    "agentes": "Configuramos as mensagens para acompanhar as etapas combinadas do pedido. Quando houver uma exceção, o caso segue para revisão humana, conforme as regras definidas com você.",
+    "resultados": "Comparamos o tempo gasto nas atualizações e as perguntas repetidas antes e depois da implantação. Com esses dados, ajustamos as mensagens e as regras; o ganho depende da operação.",
     "entregas": [
-      "Confirmação do pedido no WhatsApp segundos depois da compra",
-      "Aviso automático a cada mudança de status",
-      "Mensagens com nome, itens e código de rastreio",
-      "Mensagem de pós-venda e convite para recompra",
-      "Exceções (endereço errado, pagamento recusado) encaminhadas para a equipe"
+      "Mapeamento dos status do pedido e das mensagens correspondentes",
+      "Definição dos avisos de confirmação, envio e entrega conforme a operação",
+      "Regras para encaminhar exceções à revisão da equipe",
+      "Acompanhamento de tempo gasto e perguntas repetidas para orientar ajustes"
     ],
-    "prova": "Mais segurança para o cliente e maior taxa de recompra para a loja",
-    "prova_nota": "Objetivo da automação na loja Minimalista"
+    "prova": "Tempo gasto e perguntas repetidas: medir antes e depois",
+    "prova_nota": "Método de acompanhamento proposto pela AgenticaLab; não é resultado medido de cliente."
   },
   {
     "slug": "discover-launch",
     "ordem": 2,
     "nome": "Discover Launch",
     "categoria": "Inteligência de mercado",
-    "resumo": "Radar de lançamentos no YouTube e na Meta. Coleta vídeos e anúncios todo dia, a IA classifica os sinais de lançamento e um vigia avisa por e-mail quando um concorrente se mexe.",
-    "titulo": "Saiba que o concorrente vai lançar <span>antes do lançamento.</span>",
-    "lead": "Agentes coletam vídeos e anúncios todos os dias, a IA separa o que é sinal de lançamento e você recebe um e-mail quando um concorrente monitorado se mexe.",
+    "resumo": "Organize o acompanhamento de concorrentes em um só processo. Defina o que observar e leve os sinais relevantes para uma revisão humana.",
+    "titulo": "Acompanhe movimentos de concorrentes <span>sem viver abrindo abas</span>",
+    "lead": "Se você é Dono de Negócio e acompanha lançamentos de perto, vale tirar essa checagem da memória e da planilha. A AgenticaLab mapeia com você o que observar, o que registrar e o que precisa da sua decisão.",
     "imagens": [
-      {"src": "/assets/img/discover-ads.jpg", "alt": "Discover Launch: anúncios ativos e anunciantes monitorados", "classe": "s1"},
-      {"src": "/assets/img/discover-ads-2.jpg", "alt": "Discover Launch: fontes de dados e pipeline de coleta", "classe": "s2"}
+      {
+        "src": "/assets/img/discover-ads.jpg",
+        "alt": "Discover Launch: anúncios ativos e anunciantes monitorados",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/discover-ads-2.jpg",
+        "alt": "Discover Launch: fontes de dados e pipeline de coleta",
+        "classe": "s2"
+      }
     ],
     "problema": [
-      "Acompanhar concorrentes no YouTube e na biblioteca de anúncios da Meta é trabalho manual: abrir canal por canal, anúncio por anúncio, e anotar numa planilha.",
-      "Quando alguém percebe o movimento, o lançamento já está no ar."
+      "Um vídeo novo aqui, uma campanha ali. Para acompanhar concorrentes, você precisa abrir fontes diferentes, lembrar o que viu e juntar as peças depois.",
+      "Sem um critério combinado, o acompanhamento ocupa a rotina e a informação pode chegar sem contexto para uma decisão."
     ],
-    "processos": "Definimos com você quais concorrentes, canais e palavras indicam que um lançamento está chegando.",
-    "agentes": "Os agentes coletam vídeos e anúncios todo dia, a IA classifica os sinais e um vigia dispara o alerta por e-mail.",
-    "resultados": "Você recebe os alertas no dia e um histórico pesquisável de tudo o que foi coletado.",
+    "processos": "Mapeamos com você quais concorrentes e fontes fazem sentido, quais mudanças merecem atenção e quando a revisão deve ficar com uma pessoa.",
+    "agentes": "A proposta é usar agentes para organizar a checagem repetitiva e separar ocorrências pelos critérios definidos. O que fugir das regras segue para revisão humana.",
+    "resultados": "Comparamos o tempo gasto no acompanhamento e o retrabalho antes e depois da implantação. Ajustamos os critérios conforme o que a operação mostrar.",
     "entregas": [
-      "Coleta diária de vídeos no YouTube e anúncios na Meta",
-      "Classificação dos sinais de lançamento por IA",
-      "Alerta por e-mail quando um concorrente monitorado se mexe",
-      "Painel com anunciantes, anúncios ativos e histórico",
-      "Lista de concorrentes e critérios ajustáveis"
+      "Mapa das fontes e dos concorrentes que você quer acompanhar",
+      "Critérios para registrar mudanças e separar o que merece revisão",
+      "Fluxo para organizar a checagem repetitiva e encaminhar exceções a uma pessoa",
+      "Acompanhamento de tempo e retrabalho antes e depois para ajustar o processo"
     ],
-    "prova": "22 mil vídeos e 926 anúncios analisados",
-    "prova_nota": "Volume coletado pelo sistema em operação"
+    "prova": "Medir tempo e retrabalho antes e depois",
+    "prova_nota": "Critério de avaliação do projeto, não resultado já comprovado"
   },
   {
     "slug": "discover-ads-cod",
     "ordem": 3,
     "nome": "Discover Ads COD",
     "categoria": "E-commerce",
-    "resumo": "Garimpo de produtos físicos que estão escalando com pagamento na entrega em 7 países da América Latina, ranqueados por crescimento de anúncios.",
-    "titulo": "Os produtos que estão escalando, <span>ranqueados todo dia.</span>",
-    "lead": "Agentes varrem os anúncios de produtos com pagamento na entrega em 7 países da América Latina, ranqueiam pelo crescimento e organizam os testes numa esteira.",
+    "resumo": "Para quem vende com pagamento na entrega e precisa escolher o que testar. No diagnóstico, definimos critérios para analisar anúncios de produtos antes de organizar os testes.",
+    "titulo": "Dono de Negócio, encontre critérios para <span>escolher o próximo produto COD</span>",
+    "lead": "Olhar anúncios por país e comparar produtos toma tempo. A AgenticaLab propõe mapear esse processo com você, separar os sinais relevantes e organizar a análise antes de cada teste. Comece pelo diagnóstico gratuito.",
     "imagens": [
-      {"src": "/assets/img/discover-ads-cod.jpg", "alt": "Discover Ads COD: produtos escalando por país", "classe": "s1"},
-      {"src": "/assets/img/discover-ads-cod-2.jpg", "alt": "Discover Ads COD: vitrine de produtos com crescimento de anúncios", "classe": "s2"}
+      {
+        "src": "/assets/img/discover-ads-cod.jpg",
+        "alt": "Discover Ads COD: produtos escalando por país",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/discover-ads-cod-2.jpg",
+        "alt": "Discover Ads COD: vitrine de produtos com crescimento de anúncios",
+        "classe": "s2"
+      }
     ],
     "problema": [
-      "Encontrar produto vencedor para pagamento na entrega significa horas na biblioteca de anúncios, país por país, tentando adivinhar o que está crescendo de verdade.",
-      "Sem critério, os testes viram aposta e o dinheiro de tráfego vai embora."
+      "Você abre anúncios, compara produtos e tenta guardar o que viu em cada mercado. Quando os critérios ficam só na sua cabeça, decidir o próximo teste exige refazer o caminho.",
+      "Com uma fila de possibilidades sem contexto, fica difícil explicar por que um produto entrou na frente de outro."
     ],
-    "processos": "Definimos países, critérios de crescimento e o que faz um produto entrar na esteira de testes.",
-    "agentes": "Os agentes coletam os anúncios, medem o crescimento de cada produto e montam o ranking diário.",
-    "resultados": "Você testa primeiro o que mais cresce e acompanha cada teste na mesma esteira.",
+    "processos": "No diagnóstico, definimos com você quais mercados observar, quais sinais considerar e o que precisa de revisão humana antes de virar teste.",
+    "agentes": "A proposta é usar agentes para reunir os anúncios e organizar as informações conforme os critérios combinados. Os casos duvidosos ficam para revisão humana.",
+    "resultados": "Acompanhamos o tempo gasto na análise e o retrabalho antes e depois. Com esses dados, ajustamos os critérios e a organização dos testes.",
     "entregas": [
-      "Varredura de anúncios COD em 7 países da América Latina",
-      "Ranking diário por crescimento de anúncios",
-      "Vitrine de produtos com histórico de cada um",
-      "Esteira para organizar e acompanhar os testes",
-      "Filtros por país e categoria"
+      "Mapeamento do processo de análise de produtos COD",
+      "Critérios definidos com você para observar anúncios e comparar produtos",
+      "Organização das informações para avaliar o que entra na fila de testes",
+      "Encaminhamento de casos duvidosos para revisão humana",
+      "Acompanhamento de tempo e retrabalho para ajustar o processo"
     ],
-    "prova": "922 produtos mapeados na Colômbia",
-    "prova_nota": "Volume coletado pelo sistema em operação"
+    "prova": "",
+    "prova_nota": ""
   }
 ]
