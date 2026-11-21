@@ -4,9 +4,9 @@
     "ordem": 1,
     "nome": "Automação de WhatsApp",
     "categoria": "Atendimento",
-    "resumo": "Organize os avisos do pedido no WhatsApp, da confirmação à entrega, e encaminhe as exceções para a equipe revisar.",
-    "titulo": "Seu cliente pergunta pelo pedido? <span>Organize os avisos no WhatsApp</span>",
-    "lead": "Para o Dono de Negócio que precisa acompanhar pedidos sem repetir a mesma atualização no atendimento: mapeamos os status, combinamos as mensagens e definimos quando a equipe entra. No diagnóstico, vemos como isso se encaixa na sua operação.",
+    "resumo": "A proposta: o agente acompanha o pedido e organiza os avisos no WhatsApp. Você confere e aprova o resultado; exceções seguem para revisão humana.",
+    "titulo": "O agente cuida dos avisos do pedido; <span>você confere o resultado</span>",
+    "lead": "Para o Dono de Negócio que ainda precisa buscar o status do pedido e repetir a atualização ao cliente. A AgenticaLab propõe um agente para assumir essa rotina, da consulta ao status à organização do aviso. Você confere e aprova o resultado; o que fugir das regras passa por revisão humana. No diagnóstico, definimos o que cabe na sua operação.",
     "imagens": [
       {
         "src": "/assets/img/minimalista-pedido.jpg",
@@ -20,29 +20,30 @@
       }
     ],
     "problema": [
-      "O cliente quer saber se o pedido foi confirmado, enviado ou entregue. Quando essa informação fica espalhada, ele pergunta no WhatsApp e a equipe precisa consultar o status antes de responder.",
-      "Cada atualização pede atenção de alguém. Também há casos que uma mensagem automática não resolve, como uma mudança de endereço ou uma dúvida sobre o pagamento."
+      "O cliente pergunta pelo pedido no WhatsApp. Para responder, alguém procura a informação, entende a etapa e prepara a atualização. A rotina volta a cada mudança de status.",
+      "Nem todo caso cabe num aviso previsto. Mudança de endereço, dúvida sobre pagamento ou informação faltando pedem revisão de uma pessoa antes de seguir."
     ],
-    "processos": "Mapeamos de onde vem o status do pedido, quais avisos fazem sentido e em que situações a equipe precisa revisar antes de responder.",
-    "agentes": "Configuramos as mensagens para acompanhar as etapas combinadas do pedido. Quando houver uma exceção, o caso segue para revisão humana, conforme as regras definidas com você.",
-    "resultados": "Comparamos o tempo gasto nas atualizações e as perguntas repetidas antes e depois da implantação. Com esses dados, ajustamos as mensagens e as regras; o ganho depende da operação.",
+    "processos": "No diagnóstico, mapeamos com você onde consultar o status, quais etapas pedem aviso, o que precisa de aprovação antes de qualquer envio e quais casos devem ir para revisão humana.",
+    "agentes": "A proposta é que o agente assuma a rotina de ponta a ponta: consulte o status na fonte definida com o negócio, identifique a etapa, organize o aviso correspondente e separe o que fugir das regras para revisão humana. Em vez de operar cada atualização, você confere e aprova os resultados. O envio depende das regras combinadas para a sua operação.",
+    "resultados": "A proposta é acompanhar o tempo gasto com atualizações e as perguntas repetidas antes e depois. Você confere o que o agente organizou e aprova os ajustes; casos fora das regras continuam com revisão humana. Não há ganho medido apresentado aqui.",
     "entregas": [
-      "Mapeamento dos status do pedido e das mensagens correspondentes",
-      "Definição dos avisos de confirmação, envio e entrega conforme a operação",
-      "Regras para encaminhar exceções à revisão da equipe",
-      "Acompanhamento de tempo gasto e perguntas repetidas para orientar ajustes"
+      "Mapa proposto da fonte dos status, das etapas do pedido e dos avisos correspondentes",
+      "Rotina proposta para o agente consultar o status e organizar o aviso segundo as regras combinadas",
+      "Critérios para separar exceções e encaminhá-las à revisão humana",
+      "Ponto de conferência e aprovação dos resultados pelo Dono de Negócio",
+      "Acompanhamento proposto do tempo gasto e das perguntas repetidas para orientar ajustes"
     ],
-    "prova": "Tempo gasto e perguntas repetidas: medir antes e depois",
-    "prova_nota": "Método de acompanhamento proposto pela AgenticaLab; não é resultado medido de cliente."
+    "prova": "",
+    "prova_nota": ""
   },
   {
     "slug": "discover-launch",
     "ordem": 2,
     "nome": "Discover Launch",
     "categoria": "Inteligência de mercado",
-    "resumo": "Organize o acompanhamento de concorrentes em um só processo. Defina o que observar e leve os sinais relevantes para uma revisão humana.",
-    "titulo": "Acompanhe movimentos de concorrentes <span>sem viver abrindo abas</span>",
-    "lead": "Se você é Dono de Negócio e acompanha lançamentos de perto, vale tirar essa checagem da memória e da planilha. A AgenticaLab mapeia com você o que observar, o que registrar e o que precisa da sua decisão.",
+    "resumo": "Proposta para tirar da rotina do Dono de Negócio a checagem repetitiva dos concorrentes. Agentes organizam os movimentos observados e entregam uma análise para ele conferir e decidir.",
+    "titulo": "Deixe a checagem dos concorrentes com agentes <span>e receba a análise para decidir</span>",
+    "lead": "Você acompanha concorrentes, mas não precisa viver abrindo fontes e reunindo anotações. Na proposta da AgenticaLab, agentes assumem essa rotina de ponta a ponta e entregam uma análise para você conferir e aprovar os próximos passos.",
     "imagens": [
       {
         "src": "/assets/img/discover-ads.jpg",
@@ -56,29 +57,30 @@
       }
     ],
     "problema": [
-      "Um vídeo novo aqui, uma campanha ali. Para acompanhar concorrentes, você precisa abrir fontes diferentes, lembrar o que viu e juntar as peças depois.",
-      "Sem um critério combinado, o acompanhamento ocupa a rotina e a informação pode chegar sem contexto para uma decisão."
+      "Um movimento aqui, outro ali. Você abre fontes diferentes, anota o que mudou e depois tenta juntar as peças para entender o que merece atenção.",
+      "Quando a checagem depende só da sua memória, sobra menos tempo para analisar o que fazer com a informação."
     ],
-    "processos": "Mapeamos com você quais concorrentes e fontes fazem sentido, quais mudanças merecem atenção e quando a revisão deve ficar com uma pessoa.",
-    "agentes": "A proposta é usar agentes para organizar a checagem repetitiva e separar ocorrências pelos critérios definidos. O que fugir das regras segue para revisão humana.",
-    "resultados": "Comparamos o tempo gasto no acompanhamento e o retrabalho antes e depois da implantação. Ajustamos os critérios conforme o que a operação mostrar.",
+    "processos": "Combinamos quais concorrentes e fontes acompanhar, o que conta como mudança relevante e quais casos precisam de revisão humana.",
+    "agentes": "Na solução proposta, os agentes assumem a checagem repetitiva, organizam as mudanças pelos critérios combinados e preparam a análise para você conferir. Fonte indisponível ou informação ambígua segue para revisão humana.",
+    "resultados": "Você confere a análise e aprova os próximos passos. Medimos tempo e retrabalho antes e depois para ajustar o processo, sem tratar essa medição como ganho já obtido.",
     "entregas": [
-      "Mapa das fontes e dos concorrentes que você quer acompanhar",
-      "Critérios para registrar mudanças e separar o que merece revisão",
-      "Fluxo para organizar a checagem repetitiva e encaminhar exceções a uma pessoa",
-      "Acompanhamento de tempo e retrabalho antes e depois para ajustar o processo"
+      "Mapa dos concorrentes e das fontes acordadas para o acompanhamento",
+      "Critérios para separar mudanças relevantes do restante da checagem",
+      "Rotina proposta de checagem e organização das mudanças pelos agentes",
+      "Análise para o Dono de Negócio conferir e aprovar os próximos passos",
+      "Encaminhamento de fontes indisponíveis e informações ambíguas para revisão humana"
     ],
-    "prova": "Medir tempo e retrabalho antes e depois",
-    "prova_nota": "Critério de avaliação do projeto, não resultado já comprovado"
+    "prova": "O que será avaliado: tempo e retrabalho",
+    "prova_nota": "Critério de medição antes e depois, não resultado obtido"
   },
   {
     "slug": "discover-ads-cod",
     "ordem": 3,
     "nome": "Discover Ads COD",
     "categoria": "E-commerce",
-    "resumo": "Para quem vende com pagamento na entrega e precisa escolher o que testar. No diagnóstico, definimos critérios para analisar anúncios de produtos antes de organizar os testes.",
-    "titulo": "Dono de Negócio, encontre critérios para <span>escolher o próximo produto COD</span>",
-    "lead": "Olhar anúncios por país e comparar produtos toma tempo. A AgenticaLab propõe mapear esse processo com você, separar os sinais relevantes e organizar a análise antes de cada teste. Comece pelo diagnóstico gratuito.",
+    "resumo": "Para o Dono de Negócio que avalia produtos com pagamento na entrega: propomos agentes para reunir anúncios, separar candidatos e entregar uma análise para sua decisão.",
+    "titulo": "Dono de Negócio, receba a análise de produtos COD <span>sem fazer a triagem</span>",
+    "lead": "Você define com a AgenticaLab o que observar. Na solução proposta, agentes assumem a coleta e a triagem dos anúncios e entregam a análise para você conferir. A decisão sobre testes continua com você. Comece pelo diagnóstico gratuito.",
     "imagens": [
       {
         "src": "/assets/img/discover-ads-cod.jpg",
@@ -92,18 +94,18 @@
       }
     ],
     "problema": [
-      "Você abre anúncios, compara produtos e tenta guardar o que viu em cada mercado. Quando os critérios ficam só na sua cabeça, decidir o próximo teste exige refazer o caminho.",
-      "Com uma fila de possibilidades sem contexto, fica difícil explicar por que um produto entrou na frente de outro."
+      "Para avaliar produtos com pagamento na entrega, você procura anúncios, compara opções e tenta lembrar de onde veio cada informação. A checagem manual toma espaço na rotina.",
+      "Quando uma informação está incompleta ou parece repetida, a análise volta para suas mãos antes de você sequer decidir o que merece um teste."
     ],
-    "processos": "No diagnóstico, definimos com você quais mercados observar, quais sinais considerar e o que precisa de revisão humana antes de virar teste.",
-    "agentes": "A proposta é usar agentes para reunir os anúncios e organizar as informações conforme os critérios combinados. Os casos duvidosos ficam para revisão humana.",
-    "resultados": "Acompanhamos o tempo gasto na análise e o retrabalho antes e depois. Com esses dados, ajustamos os critérios e a organização dos testes.",
+    "processos": "No diagnóstico, combinamos com você os critérios para observar anúncios, separar candidatos e levar dúvidas à revisão humana. Também definimos o que depende da sua aprovação.",
+    "agentes": "Na rotina proposta, agentes fazem a coleta nas fontes acordadas, organizam os anúncios, separam candidatos pelos critérios combinados e entregam a análise. Anúncio ambíguo, dado incompleto ou possível duplicidade segue para revisão humana. Você confere o resultado e aprova o que entra na fila de testes.",
+    "resultados": "Depois da implantação, a proposta é comparar tempo de análise e retrabalho antes e depois, ajustar os critérios e apresentar o resultado para sua conferência. A decisão de testar continua com você.",
     "entregas": [
-      "Mapeamento do processo de análise de produtos COD",
-      "Critérios definidos com você para observar anúncios e comparar produtos",
-      "Organização das informações para avaliar o que entra na fila de testes",
-      "Encaminhamento de casos duvidosos para revisão humana",
-      "Acompanhamento de tempo e retrabalho para ajustar o processo"
+      "Mapa da rotina de análise de produtos com pagamento na entrega",
+      "Critérios combinados para coletar anúncios e separar candidatos",
+      "Proposta de fluxo em que agentes fazem coleta, triagem e entrega da análise para conferência do dono",
+      "Encaminhamento de anúncios ambíguos, dados incompletos e possíveis duplicidades à revisão humana",
+      "Proposta de acompanhamento do tempo de análise e do retrabalho para orientar ajustes"
     ],
     "prova": "",
     "prova_nota": ""
