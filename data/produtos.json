@@ -41,9 +41,9 @@
     "ordem": 2,
     "nome": "Discover Launch",
     "categoria": "Inteligência de mercado",
-    "resumo": "Proposta para tirar da rotina do Dono de Negócio a checagem repetitiva dos concorrentes. Agentes organizam os movimentos observados e entregam uma análise para ele conferir e decidir.",
-    "titulo": "Deixe a checagem dos concorrentes com agentes <span>e receba a análise para decidir</span>",
-    "lead": "Você acompanha concorrentes, mas não precisa viver abrindo fontes e reunindo anotações. Na proposta da AgenticaLab, agentes assumem essa rotina de ponta a ponta e entregam uma análise para você conferir e aprovar os próximos passos.",
+    "resumo": "Para o Dono de Negócio acompanhar sinais de possíveis lançamentos sem fazer a busca manual: agentes organizam os movimentos nas fontes combinadas e entregam uma análise para sua decisão.",
+    "titulo": "Dono de Negócio, acompanhe possíveis lançamentos <span>sem fazer a busca manual</span>",
+    "lead": "Encontrar um sinal de lançamento é diferente de saber o que fazer com ele. Na proposta Discover Launch, agentes acompanham as fontes combinadas, organizam os movimentos e entregam uma análise para você conferir. A decisão sobre os próximos passos continua com você.",
     "imagens": [
       {
         "src": "/assets/img/discover-ads.jpg",
@@ -57,21 +57,21 @@
       }
     ],
     "problema": [
-      "Um movimento aqui, outro ali. Você abre fontes diferentes, anota o que mudou e depois tenta juntar as peças para entender o que merece atenção.",
-      "Quando a checagem depende só da sua memória, sobra menos tempo para analisar o que fazer com a informação."
+      "Um anúncio aparece, uma comunicação muda, outro concorrente começa a movimentar sua oferta. Sem uma rotina de acompanhamento, você volta às fontes, compara o que viu e tenta descobrir se aquilo aponta para um possível lançamento.",
+      "Buscar tudo à mão consome o tempo que poderia ir para a análise. E um sinal isolado não confirma que haverá lançamento nem diz qual ação vale tomar."
     ],
-    "processos": "Combinamos quais concorrentes e fontes acompanhar, o que conta como mudança relevante e quais casos precisam de revisão humana.",
-    "agentes": "Na solução proposta, os agentes assumem a checagem repetitiva, organizam as mudanças pelos critérios combinados e preparam a análise para você conferir. Fonte indisponível ou informação ambígua segue para revisão humana.",
-    "resultados": "Você confere a análise e aprova os próximos passos. Medimos tempo e retrabalho antes e depois para ajustar o processo, sem tratar essa medição como ganho já obtido.",
+    "processos": "No diagnóstico, combinamos com você quais concorrentes e fontes fazem sentido, quais sinais observar e quando uma informação duvidosa precisa de revisão humana. Os critérios e as fontes dependem da sua operação.",
+    "agentes": "Na rotina proposta, os agentes acompanham as fontes acordadas, reúnem os sinais de possíveis lançamentos, organizam as mudanças pelos critérios combinados e preparam uma análise para sua conferência. Fonte indisponível ou sinal ambíguo vai para revisão humana.",
+    "resultados": "Você confere a análise e decide se há algo a investigar ou testar. Depois da implantação, a proposta é comparar tempo de busca e retrabalho antes e depois para ajustar os critérios. Não apresentamos ganhos já medidos nem garantimos a identificação de lançamentos.",
     "entregas": [
-      "Mapa dos concorrentes e das fontes acordadas para o acompanhamento",
-      "Critérios para separar mudanças relevantes do restante da checagem",
-      "Rotina proposta de checagem e organização das mudanças pelos agentes",
-      "Análise para o Dono de Negócio conferir e aprovar os próximos passos",
-      "Encaminhamento de fontes indisponíveis e informações ambíguas para revisão humana"
+      "Mapa proposto dos concorrentes, fontes e sinais a acompanhar",
+      "Critérios combinados para organizar sinais de possíveis lançamentos",
+      "Rotina proposta para agentes acompanharem fontes e reunirem movimentos relevantes",
+      "Análise para o Dono de Negócio conferir e decidir o que investigar ou testar",
+      "Encaminhamento de fontes indisponíveis e sinais ambíguos para revisão humana"
     ],
-    "prova": "O que será avaliado: tempo e retrabalho",
-    "prova_nota": "Critério de medição antes e depois, não resultado obtido"
+    "prova": "O que a proposta prevê medir: tempo de busca e retrabalho",
+    "prova_nota": "Comparação prevista antes e depois da implantação, não resultado obtido"
   },
   {
     "slug": "discover-ads-cod",
