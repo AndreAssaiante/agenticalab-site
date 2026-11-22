@@ -198,3 +198,47 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .dl-tctrl button:hover{border-color:var(--accent);color:var(--accent)}
 @media (max-width:900px){.dl-tcard{flex-basis:calc((100% - 18px)/2)}}
 @media (max-width:600px){.dl-tcard{flex-basis:88%}}
+/* ===== Página Agentes (prefixo ag-) ===== */
+.ag-modes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ag-modes article{border:1px solid var(--line);background:linear-gradient(150deg,#24232D,var(--panel));padding:30px 28px;display:grid;gap:12px;align-content:start}
+.ag-modes article.hl{border-color:rgba(107,59,245,.7);background:linear-gradient(150deg,#2A2250,var(--panel))}
+.ag-modes .tag,.ag-teams .tag,.ag-built .tag{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.ag-modes h3{font-size:24px;letter-spacing:-.02em;line-height:1.2}
+.ag-modes p{color:var(--muted)}
+.ag-modes ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:10px;color:#DCD6E4;font-size:15.5px}
+.ag-modes li{display:flex;gap:12px}.ag-modes li::before{content:"✓";color:var(--accent);font-weight:800}
+.ag-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:f}
+.ag-flow article{position:relative;border:1px solid var(--line);background:var(--panel);padding:26px 22px;display:grid;gap:10px;align-content:start}
+.ag-flow article:not(:last-child)::after{content:"→";position:absolute;right:-16px;top:28px;z-index:1;color:var(--accent);font-weight:800;font-size:18px}
+.ag-flow article.r{border-color:rgba(255,107,44,.6)}
+.ag-flow .n{font-size:13px;font-weight:800;letter-spacing:.18em;color:var(--primary-2)}
+.ag-flow h3{font-size:20px;letter-spacing:-.02em}
+.ag-flow p{color:var(--muted);font-size:15px}
+.ag-teams{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ag-teams article{border:1px solid var(--line);background:linear-gradient(170deg,#24232D,var(--panel));padding:28px 24px;display:grid;gap:12px;align-content:start;position:relative}
+.ag-teams article::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--c)}
+.ag-teams .t-o{--c:var(--paper)} .ag-teams .t-c{--c:var(--primary-2)} .ag-teams .t-m{--c:var(--accent)}
+.ag-teams .tag{color:var(--c)}
+.ag-teams h3{font-size:22px;letter-spacing:-.02em;line-height:1.2}
+.ag-teams dl{margin:6px 0 0;display:grid}
+.ag-teams dt{font-weight:700;font-size:15.5px;padding-top:14px;border-top:1px solid var(--line);margin-top:14px}
+.ag-teams dt:first-child{border-top:0;margin-top:0;padding-top:4px}
+.ag-teams dd{margin:4px 0 0;color:var(--muted);font-size:14.5px}
+.ag-prof article:last-child{grid-column:auto}
+@media (min-width:901px){.ag-prof{grid-template-columns:repeat(3,1fr)}}
+.ag-link{color:var(--accent);font-weight:700;white-space:nowrap}
+.ag-h2{font-size:clamp(32px,3.8vw,50px);line-height:1.06;letter-spacing:-.04em;margin:14px 0 26px}
+.ag-checks{list-style:none;margin:0;padding:0;display:grid;gap:14px;color:var(--muted)}
+.ag-checks li{position:relative;padding-left:25px}
+.ag-checks li::before{content:"";position:absolute;left:0;top:8px;width:11px;height:10px;background:var(--accent);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.ag-checks b{color:var(--paper)}
+.ag-phone{display:grid;place-items:center;padding:24px;background:radial-gradient(at 50% 40%,rgba(107,59,245,.35),transparent 65%)}
+.ag-phone img{width:min(340px,100%);border:1px solid rgba(255,107,44,.6);border-radius:24px;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.ag-built{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.ag-built a{border:1px solid var(--line);background:linear-gradient(150deg,#24232D,var(--panel));padding:24px 22px;display:grid;gap:10px;align-content:start;transition:border-color .2s ease,transform .2s ease}
+.ag-built a:hover{border-color:var(--primary-2);transform:translateY(-2px)}
+.ag-built h3{font-size:19px;letter-spacing:-.02em}
+.ag-built p{color:var(--muted);font-size:14.5px}
+.ag-built .more{font-weight:700;font-size:14px;color:var(--accent)}
+@media (max-width:1000px){.ag-teams{grid-template-columns:1fr}.ag-flow,.ag-built{grid-template-columns:1fr 1fr}.ag-flow article:nth-child(2)::after{display:none}}
+@media (max-width:700px){.ag-modes,.ag-flow,.ag-built{grid-template-columns:1fr}.ag-flow article:not(:last-child)::after{content:"↓";right:auto;left:22px;top:auto;bottom:-22px;display:block}}
