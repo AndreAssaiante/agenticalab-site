@@ -1,16 +1,67 @@
 [
   {
-    "slug": "automacao-whatsapp",
+    "slug": "agenticalab-shop",
     "ordem": 1,
+    "nome": "AgenticaLab Shop",
+    "categoria": "E-commerce",
+    "resumo": "Plataforma de e-commerce white-label para o mercado LATAM: construtor de páginas, traqueamento, mini CRM, importação por SKU e os agentes de IA já plugados.",
+    "titulo": "Uma loja virtual que é sua de verdade, <span>sem depender de plataforma de fora.</span>",
+    "lead": "A AgenticaLab Shop é uma plataforma de e-commerce white-label, criada sob medida para um cliente e hoje disponível para venda. Uma alternativa ao Shopify e ao WooCommerce para quem quer personalização total e menos dependência das plataformas líderes, com construtor de páginas, traqueamento, mini CRM e os agentes de IA já integrados.",
+    "imagens": [
+      {
+        "src": "/assets/img/agenticalab-shop-loja.jpg",
+        "alt": "AgenticaLab Shop: vitrine da loja (exemplo ilustrativo)",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/agenticalab-shop-gestao.jpg",
+        "alt": "AgenticaLab Shop: painel de gestão com pedidos e indicadores (dados ilustrativos)",
+        "classe": "s2"
+      }
+    ],
+    "problema": [
+      "Montar uma loja em plataforma líder significa jogar pelas regras, taxas e limites de personalização de quem é dono da plataforma. Você adapta a sua operação ao template, e não o contrário.",
+      "E, mesmo assim, traqueamento, CRM, gestão de pedidos e atendimento no WhatsApp acabam espalhados em ferramentas soltas que não conversam entre si."
+    ],
+    "processos": "Implantamos a plataforma com a sua marca (white-label) e configuramos a loja, as páginas e as regras do seu mercado.",
+    "agentes": "Você opera com construtor de páginas, traqueamento, mini CRM em Kanban e importação por SKU, e pluga os agentes de IA e o follow-up no WhatsApp.",
+    "resultados": "Uma loja personalizável de ponta a ponta, com gestão e automação no mesmo lugar, sem depender de plataforma de fora.",
+    "entregas": [
+      "Plataforma white-label, com a sua marca",
+      "Construtor de páginas interno",
+      "Traqueamento de UTMs, no padrão de ferramentas como a UTMFY",
+      "Mini CRM com acompanhamento de pedidos em Kanban",
+      "Importação por SKU, que já gera uma página de vendas template",
+      "Integrações por API, MCP e CLI, e acesso de API para times e agentes",
+      "Follow-up de pedidos no WhatsApp com agentes de IA"
+    ],
+    "prova": "Plataforma white-label em operação no mercado LATAM",
+    "prova_nota": "Projeto exclusivo para um cliente, hoje disponível para venda"
+  },
+  {
+    "slug": "automacao-whatsapp",
+    "ordem": 2,
     "nome": "Automação de WhatsApp",
     "categoria": "Atendimento",
     "resumo": "O cliente faz o pedido e recebe na hora a confirmação no WhatsApp. Depois, mensagens personalizadas acompanham cada status até a entrega e o pós-venda.",
     "titulo": "Seu cliente sabe onde está o pedido <span>sem precisar perguntar.</span>",
     "lead": "Um agente acompanha cada pedido e avisa o cliente no WhatsApp em todas as etapas, da confirmação ao pós-venda. Sua equipe para de responder \"cadê meu pedido?\" um por um.",
     "imagens": [
-      {"src": "/assets/img/agenticalab-shop-painel.jpg", "alt": "Painel do atendimento acompanhando um pedido da AgenticaLab Shop (exemplo ilustrativo)", "classe": "s1"},
-      {"src": "/assets/img/agenticalab-shop-pedido.jpg", "alt": "Pedido na loja AgenticaLab Shop (exemplo ilustrativo)", "classe": "s3"},
-      {"src": "/assets/img/agenticalab-shop-whatsapp.jpg", "alt": "Confirmação automática do pedido no WhatsApp (exemplo ilustrativo)", "classe": "s2 phone"}
+      {
+        "src": "/assets/img/agenticalab-shop-painel.jpg",
+        "alt": "Painel do atendimento acompanhando um pedido da AgenticaLab Shop (exemplo ilustrativo)",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/agenticalab-shop-pedido.jpg",
+        "alt": "Pedido na loja AgenticaLab Shop (exemplo ilustrativo)",
+        "classe": "s3"
+      },
+      {
+        "src": "/assets/img/agenticalab-shop-whatsapp.jpg",
+        "alt": "Confirmação automática do pedido no WhatsApp (exemplo ilustrativo)",
+        "classe": "s2 phone"
+      }
     ],
     "problema": [
       "Depois da compra, o cliente fica sem notícia e abre o WhatsApp para perguntar. A equipe responde a mesma pergunta dezenas de vezes por dia, copiando código de rastreio e status de outro sistema.",
@@ -27,19 +78,27 @@
       "Exceções (endereço errado, pagamento recusado) encaminhadas para a equipe"
     ],
     "prova": "Mais segurança para o cliente e maior taxa de recompra para a loja",
-    "prova_nota": "Objetivo da automação na loja Minimalista"
+    "prova_nota": "Objetivo da automação nas lojas atendidas"
   },
   {
     "slug": "discover-launch",
-    "ordem": 2,
+    "ordem": 3,
     "nome": "Discover Launch",
     "categoria": "Inteligência de mercado",
     "resumo": "Radar de lançamentos no YouTube e na Meta. Coleta vídeos e anúncios todo dia, a IA classifica os sinais de lançamento e um vigia avisa por e-mail quando um concorrente se mexe.",
     "titulo": "Saiba que o concorrente vai lançar <span>antes do lançamento.</span>",
     "lead": "Agentes coletam vídeos e anúncios todos os dias, a IA separa o que é sinal de lançamento e você recebe um e-mail quando um concorrente monitorado se mexe.",
     "imagens": [
-      {"src": "/assets/img/discover-ads.jpg", "alt": "Discover Launch: anúncios ativos e anunciantes monitorados", "classe": "s1"},
-      {"src": "/assets/img/discover-ads-linha-cards.jpg", "alt": "Discover Launch: cards de anúncios de lançamento encontrados", "classe": "s2"}
+      {
+        "src": "/assets/img/discover-ads.jpg",
+        "alt": "Discover Launch: anúncios ativos e anunciantes monitorados",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/discover-ads-linha-cards.jpg",
+        "alt": "Discover Launch: cards de anúncios de lançamento encontrados",
+        "classe": "s2"
+      }
     ],
     "problema": [
       "Acompanhar concorrentes no YouTube e na biblioteca de anúncios da Meta é trabalho manual: abrir canal por canal, anúncio por anúncio, e anotar numa planilha.",
@@ -60,15 +119,23 @@
   },
   {
     "slug": "discover-ads-cod",
-    "ordem": 3,
+    "ordem": 4,
     "nome": "Discover Ads COD",
     "categoria": "E-commerce",
     "resumo": "Garimpo de produtos físicos que estão escalando contra entrega em 7 países da América Latina, ranqueados por crescimento de anúncios.",
     "titulo": "Os produtos que estão escalando, <span>ranqueados todo dia.</span>",
     "lead": "Agentes varrem os anúncios de produtos contra entrega em 7 países da América Latina, ranqueiam pelo crescimento e organizam os testes numa esteira.",
     "imagens": [
-      {"src": "/assets/img/discover-ads-cod.jpg", "alt": "Discover Ads COD: produtos escalando por país", "classe": "s1"},
-      {"src": "/assets/img/discover-ads-cod-2.jpg", "alt": "Discover Ads COD: vitrine de produtos com crescimento de anúncios", "classe": "s2"}
+      {
+        "src": "/assets/img/discover-ads-cod.jpg",
+        "alt": "Discover Ads COD: produtos escalando por país",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/discover-ads-cod-2.jpg",
+        "alt": "Discover Ads COD: vitrine de produtos com crescimento de anúncios",
+        "classe": "s2"
+      }
     ],
     "problema": [
       "Encontrar produto vencedor para contra entrega significa horas na biblioteca de anúncios, país por país, tentando adivinhar o que está crescendo de verdade.",
