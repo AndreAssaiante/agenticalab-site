@@ -219,6 +219,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .ag-teams article::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--c)}
 .ag-teams .t-o{--c:var(--paper)} .ag-teams .t-c{--c:var(--primary-2)} .ag-teams .t-m{--c:var(--accent)}
 .ag-teams .tag{color:var(--c)}
+.ag-teams .ag-art{display:block;width:calc(100% + 48px);max-width:none;height:auto;margin:-28px -24px 8px;border-bottom:1px solid var(--line)}
 .ag-teams h3{font-size:22px;letter-spacing:-.02em;line-height:1.2}
 .ag-teams dl{margin:6px 0 0;display:grid}
 .ag-teams dt{font-weight:700;font-size:15.5px;padding-top:14px;border-top:1px solid var(--line);margin-top:14px}
