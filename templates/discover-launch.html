@@ -127,13 +127,23 @@ nav: solucoes
 
   <section class="block" style="padding-top:0">
     <div class="wrap">
-      <div class="head"><div><span class="kicker">Prova</span><h2>Quem já usa diz o quê?</h2></div></div>
-      <div class="dl-proof">
-        <!-- PLACEHOLDER: inserir depoimentos reais e prints de resultado quando existirem. Não inventar. -->
-        <article><p>[Espaço reservado para depoimento real de afiliado ou coprodutor]</p><small>Nome, nicho e resultado, com autorização</small></article>
-        <article><p>[Espaço reservado para print de lançamento encontrado antes do mercado]</p><small>Com data, para comprovar o timing</small></article>
-        <article><p>[Espaço reservado para resultado de operação que usou o radar]</p><small>Só dado verificável</small></article>
+      <div class="head"><div><span class="kicker">Na prática</span><h2>Como o Discover Launch facilita sua rotina.</h2></div><p>Cenários de uso escritos pela AgenticaLab a partir dos recursos do sistema. <strong>Não são depoimentos de clientes.</strong></p></div>
+      <!-- CENÁRIOS DE USO: demonstram aplicações do sistema. Depoimentos reais e autorizados entram aqui quando existirem. -->
+      <div class="dl-tcar" id="dl-tcar">
+        <div class="dl-ttrack">
+          <article class="dl-tcard"><p>“Antes eu precisava alternar entre a Biblioteca de Anúncios e o YouTube para tentar entender quais lançamentos estavam esquentando. Agora começo pelo radar, vejo os sinais mais fortes e só abro o que realmente vale investigar.”</p><small>Perfil: Afiliada de lançamentos</small></article>
+          <article class="dl-tcard"><p>“Minha pesquisa ficou ordenada. Em vez de garimpar solto, olho os candidatos pontuados, monto uma short list de produtores e decido para quem mandar proposta de afiliação primeiro.”</p><small>Perfil: Estrategista de afiliação</small></article>
+          <article class="dl-tcard"><p>“Eu acompanhava alguns experts na mão, abrindo perfil por perfil. Hoje as movimentações ficam registradas e os alertas me avisam quando algo muda, então não dependo de lembrar de checar todo dia.”</p><small>Perfil: Coprodutora digital</small></article>
+          <article class="dl-tcard"><p>“Antes de decidir entrar em um lançamento, consigo ver os criativos, há quanto tempo estão ativos e as variações. Isso deixou minhas reuniões de operação bem mais objetivas.”</p><small>Perfil: Gestor de tráfego</small></article>
+          <article class="dl-tcard"><p>“Quando vejo um anúncio interessante, parto do link para encontrar o produto e o caminho de afiliação. Economizo o tempo que eu gastava tentando descobrir de quem era a oferta.”</p><small>Perfil: Afiliada Hotmart</small></article>
+          <article class="dl-tcard"><p>“Troquei as planilhas soltas pelos favoritos dentro do painel. O que eu quero acompanhar fica salvo em um lugar só, e eu volto quando tenho tempo de analisar com calma.”</p><small>Perfil: Analista de mercado digital</small></article>
+          <article class="dl-tcard"><p>“Gosto de observar o que os experts da minha área estão anunciando. Ver essa movimentação me ajuda a entender o timing do mercado sem precisar ficar vigiando rede por rede.”</p><small>Perfil: Produtora de infoprodutos</small></article>
+          <article class="dl-tcard"><p>“Pesquiso por termos como aula gratuita, evento e inscrições abertas para mapear quem está em fase de captação. Assim identifico onde há lançamento em andamento sem abrir dezenas de abas.”</p><small>Perfil: Especialista em funis</small></article>
+          <article class="dl-tcard"><p>“O radar separou bem as duas coisas: a hora de pesquisar e a hora de decidir. Faço a coleta e a leitura dos sinais primeiro, depois sento para escolher onde vale colocar energia.”</p><small>Perfil: Consultora de lançamentos</small></article>
+        </div>
       </div>
+      <div class="dl-tctrl"><span class="dl-note">Cenários de uso do sistema · Depoimentos reais de clientes entram aqui assim que forem coletados e autorizados</span><div><button type="button" data-dir="-1" aria-label="Anteriores">←</button><button type="button" data-dir="1" aria-label="Próximos">→</button></div></div>
+      <script>(()=>{const v=document.getElementById('dl-tcar');document.querySelectorAll('.dl-tctrl button').forEach(b=>b.addEventListener('click',()=>{const c=v.querySelector('.dl-tcard');v.scrollBy({left:(c.offsetWidth+18)*Number(b.dataset.dir),behavior:'smooth'})}))})();</script>
     </div>
   </section>
 
