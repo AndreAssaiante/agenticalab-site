@@ -1,21 +1,21 @@
 [
   {
-    "slug": "minimalista",
+    "slug": "agenticalab-shop",
     "ordem": 1,
-    "nome": "Minimalista",
+    "nome": "AgenticaLab Shop",
     "categoria": "E-commerce",
     "resumo": "Plataforma de e-commerce white-label para o mercado LATAM: construtor de páginas, traqueamento, mini CRM, importação por SKU e os agentes de IA já plugados.",
     "titulo": "Uma loja virtual que é sua de verdade, <span>sem depender de plataforma de fora.</span>",
-    "lead": "A Minimalista é uma plataforma de e-commerce white-label, criada sob medida para um cliente e hoje disponível para venda. Uma alternativa ao Shopify e ao WooCommerce para quem quer personalização total e menos dependência das plataformas líderes, com construtor de páginas, traqueamento, mini CRM e os agentes de IA já integrados.",
+    "lead": "A AgenticaLab Shop é uma plataforma de e-commerce white-label, criada sob medida para um cliente e hoje disponível para venda. Uma alternativa ao Shopify e ao WooCommerce para quem quer personalização total e menos dependência das plataformas líderes, com construtor de páginas, traqueamento, mini CRM e os agentes de IA já integrados.",
     "imagens": [
       {
-        "src": "/assets/img/minimalista.jpg",
-        "alt": "Minimalista: vitrine da loja",
+        "src": "/assets/img/agenticalab-shop-loja.jpg",
+        "alt": "AgenticaLab Shop: vitrine da loja (exemplo ilustrativo)",
         "classe": "s1"
       },
       {
-        "src": "/assets/img/minimalista-2.jpg",
-        "alt": "Minimalista: painel de gestão com pedidos e indicadores (dados ilustrativos)",
+        "src": "/assets/img/agenticalab-shop-gestao.jpg",
+        "alt": "AgenticaLab Shop: painel de gestão com pedidos e indicadores (dados ilustrativos)",
         "classe": "s2"
       }
     ],
@@ -78,7 +78,7 @@
       "Exceções (endereço errado, pagamento recusado) encaminhadas para a equipe"
     ],
     "prova": "Mais segurança para o cliente e maior taxa de recompra para a loja",
-    "prova_nota": "Objetivo da automação na loja Minimalista"
+    "prova_nota": "Objetivo da automação nas lojas atendidas"
   },
   {
     "slug": "discover-launch",
