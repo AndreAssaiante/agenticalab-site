@@ -184,3 +184,16 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .dl-faq details p{padding-bottom:20px;color:var(--muted)}
 @media (max-width:900px){.dl-pains,.dl-proof{grid-template-columns:1fr}.dl-feats,.dl-vs{grid-template-columns:1fr}}
 .dl-feats article:last-child{grid-column:1/-1}
+/* Carrossel de cenários/depoimentos (dl-t*) */
+.dl-tcar{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.dl-tcar::-webkit-scrollbar{display:none}
+.dl-ttrack{display:flex;gap:18px}
+.dl-tcard{flex:0 0 calc((100% - 36px)/3);scroll-snap-align:start;background:linear-gradient(150deg,#24232D,var(--panel));border:1px dashed var(--line-2);padding:26px 24px;display:flex;flex-direction:column;gap:14px;min-height:260px}
+.dl-tcard p{color:#DCD6E4;font-size:15.5px;line-height:1.65;flex:1}
+.dl-tcard small{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+.dl-tlabel{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(255,107,44,.5);padding:4px 8px}
+.dl-tctrl{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:18px;flex-wrap:wrap}
+.dl-tctrl button{width:44px;height:44px;margin-left:8px;background:transparent;border:1px solid var(--line-2);color:var(--paper);font-size:18px;cursor:pointer}
+.dl-tctrl button:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:900px){.dl-tcard{flex-basis:calc((100% - 18px)/2)}}
+@media (max-width:600px){.dl-tcard{flex-basis:88%}}
