@@ -62,22 +62,22 @@
     "ordem": 3,
     "nome": "Discover Ads COD",
     "categoria": "E-commerce",
-    "resumo": "Garimpo de produtos físicos que estão escalando com pagamento na entrega em 7 países da América Latina, ranqueados por crescimento de anúncios.",
+    "resumo": "Garimpo de produtos físicos que estão escalando contra entrega em 7 países da América Latina, ranqueados por crescimento de anúncios.",
     "titulo": "Os produtos que estão escalando, <span>ranqueados todo dia.</span>",
-    "lead": "Agentes varrem os anúncios de produtos com pagamento na entrega em 7 países da América Latina, ranqueiam pelo crescimento e organizam os testes numa esteira.",
+    "lead": "Agentes varrem os anúncios de produtos contra entrega em 7 países da América Latina, ranqueiam pelo crescimento e organizam os testes numa esteira.",
     "imagens": [
       {"src": "/assets/img/discover-ads-cod.jpg", "alt": "Discover Ads COD: produtos escalando por país", "classe": "s1"},
       {"src": "/assets/img/discover-ads-cod-2.jpg", "alt": "Discover Ads COD: vitrine de produtos com crescimento de anúncios", "classe": "s2"}
     ],
     "problema": [
-      "Encontrar produto vencedor para pagamento na entrega significa horas na biblioteca de anúncios, país por país, tentando adivinhar o que está crescendo de verdade.",
+      "Encontrar produto vencedor para contra entrega significa horas na biblioteca de anúncios, país por país, tentando adivinhar o que está crescendo de verdade.",
       "Sem critério, os testes viram aposta e o dinheiro de tráfego vai embora."
     ],
     "processos": "Definimos países, critérios de crescimento e o que faz um produto entrar na esteira de testes.",
     "agentes": "Os agentes coletam os anúncios, medem o crescimento de cada produto e montam o ranking diário.",
     "resultados": "Você testa primeiro o que mais cresce e acompanha cada teste na mesma esteira.",
     "entregas": [
-      "Varredura de anúncios COD em 7 países da América Latina",
+      "Varredura de anúncios contra entrega em 7 países da América Latina",
       "Ranking diário por crescimento de anúncios",
       "Vitrine de produtos com histórico de cada um",
       "Esteira para organizar e acompanhar os testes",
