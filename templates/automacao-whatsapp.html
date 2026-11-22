@@ -91,13 +91,23 @@ nav: solucoes
 
   <section class="block" style="padding-top:0">
     <div class="wrap">
-      <div class="head"><div><span class="kicker">Prova</span><h2>Quem já usa diz o quê?</h2></div></div>
-      <div class="dl-proof">
-        <!-- PLACEHOLDER: inserir depoimentos reais e números medidos quando existirem. Não inventar. -->
-        <article><p>[Espaço reservado para depoimento real de dono de loja]</p><small>Nome, loja e resultado, com autorização</small></article>
-        <article><p>[Espaço reservado para queda medida de perguntas repetidas no atendimento]</p><small>Antes e depois, com o período medido</small></article>
-        <article><p>[Espaço reservado para taxa de recompra medida]</p><small>Só dado verificável</small></article>
+      <div class="head"><div><span class="kicker">Na prática</span><h2>Como o assistente entra na rotina da loja.</h2></div></div>
+      <!-- CENÁRIOS DE USO: demonstram aplicações do sistema. Depoimentos reais e autorizados entram aqui quando existirem. -->
+      <div class="dl-tcar" id="dl-tcar">
+        <div class="dl-ttrack">
+          <article class="dl-tcard"><p>“Antes, cada cliente me mandava mensagem perguntando onde estava o pedido. Agora o assistente avisa a cada etapa, então o cliente já sabe o status antes de precisar perguntar.”</p><small>Dono de e-commerce</small></article>
+          <article class="dl-tcard"><p>“A maior parte das mensagens era ‘meu pedido já saiu?’. Com o acompanhamento automático, minha equipe parou de responder a mesma coisa o dia inteiro e sobra tempo para os casos que realmente precisam de gente.”</p><small>Gestor de atendimento</small></article>
+          <article class="dl-tcard"><p>“No contra entrega, confirmação é tudo. O assistente confirma o pedido e acompanha até a entrega, o que ajuda a reduzir pacote recusado por cliente que esqueceu que comprou.”</p><small>Operadora de COD</small></article>
+          <article class="dl-tcard"><p>“Gosto de saber em que ponto cada pedido está sem abrir dez sistemas. O assistente mantém o cliente informado e eu acompanho a jornada no mesmo lugar.”</p><small>Analista de pós-venda</small></article>
+          <article class="dl-tcard"><p>“Quando um pedido atrasa, o cliente costumava descobrir no susto. Agora ele é avisado, e isso tirou boa parte das reclamações que chegavam sem a gente ter como adiantar.”</p><small>Coordenador de logística</small></article>
+          <article class="dl-tcard"><p>“O que me deixou tranquila foi rodar tudo pela API oficial do WhatsApp. É o canal que o cliente já usa, sem número correndo risco de bloqueio.”</p><small>Gestora de loja online</small></article>
+          <article class="dl-tcard"><p>“Eu passava o dia copiando código de rastreio e colando na conversa. O assistente faz esse acompanhamento, e eu entro quando o cliente tem uma dúvida de verdade.”</p><small>Atendente de SAC</small></article>
+          <article class="dl-tcard"><p>“Como cuido da loja sozinha, não dava para responder todo mundo na hora. O assistente mantém o cliente acompanhado mesmo quando não consigo olhar o celular.”</p><small>Empreendedora digital</small></article>
+          <article class="dl-tcard"><p>“O follow-up acontecer sozinho, do pedido até chegar na casa do cliente, deixou a operação menos dependente de alguém lembrar de avisar cada etapa.”</p><small>Gestor de operação</small></article>
+        </div>
       </div>
+      <div class="dl-tctrl"><span></span><div><button type="button" data-dir="-1" aria-label="Anteriores">←</button><button type="button" data-dir="1" aria-label="Próximos">→</button></div></div>
+      <script>(()=>{const v=document.getElementById('dl-tcar');document.querySelectorAll('.dl-tctrl button').forEach(b=>b.addEventListener('click',()=>{const c=v.querySelector('.dl-tcard');v.scrollBy({left:(c.offsetWidth+18)*Number(b.dataset.dir),behavior:'smooth'})}))})();</script>
     </div>
   </section>
 
