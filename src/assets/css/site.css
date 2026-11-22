@@ -117,9 +117,10 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 @media (max-width:900px){.split{grid-template-columns:1fr}}
 .shots{position:relative;aspect-ratio:4/3;max-width:100%;min-width:0}
 .shots img{position:absolute;display:block;object-fit:cover;object-position:left top;border:1px solid var(--line-2);box-shadow:0 24px 60px rgba(0,0,0,.55)}
-.shots .s1{left:0;top:0;width:82%;height:78%}
+.shots .s1{left:0;top:0;width:84%;height:60%}
 .shots .s2{right:0;bottom:0;width:58%;height:56%;border-color:rgba(107,59,245,.7)}
-.shots .s2.phone{top:6%;bottom:auto;right:2%;width:auto;height:88%;border-radius:18px;border-color:rgba(255,107,44,.7)}
+.shots .s3{left:0;bottom:0;width:54%;height:42%;border-color:rgba(107,59,245,.7)}
+.shots .s2.phone{top:auto;bottom:-2%;right:1%;width:auto;height:72%;border-radius:18px;border-color:rgba(255,107,44,.7)}
 .prose{display:grid;gap:18px;max-width:62ch;color:#DCD6E4;font-size:18px}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media (max-width:900px){.steps{grid-template-columns:1fr}}
