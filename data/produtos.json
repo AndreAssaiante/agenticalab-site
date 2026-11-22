@@ -38,7 +38,7 @@
     "lead": "Agentes coletam vídeos e anúncios todos os dias, a IA separa o que é sinal de lançamento e você recebe um e-mail quando um concorrente monitorado se mexe.",
     "imagens": [
       {"src": "/assets/img/discover-ads.jpg", "alt": "Discover Launch: anúncios ativos e anunciantes monitorados", "classe": "s1"},
-      {"src": "/assets/img/discover-ads-cards.jpg", "alt": "Discover Launch: cards de anúncios de lançamento encontrados", "classe": "s2"}
+      {"src": "/assets/img/discover-ads-linha-cards.jpg", "alt": "Discover Launch: cards de anúncios de lançamento encontrados", "classe": "s2"}
     ],
     "problema": [
       "Acompanhar concorrentes no YouTube e na biblioteca de anúncios da Meta é trabalho manual: abrir canal por canal, anúncio por anúncio, e anotar numa planilha.",
