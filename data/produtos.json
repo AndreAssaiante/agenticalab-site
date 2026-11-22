@@ -8,8 +8,9 @@
     "titulo": "Seu cliente sabe onde está o pedido <span>sem precisar perguntar.</span>",
     "lead": "Um agente acompanha cada pedido e avisa o cliente no WhatsApp em todas as etapas, da confirmação ao pós-venda. Sua equipe para de responder \"cadê meu pedido?\" um por um.",
     "imagens": [
-      {"src": "/assets/img/minimalista-pedido.jpg", "alt": "Formulário de pedido na loja", "classe": "s1"},
-      {"src": "/assets/img/minimalista-whatsapp.jpg", "alt": "Confirmação automática do pedido no WhatsApp", "classe": "s2 phone"}
+      {"src": "/assets/img/agenticalab-shop-painel.jpg", "alt": "Painel do atendimento acompanhando um pedido da AgenticaLab Shop (exemplo ilustrativo)", "classe": "s1"},
+      {"src": "/assets/img/agenticalab-shop-pedido.jpg", "alt": "Pedido na loja AgenticaLab Shop (exemplo ilustrativo)", "classe": "s3"},
+      {"src": "/assets/img/agenticalab-shop-whatsapp.jpg", "alt": "Confirmação automática do pedido no WhatsApp (exemplo ilustrativo)", "classe": "s2 phone"}
     ],
     "problema": [
       "Depois da compra, o cliente fica sem notícia e abre o WhatsApp para perguntar. A equipe responde a mesma pergunta dezenas de vezes por dia, copiando código de rastreio e status de outro sistema.",
