@@ -9,17 +9,22 @@
     escritorio: ['Agenda e prazos', 'Documentos e contratos', 'Cobranças', 'Atendimento a clientes'],
     'nao-sei': ['Atendimento', 'Propostas', 'Documentos', 'Conteúdo e redes'] };
   const STEPS = [
-    { k: 'area', q: 'Oi! Sou o coordenador do time de IA. Em 1 minuto entendo o seu caso. Qual área mais toma o seu tempo hoje?', o: AREAS },
-    { k: 'negocio', q: 'E qual é o seu negócio?', o: [
+    { k: 'negocio', q: 'Oi! Sou o coordenador do time de IA. Em 1 minuto entendo o seu caso. Qual é o seu negócio?', o: [
       { v: 'advocacia', t: 'Advocacia', p: 2 }, { v: 'engenharia-arquitetura', t: 'Engenharia ou arquitetura', p: 2 },
       { v: 'agencia-viagens', t: 'Agência de viagens', p: 2 }, { v: 'clinica', t: 'Clínica ou consultório', p: 2 },
       { v: 'loja-ecommerce', t: 'Loja ou e-commerce', p: 2 }, { v: 'outro', t: 'Outro', p: 1 }] },
-    { k: 'equipe', q: 'Quantas pessoas trabalham com você?', o: [
-      { v: 'so-eu', t: 'Só eu', p: 1 }, { v: '2-5', t: '2 a 5', p: 3 }, { v: '6-20', t: '6 a 20', p: 3 }, { v: '20+', t: 'Mais de 20', p: 2 }] },
+    { k: 'papel', q: 'Qual é o seu papel no negócio? Assim eu já sei com quem estou falando.', o: [
+      { v: 'dono', t: 'Sócio ou dono', p: 3 }, { v: 'gestor', t: 'Gerente ou líder', p: 2 },
+      { v: 'autonomo', t: 'Autônomo', p: 2 }, { v: 'colaborador', t: 'Colaborador', p: 0 }] },
+    { k: 'faturamento', q: 'Quanto o negócio fatura por mês, em média? Isso só serve para indicar o tamanho certo de solução.', o: [
+      { v: 'ate-20k', t: 'Até R$ 20 mil', p: 0 }, { v: '20-50k', t: 'R$ 20 mil a R$ 50 mil', p: 2 },
+      { v: '50-100k', t: 'R$ 50 mil a R$ 100 mil', p: 3 }, { v: '100-300k', t: 'R$ 100 mil a R$ 300 mil', p: 3 },
+      { v: '300k+', t: 'Acima de R$ 300 mil', p: 3 }] },
+    { k: 'area', q: 'Qual área mais toma o seu tempo hoje?', o: AREAS },
     { k: 'tarefas', multi: 2, q: 'O que você mais quer tirar das suas mãos? Escolha até 2.', o: s => TAREFAS[s.area || 'nao-sei'].map(t => ({ v: t, t, p: 0 })) },
     { k: 'prazo', q: 'Quando você quer começar?', o: [
       { v: 'agora', t: 'O quanto antes', p: 3 }, { v: '3-meses', t: 'Nos próximos 3 meses', p: 2 }, { v: 'pesquisando', t: 'Só estou pesquisando', p: 0 }] },
-    { k: 'contato', q: 'Perfeito. Para onde mando o próximo passo?', form: true }];
+    { k: 'contato', q: 'Perfeito. Para onde mando o próximo passo? Um especialista fala com você pelo WhatsApp para entender a operação. Sem spam.', form: true }];
 
   const s = {}; let i = 0, score = 0, dlg, log, foot;
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -28,7 +33,7 @@
   function build() {
     dlg = el('dialog', 'dg');
     dlg.setAttribute('aria-label', 'Diagnóstico gratuito');
-    dlg.innerHTML = `<div class="dg-box"><header class="dg-hd"><span class="dg-av" aria-hidden="true">CO</span><div><b>Coordenador · AgenticaLab</b><small>Diagnóstico gratuito · cerca de 1 minuto</small></div><button class="dg-x" type="button" aria-label="Fechar">×</button></header><div class="dg-bar"><i></i></div><div class="dg-log" aria-live="polite"></div><div class="dg-foot"></div></div>`;
+    dlg.innerHTML = `<div class="dg-box"><header class="dg-hd"><span class="dg-av" aria-hidden="true">CO</span><div><b>Coordenador · AgenticaLab</b><small class="dg-step">Diagnóstico gratuito · cerca de 1 minuto</small></div><button class="dg-x" type="button" aria-label="Fechar">×</button></header><div class="dg-bar"><i></i></div><div class="dg-log" aria-live="polite"></div><div class="dg-foot"></div><p class="dg-trust">Sem compromisso · Resposta em até 1 dia útil · Seus dados ficam só com a gente</p></div>`;
     document.body.appendChild(dlg);
     log = dlg.querySelector('.dg-log'); foot = dlg.querySelector('.dg-foot');
     dlg.querySelector('.dg-x').onclick = () => dlg.close();
@@ -36,7 +41,7 @@
   }
   const down = () => requestAnimationFrame(() => log.scrollTop = log.scrollHeight);
   const say = (html, who = 'bot') => { log.appendChild(el('div', 'dg-msg ' + who, html)); down(); };
-  const progress = () => dlg.querySelector('.dg-bar i').style.width = Math.round(i / STEPS.length * 100) + '%';
+  const progress = () => { dlg.querySelector('.dg-bar i').style.width = Math.round(i / STEPS.length * 100) + '%'; dlg.querySelector('.dg-step').textContent = i < STEPS.length ? `Passo ${i + 1} de ${STEPS.length} · cerca de 1 minuto` : 'Diagnóstico gratuito'; };
 
   function ask() {
     progress(); foot.innerHTML = '';
@@ -74,7 +79,7 @@
       const d = Object.fromEntries(new FormData(f));
       const err = f.querySelector('.dg-err');
       if (!d.nome.trim() || d.whatsapp.replace(/\D/g, '').length < 10 || !/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = 'Confira nome, WhatsApp com DDD e e-mail.'; err.hidden = false; return; }
-      const qualificado = s.prazo !== 'pesquisando' && score >= 7;
+      const qualificado = s.prazo !== 'pesquisando' && s.faturamento !== 'ate-20k' && score >= 9;
       const q = new URLSearchParams(location.search), utm = {};
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
       const payload = { ...s, ...d, nota: score, status: qualificado ? 'qualificado' : 'nutrir', pagina: location.pathname, ...utm };

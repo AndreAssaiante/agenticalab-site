@@ -275,7 +275,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .dg{border:0;padding:0;background:transparent;max-width:none;max-height:none;width:100%;height:100%;color:var(--paper)}
 .dg::backdrop{background:rgba(14,13,20,.72);backdrop-filter:blur(4px)}
 .dg[open]{display:grid;place-items:center}
-.dg-box{width:min(560px,calc(100% - 32px));max-height:min(760px,calc(100dvh - 32px));display:grid;grid-template-rows:auto 3px 1fr auto;background:linear-gradient(160deg,#26252F,#1B1A22);border:1px solid var(--line);box-shadow:0 30px 90px rgba(0,0,0,.5);position:relative}
+.dg-box{width:min(560px,calc(100% - 32px));max-height:min(760px,calc(100dvh - 32px));display:grid;grid-template-rows:auto 3px 1fr auto auto;background:linear-gradient(160deg,#26252F,#1B1A22);border:1px solid var(--line);box-shadow:0 30px 90px rgba(0,0,0,.5);position:relative}
 .dg-box::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent))}
 .dg-hd{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--line)}
 .dg-hd b{display:block;font-size:15px}.dg-hd small{color:var(--muted);font-size:13px}
@@ -300,7 +300,9 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .dg-form input:focus{outline:none;border-color:var(--primary-2)}
 .dg-form .btn{justify-self:start;height:48px;margin-top:4px}
 .dg-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.dg-trust{margin:0;padding:0 20px 14px;font-size:12.5px;color:var(--muted);text-align:center}
 .dg-err{color:var(--accent-2);font-size:14px;margin:0}
 .contact-start{display:grid;gap:16px;align-content:start;padding:28px;border:1px solid var(--line);background:linear-gradient(160deg,#24232D,var(--panel))}
 .contact-start ol{margin:0;padding-left:20px;color:#DCD6E4;display:grid;gap:6px}
 @media (max-width:600px){.dg-box{width:100%;height:100dvh;max-height:none;border:0}.dg-msg{max-width:92%}}
+.dg .dg-form{border:0;background:none;padding:0;box-shadow:none}.dg .dg-form::before{display:none}
