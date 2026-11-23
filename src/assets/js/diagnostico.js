@@ -1,5 +1,8 @@
 /* Diagnóstico gratuito: popup em etapas com filtro. Abre em qualquer link para #contato ou [data-diag].
-   Qualificados escolhem o horário na agenda (Cal.diy em agenda.agenticalab.com.br), já com nome e e-mail preenchidos. */
+   Dois modos de entrada, trocados por uma chave no Cloudflare (variável ENTRADA_LEAD, lida em /api/config):
+   - "contato" (padrão): o qualificado recebe "vamos chamar você no WhatsApp" e a equipe entra em contato.
+   - "agenda": o qualificado já escolhe o horário na agenda (Cal.diy), com nome e e-mail preenchidos.
+   Para testar um modo sem mexer na chave: ?entrada=agenda ou ?entrada=contato no endereço da página. */
 (() => {
   const AGENDA = { origin: 'https://agenda.agenticalab.com.br', link: 'agenticalab/diagnostico-gratis' };
   const TAREFAS = {
@@ -24,7 +27,11 @@
       ['agora', 'O quanto antes', 3], ['3-meses', 'Nos próximos 3 meses', 2], ['pesquisando', 'Só estou pesquisando', 0]] },
     { k: 'contato', f: 3, tag: 'Contato', q: 'Para onde mandamos o próximo passo?', form: true }];
 
-  const s = {}, pts = {}; let i = 0, dlg, body;
+  const s = {}, pts = {}; let i = 0, dlg, body, modo = 'contato';
+  const forcado = new URLSearchParams(location.search).get('entrada');
+  const modoPronto = (forcado === 'agenda' || forcado === 'contato') ? Promise.resolve(forcado)
+    : fetch('/api/config', { cache: 'no-store' }).then(r => r.json()).then(c => c.entrada === 'agenda' ? 'agenda' : 'contato').catch(() => 'contato');
+  modoPronto.then(m => { modo = m; });
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const score = () => Object.values(pts).reduce((a, b) => a + b, 0);
 
@@ -80,7 +87,7 @@
   const prev = () => { i--; render(); };
 
   function contactForm(st) {
-    body.innerHTML = head(st) + `<div class="dg-note"><b>O que acontece agora:</b> um especialista fala com você pelo WhatsApp para entender a operação e mostrar por onde começar. Sem spam.</div>
+    body.innerHTML = head(st) + `<div class="dg-note"><b>O que acontece agora:</b> ${modo === 'agenda' ? 'se o seu caso tiver a ver com o que fazemos, você já escolhe o horário da conversa de 30 minutos na tela seguinte.' : 'um especialista fala com você pelo WhatsApp para entender a operação e mostrar por onde começar.'} Sem spam.</div>
       <form class="dg-form" novalidate>
         <label>Nome<input name="nome" autocomplete="name" placeholder="Seu nome" required value="${esc(s.nome || '')}"></label>
         <label>WhatsApp com DDD<input name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" required value="${esc(s.whatsapp || '')}"></label>
@@ -105,21 +112,22 @@
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
       const { nome: _n, whatsapp: _w, email: _e, instagram: _i, site: _s, ...resp } = s;
       const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
-      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, nota, status: qualificado ? 'qualificado' : 'nutrir', pagina: location.pathname, ...utm }) }); } catch (_) {}
+      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, nota, status: qualificado ? 'qualificado' : 'nutrir', entrada: modo, pagina: location.pathname, ...utm }) }); } catch (_) {}
       done(d.nome.split(' ')[0], qualificado, d);
     };
   }
 
   function done(nome, ok, d) {
     chrome(null);
+    const comAgenda = ok && modo === 'agenda';
     const url = `${AGENDA.origin}/${AGENDA.link}?` + new URLSearchParams({ name: d.nome.trim(), email: d.email.trim() });
     body.innerHTML = `<div class="dg-done"><span class="dg-check" aria-hidden="true">✓</span>
       <h3 class="dg-q">${ok ? `Tudo certo, ${esc(nome)}. Seu caso tem tudo a ver com o que fazemos.` : `Obrigado, ${esc(nome)}!`}</h3>
-      <p class="dg-sub">${ok ? 'Escolha agora o melhor horário para a conversa de 30 minutos, por Google Meet. A confirmação chega no seu e-mail.' : 'Vamos mandar no seu e-mail exemplos de como um time de IA assume essas tarefas. Quando fizer sentido, é só responder.'}</p>
-      ${ok ? `<div class="dg-cal" id="dg-cal"><p class="dg-cal-load">Carregando a agenda…</p></div>
+      <p class="dg-sub">${comAgenda ? 'Escolha agora o melhor horário para a conversa de 30 minutos, por Google Meet. A confirmação chega no seu e-mail.' : ok ? 'Vamos chamar você no WhatsApp em até 1 dia útil para marcar a conversa de 30 minutos. Fique de olho no celular.' : 'Vamos mandar no seu e-mail exemplos de como um time de IA assume essas tarefas. Quando fizer sentido, é só responder.'}</p>
+      ${comAgenda ? `<div class="dg-cal" id="dg-cal"><p class="dg-cal-load">Carregando a agenda…</p></div>
       <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> ou aguarde: chamamos você no WhatsApp em até 1 dia útil.</p>` : '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
     body.querySelector('.dg-go')?.addEventListener('click', () => dlg.close());
-    if (ok) { dlg.classList.add('dg-wide'); agenda(d); }
+    if (comAgenda) { dlg.classList.add('dg-wide'); agenda(d); }
   }
 
   // Agenda embutida: script oficial do próprio Cal.diy, carregado só quando um qualificado chega aqui.
