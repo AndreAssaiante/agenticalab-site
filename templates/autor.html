@@ -1,0 +1,28 @@
+<!--
+title: {{nome}} · {{cargo}} · AgenticaLab
+description: {{descricao}}
+nav: blog
+-->
+<main class="theme-light">
+  <section class="page-hero autor-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap autor-grid">
+      <div class="autor-foto">{{{foto}}}</div>
+      <div>
+        <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a><span aria-hidden="true">/</span><span aria-current="page">{{nome}}</span></nav>
+        <span class="kicker">Autor</span>
+        <h1>{{nome}}</h1>
+        <p class="autor-cargo">{{cargo}} · <a href="/sobre/">AgenticaLab</a></p>
+        <div class="autor-bio">{{{bio}}}</div>
+        {{{links}}}
+      </div>
+    </div>
+  </section>
+
+  <section class="block blog-list">
+    <div class="wrap">
+      <h2 class="related-title">Artigos de {{primeiro_nome}}</h2>
+      {{{posts}}}
+    </div>
+  </section>
+</main>

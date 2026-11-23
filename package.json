@@ -1,0 +1,8 @@
+{
+  "name": "agenticalab-site",
+  "private": true,
+  "description": "Site estático da AgenticaLab. Build: node build.mjs. A dependência só gera as capas PNG dos posts; sem ela o site gera igual.",
+  "scripts": { "build": "node build.mjs" },
+  "engines": { "node": ">=18" },
+  "optionalDependencies": { "@resvg/resvg-js": "2.6.2" }
+}
