@@ -1,8 +1,9 @@
-/* Diagnóstico gratuito: popup em etapas com filtro. Abre em qualquer link para #contato ou [data-diag].
-   Dois modos de entrada, trocados por uma chave no Cloudflare (variável ENTRADA_LEAD, lida em /api/config):
-   - "contato" (padrão): o qualificado recebe "vamos chamar você no WhatsApp" e a equipe entra em contato.
-   - "agenda": o qualificado já escolhe o horário na agenda (Cal.diy), com nome e e-mail preenchidos.
-   Para testar um modo sem mexer na chave: ?entrada=agenda ou ?entrada=contato no endereço da página. */
+/* Popup de entrada do lead. Abre em qualquer link para #contato ou [data-diag].
+   Três formulários, escolhidos no CRM (Configurações → Site), lidos em /api/config:
+   - "simples": Form Simples, só nome, WhatsApp e e-mail.
+   - "contato" (padrão): Form Qualificação; o qualificado recebe "vamos chamar você no WhatsApp".
+   - "agenda": Form Qualificação + Agenda; o qualificado já escolhe o horário (Cal.diy), com nome e e-mail preenchidos.
+   Para testar um modo sem mexer no CRM: ?entrada=simples, ?entrada=contato ou ?entrada=agenda no endereço da página. */
 (() => {
   const AGENDA = { origin: 'https://agenda.agenticalab.com.br', link: 'agenticalab/diagnostico-gratis' };
   const TAREFAS = {
@@ -27,11 +28,11 @@
       ['agora', 'O quanto antes', 3], ['3-meses', 'Nos próximos 3 meses', 2], ['pesquisando', 'Só estou pesquisando', 0]] },
     { k: 'contato', f: 3, tag: 'Contato', q: 'Para onde mandamos o próximo passo?', form: true }];
 
-  const s = {}, pts = {}; let i = 0, dlg, body, modo = 'contato';
+  const MODOS = ['simples', 'contato', 'agenda'];
+  const s = {}, pts = {}; let i = 0, dlg, body, modo = 'contato', steps = STEPS;
   const forcado = new URLSearchParams(location.search).get('entrada');
-  const modoPronto = (forcado === 'agenda' || forcado === 'contato') ? Promise.resolve(forcado)
-    : fetch('/api/config', { cache: 'no-store' }).then(r => r.json()).then(c => c.entrada === 'agenda' ? 'agenda' : 'contato').catch(() => 'contato');
-  modoPronto.then(m => { modo = m; });
+  const modoPronto = fetch('/api/config?' + new URLSearchParams({ p: location.pathname }), { cache: 'no-store' }).then(r => r.json()).catch(() => ({}))
+    .then(c => { if (c.agendaLink) AGENDA.link = c.agendaLink; modo = MODOS.includes(forcado) ? forcado : MODOS.includes(c.entrada) ? c.entrada : 'contato'; });
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const score = () => Object.values(pts).reduce((a, b) => a + b, 0);
 
@@ -55,16 +56,17 @@
   }
 
   function chrome(st) {
+    dlg.classList.toggle('dg-simples', modo === 'simples');
     const f = st ? st.f : FASES.length;
     dlg.querySelectorAll('.dg-steps li').forEach((li, n) => { li.className = n < f ? 'done' : n === f ? 'on' : ''; });
-    dlg.style.setProperty('--prog', (st ? (i + 1) / STEPS.length : 1) * 100 + '%');
-    dlg.querySelector('.dg-count').textContent = st ? `Passo ${i + 1} de ${STEPS.length}` : 'Concluído';
+    dlg.style.setProperty('--prog', (st ? (i + 1) / steps.length : 1) * 100 + '%');
+    dlg.querySelector('.dg-count').textContent = st ? (steps.length > 1 ? `Passo ${i + 1} de ${steps.length}` : '') : 'Concluído';
   }
-  const head = st => `<p class="dg-kick">Passo ${i + 1} de ${STEPS.length} · ${st.tag}</p><h3 class="dg-q">${esc(st.q)}</h3>${st.sub ? `<p class="dg-sub">${esc(st.sub)}</p>` : ''}`;
+  const head = st => `<p class="dg-kick">${steps.length > 1 ? `Passo ${i + 1} de ${steps.length} · ` : ''}${st.tag}</p><h3 class="dg-q">${esc(st.q)}</h3>${st.sub ? `<p class="dg-sub">${esc(st.sub)}</p>` : ''}`;
   const back = () => i > 0 ? `<button type="button" class="dg-back">← Voltar</button>` : '';
 
   function render() {
-    const st = STEPS[i]; chrome(st);
+    const st = steps[i]; chrome(st);
     if (st.form) return contactForm(st);
     const opts = typeof st.o === 'function' ? st.o(s) : st.o;
     const sel = new Set(st.multi ? (s[st.k] || []) : [s[st.k]]);
@@ -83,7 +85,7 @@
     body.querySelector('.dg-back')?.addEventListener('click', prev);
     body.querySelector('.dg-opt')?.focus({ preventScroll: true });
   }
-  const next = () => { i++; if (STEPS[i]?.k === 'tarefas' && s.tarefas && !s.tarefas.every(t => TAREFAS[s.area || 'nao-sei'].includes(t))) delete s.tarefas; render(); body.scrollTop = 0; };
+  const next = () => { i++; if (steps[i]?.k === 'tarefas' && s.tarefas && !s.tarefas.every(t => TAREFAS[s.area || 'nao-sei'].includes(t))) delete s.tarefas; render(); body.scrollTop = 0; };
   const prev = () => { i--; render(); };
 
   function contactForm(st) {
@@ -92,10 +94,10 @@
         <label>Nome<input name="nome" autocomplete="name" placeholder="Seu nome" required value="${esc(s.nome || '')}"></label>
         <label>WhatsApp com DDD<input name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" required value="${esc(s.whatsapp || '')}"></label>
         <label>E-mail<input name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required value="${esc(s.email || '')}"></label>
-        <div class="dg-row">
+        ${modo === 'simples' ? '' : `<div class="dg-row">
           <label><span>Instagram <em>(opcional)</em></span><input name="instagram" autocomplete="off" placeholder="@suaempresa" value="${esc(s.instagram || '')}"></label>
           <label><span>Site <em>(opcional)</em></span><input name="site" type="url" inputmode="url" autocomplete="url" placeholder="suaempresa.com.br" value="${esc(s.site || '')}"></label>
-        </div>
+        </div>`}
         <input name="empresa_site" class="dg-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <p class="dg-err" hidden></p>
         <div class="dg-nav">${back()}<button class="btn dg-go" type="submit">Enviar →</button></div>
@@ -107,13 +109,13 @@
       e.preventDefault();
       const d = Object.fromEntries(new FormData(f)), err = f.querySelector('.dg-err');
       if (!d.nome.trim() || d.whatsapp.replace(/\D/g, '').length < 10 || !/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = 'Confira o nome, o WhatsApp com DDD e o e-mail.'; err.hidden = false; return; }
-      const nota = score(), qualificado = s.prazo !== 'pesquisando' && s.faturamento !== 'ate-20k' && nota >= 9;
+      const simples = modo === 'simples', nota = score(), qualificado = !simples && s.prazo !== 'pesquisando' && s.faturamento !== 'ate-20k' && nota >= 9;
       const q = new URLSearchParams(location.search), utm = {};
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
       const { nome: _n, whatsapp: _w, email: _e, instagram: _i, site: _s, ...resp } = s;
       const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
-      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, nota, status: qualificado ? 'qualificado' : 'nutrir', entrada: modo, pagina: location.pathname, ...utm }) }); } catch (_) {}
-      done(d.nome.split(' ')[0], qualificado, d);
+      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, ...(simples ? { status: 'simples' } : { nota, status: qualificado ? 'qualificado' : 'nutrir' }), entrada: modo, pagina: location.pathname, ...utm }) }); } catch (_) {}
+      done(d.nome.split(' ')[0], qualificado || simples, d);
     };
   }
 
@@ -122,7 +124,7 @@
     const comAgenda = ok && modo === 'agenda';
     const url = `${AGENDA.origin}/${AGENDA.link}?` + new URLSearchParams({ name: d.nome.trim(), email: d.email.trim() });
     body.innerHTML = `<div class="dg-done"><span class="dg-check" aria-hidden="true">✓</span>
-      <h3 class="dg-q">${ok ? `Tudo certo, ${esc(nome)}. Seu caso tem tudo a ver com o que fazemos.` : `Obrigado, ${esc(nome)}!`}</h3>
+      <h3 class="dg-q">${modo === 'simples' ? `Recebemos seu contato, ${esc(nome)}.` : ok ? `Tudo certo, ${esc(nome)}. Seu caso tem tudo a ver com o que fazemos.` : `Obrigado, ${esc(nome)}!`}</h3>
       <p class="dg-sub">${comAgenda ? 'Escolha agora o melhor horário para a conversa de 30 minutos, por Google Meet. A confirmação chega no seu e-mail.' : ok ? 'Vamos chamar você no WhatsApp em até 1 dia útil para marcar a conversa de 30 minutos. Fique de olho no celular.' : 'Vamos mandar no seu e-mail exemplos de como um time de IA assume essas tarefas. Quando fizer sentido, é só responder.'}</p>
       ${comAgenda ? `<div class="dg-cal" id="dg-cal"><p class="dg-cal-load">Carregando a agenda…</p></div>
       <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> ou aguarde: chamamos você no WhatsApp em até 1 dia útil.</p>` : '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
@@ -144,10 +146,13 @@
     Cal.ns.dg('on', { action: 'bookingSuccessful', callback: () => { const alt = body.querySelector('.dg-cal-alt'); if (alt) alt.textContent = 'Reunião marcada. O convite com o link do Google Meet foi para o seu e-mail.'; } });
   }
 
-  function open(e) {
+  async function open(e) {
     e?.preventDefault();
     if (!dlg) build();
-    if (!dlg.open) { dlg.classList.remove('dg-wide'); Object.keys(s).forEach(k => delete s[k]); Object.keys(pts).forEach(k => delete pts[k]); i = 0; render(); dlg.showModal(); }
+    if (dlg.open) return;
+    await Promise.race([modoPronto, new Promise(r => setTimeout(r, 1500))]); // a escolha do CRM normalmente já chegou
+    steps = modo === 'simples' ? [{ ...STEPS[STEPS.length - 1], f: 0, tag: 'Fale com a gente', q: 'Deixe seu contato e falamos com você' }] : STEPS;
+    dlg.classList.remove('dg-wide'); Object.keys(s).forEach(k => delete s[k]); Object.keys(pts).forEach(k => delete pts[k]); i = 0; render(); dlg.showModal();
   }
   document.addEventListener('click', e => { const a = e.target.closest('a[href$="#contato"],[data-diag]'); if (a) open(e); });
   if (location.hash === '#diagnostico') open();
