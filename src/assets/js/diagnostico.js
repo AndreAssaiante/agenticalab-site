@@ -30,8 +30,8 @@
     dlg = document.createElement('dialog'); dlg.className = 'dg'; dlg.setAttribute('aria-label', 'Diagnóstico gratuito');
     dlg.innerHTML = `<div class="dg-box">
       <header class="dg-hd">
-        <img class="dg-av" src="/assets/img/coordenador.jpg" alt="" width="48" height="48">
-        <div class="dg-who"><b>Coordenador do time de IA</b><small><i class="dg-on"></i>AgenticaLab · diagnóstico gratuito</small></div>
+        <img class="dg-av" src="/assets/img/vitoria.jpg" alt="VitorIA" width="48" height="48">
+        <div class="dg-who"><b>VitorIA</b><small><i class="dg-on"></i>Coordenadora do time de IA · AgenticaLab</small></div>
         <button class="dg-x" type="button" aria-label="Fechar">×</button>
         <ol class="dg-steps">${FASES.map((f, n) => `<li><span>${n + 1}</span>${f}</li>`).join('')}</ol>
         <div class="dg-meta"><span class="dg-count"></span><span>cerca de 1 minuto</span></div>
