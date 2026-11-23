@@ -24,6 +24,11 @@ const bust = html => html
   .replace('/assets/js/chat-vitoria.js"', `/assets/js/chat-vitoria.js?v=${ver('assets/js/chat-vitoria.js')}"`);
 const partial = { head: bust(read('partials/head.html')), header: read('partials/header.html'), footer: bust(read('partials/footer.html')) };
 const produtos = JSON.parse(read('data/produtos.json')).sort((a, b) => a.ordem - b.ordem);
+// Pages Functions usa esbuild 0.17, que não aceita import JSON com `with`.
+// Gerar um módulo ESM de texto a partir da mesma fonte usada pelo site.
+const catalogoChat = produtos.map(p => `${p.nome}: ${p.resumo}`).join('\n');
+writeFileSync(join(ROOT, 'data', 'chat-catalogo.js'),
+  `// Gerado por build.mjs a partir de data/produtos.json. Não editar manualmente.\nexport default ${JSON.stringify(catalogoChat)};\n`);
 const footer_produtos = produtos.map(p => `<a href="/solucoes/${p.slug}/">${esc(p.nome)}</a>`).join('\n      ');
 const produtos_cards = produtos.map(p => `<a class="app" href="/solucoes/${p.slug}/"><div class="art shot"><img class="s1" src="${p.imagens[0].src}" alt="${esc(p.imagens[0].alt)}" loading="lazy"></div><div class="app-copy"><span class="kicker">${esc(p.categoria)}</span><h3>${esc(p.nome)}</h3><p>${esc(p.resumo)}</p><p class="stat">${esc(p.prova)}</p><span class="more">Ver solução →</span></div></a>`).join('\n');
 
