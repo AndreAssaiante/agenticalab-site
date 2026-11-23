@@ -1,7 +1,7 @@
 /* Diagnóstico gratuito: popup em etapas com filtro. Abre em qualquer link para #contato ou [data-diag].
    Qualificados escolhem o horário na agenda (Cal.diy em agenda.agenticalab.com.br), já com nome e e-mail preenchidos. */
 (() => {
-  const AGENDA = { origin: 'https://agenda.agenticalab.com.br', link: 'agenticalab/diagnostico' };
+  const AGENDA = { origin: 'https://agenda.agenticalab.com.br', link: 'agenticalab/diagnostico-gratis' };
   const TAREFAS = {
     marketing: ['Posts e conteúdo', 'Anúncios', 'Páginas e textos', 'Relatórios e números'],
     comercial: ['Responder quem chega', 'Propostas e orçamentos', 'Follow-up', 'Pós-venda'],
