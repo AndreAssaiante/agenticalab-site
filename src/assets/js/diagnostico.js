@@ -83,7 +83,10 @@
         <label>Nome<input name="nome" autocomplete="name" placeholder="Seu nome" required value="${esc(s.nome || '')}"></label>
         <label>WhatsApp com DDD<input name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" required value="${esc(s.whatsapp || '')}"></label>
         <label>E-mail<input name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required value="${esc(s.email || '')}"></label>
-        <label>Instagram ou site da empresa <em>(opcional)</em><input name="instagram" autocomplete="off" placeholder="@suaempresa ou suaempresa.com.br" value="${esc(s.instagram || '')}"></label>
+        <div class="dg-row">
+          <label><span>Instagram <em>(opcional)</em></span><input name="instagram" autocomplete="off" placeholder="@suaempresa" value="${esc(s.instagram || '')}"></label>
+          <label><span>Site <em>(opcional)</em></span><input name="site" type="url" inputmode="url" autocomplete="url" placeholder="suaempresa.com.br" value="${esc(s.site || '')}"></label>
+        </div>
         <input name="empresa_site" class="dg-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <p class="dg-err" hidden></p>
         <div class="dg-nav">${back()}<button class="btn dg-go" type="submit">Enviar →</button></div>
@@ -98,7 +101,7 @@
       const nota = score(), qualificado = s.prazo !== 'pesquisando' && s.faturamento !== 'ate-20k' && nota >= 9;
       const q = new URLSearchParams(location.search), utm = {};
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
-      const { nome: _n, whatsapp: _w, email: _e, instagram: _i, ...resp } = s;
+      const { nome: _n, whatsapp: _w, email: _e, instagram: _i, site: _s, ...resp } = s;
       const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
       try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, nota, status: qualificado ? 'qualificado' : 'nutrir', pagina: location.pathname, ...utm }) }); } catch (_) {}
       done(d.nome.split(' ')[0], qualificado);
