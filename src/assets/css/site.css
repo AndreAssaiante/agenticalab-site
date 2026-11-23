@@ -338,3 +338,10 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .legal ul{margin:0 0 16px;padding-left:22px;display:grid;gap:8px}
 .legal a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 .legal strong{color:var(--paper)}
+
+/* Agenda embutida no fim do diagnóstico (qualificados) */
+.dg.dg-wide .dg-box{width:min(980px,calc(100% - 32px))}
+.dg-done .dg-cal{width:100%;min-height:520px;border:1px solid var(--line-2);border-radius:12px;overflow:hidden;background:#141319}
+.dg-cal-load{margin:0;padding:24px;color:#BDB5CA;font-size:14px}
+.dg-cal-alt{margin:0;color:#BDB5CA;font-size:13px}.dg-cal-alt a{color:inherit;text-decoration:underline}
+@media (max-width:600px){.dg.dg-wide .dg-box{width:100%}.dg-done .dg-cal{min-height:640px}}
