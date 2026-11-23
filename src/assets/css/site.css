@@ -329,3 +329,12 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .dg .dg-form{border:0;background:none;padding:0;box-shadow:none}.dg .dg-form::before{display:none}
 .dg-form label em{font-style:normal;font-weight:600;letter-spacing:0;text-transform:none;color:#7E7891}
 .dg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:600px){.dg-row{grid-template-columns:1fr}}
+
+/* ===== Páginas legais (Privacidade, Termos) ===== */
+.legal{max-width:760px;color:#DCD6E4;font-size:17px;line-height:1.7}
+.legal h2{font-size:24px;letter-spacing:-.02em;line-height:1.25;color:var(--paper);margin:40px 0 12px}
+.legal h2:first-child{margin-top:0}
+.legal p{margin:0 0 14px}
+.legal ul{margin:0 0 14px;padding-left:22px;display:grid;gap:8px}
+.legal a{color:var(--paper);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
+footer a:hover{color:var(--paper)}
