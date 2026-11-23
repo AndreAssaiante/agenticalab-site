@@ -1,5 +1,7 @@
-/* Diagnóstico gratuito: popup em etapas com filtro. Abre em qualquer link para #contato ou [data-diag]. */
+/* Diagnóstico gratuito: popup em etapas com filtro. Abre em qualquer link para #contato ou [data-diag].
+   Qualificados escolhem o horário na agenda (Cal.diy em agenda.agenticalab.com.br), já com nome e e-mail preenchidos. */
 (() => {
+  const AGENDA = { origin: 'https://agenda.agenticalab.com.br', link: 'agenticalab/diagnostico' };
   const TAREFAS = {
     marketing: ['Posts e conteúdo', 'Anúncios', 'Páginas e textos', 'Relatórios e números'],
     comercial: ['Responder quem chega', 'Propostas e orçamentos', 'Follow-up', 'Pós-venda'],
@@ -104,23 +106,40 @@
       const { nome: _n, whatsapp: _w, email: _e, instagram: _i, site: _s, ...resp } = s;
       const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
       try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, nota, status: qualificado ? 'qualificado' : 'nutrir', pagina: location.pathname, ...utm }) }); } catch (_) {}
-      done(d.nome.split(' ')[0], qualificado);
+      done(d.nome.split(' ')[0], qualificado, d);
     };
   }
 
-  function done(nome, ok) {
+  function done(nome, ok, d) {
     chrome(null);
+    const url = `${AGENDA.origin}/${AGENDA.link}?` + new URLSearchParams({ name: d.nome.trim(), email: d.email.trim() });
     body.innerHTML = `<div class="dg-done"><span class="dg-check" aria-hidden="true">✓</span>
       <h3 class="dg-q">${ok ? `Tudo certo, ${esc(nome)}. Seu caso tem tudo a ver com o que fazemos.` : `Obrigado, ${esc(nome)}!`}</h3>
-      <p class="dg-sub">${ok ? 'Vamos chamar você no WhatsApp em até 1 dia útil para marcar a conversa de 30 minutos. Fique de olho no celular.' : 'Vamos mandar no seu e-mail exemplos de como um time de IA assume essas tarefas. Quando fizer sentido, é só responder.'}</p>
-      <button type="button" class="btn dg-go">Fechar</button></div>`;
-    body.querySelector('.dg-go').onclick = () => dlg.close();
+      <p class="dg-sub">${ok ? 'Escolha agora o melhor horário para a conversa de 30 minutos, por Google Meet. A confirmação chega no seu e-mail.' : 'Vamos mandar no seu e-mail exemplos de como um time de IA assume essas tarefas. Quando fizer sentido, é só responder.'}</p>
+      ${ok ? `<div class="dg-cal" id="dg-cal"><p class="dg-cal-load">Carregando a agenda…</p></div>
+      <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> ou aguarde: chamamos você no WhatsApp em até 1 dia útil.</p>` : '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
+    body.querySelector('.dg-go')?.addEventListener('click', () => dlg.close());
+    if (ok) { dlg.classList.add('dg-wide'); agenda(d); }
+  }
+
+  // Agenda embutida: script oficial do próprio Cal.diy, carregado só quando um qualificado chega aqui.
+  function agenda(d) {
+    (function (C, A, L) { const p = (a, ar) => a.q.push(ar), doc = C.document; C.Cal = C.Cal || function () { const cal = C.Cal, ar = arguments;
+      if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; doc.head.appendChild(doc.createElement('script')).src = A; cal.loaded = true; }
+      if (ar[0] === L) { const api = function () { p(api, arguments); }, ns = ar[1]; api.q = api.q || [];
+        if (typeof ns === 'string') { cal.ns[ns] = cal.ns[ns] || api; p(cal.ns[ns], ar); p(cal, ['initNamespace', ns]); } else p(cal, ar); return; }
+      p(cal, ar); }; })(window, AGENDA.origin + '/embed/embed.js', 'init');
+    Cal('init', 'dg', { origin: AGENDA.origin });
+    Cal.ns.dg('inline', { elementOrSelector: '#dg-cal', calLink: AGENDA.link,
+      config: { name: d.nome.trim(), email: d.email.trim(), layout: 'month_view', theme: 'dark', 'metadata[origem]': 'site-diagnostico' } });
+    Cal.ns.dg('ui', { theme: 'dark', hideEventTypeDetails: false, layout: 'month_view' });
+    Cal.ns.dg('on', { action: 'bookingSuccessful', callback: () => { const alt = body.querySelector('.dg-cal-alt'); if (alt) alt.textContent = 'Reunião marcada. O convite com o link do Google Meet foi para o seu e-mail.'; } });
   }
 
   function open(e) {
     e?.preventDefault();
     if (!dlg) build();
-    if (!dlg.open) { Object.keys(s).forEach(k => delete s[k]); Object.keys(pts).forEach(k => delete pts[k]); i = 0; render(); dlg.showModal(); }
+    if (!dlg.open) { dlg.classList.remove('dg-wide'); Object.keys(s).forEach(k => delete s[k]); Object.keys(pts).forEach(k => delete pts[k]); i = 0; render(); dlg.showModal(); }
   }
   document.addEventListener('click', e => { const a = e.target.closest('a[href$="#contato"],[data-diag]'); if (a) open(e); });
   if (location.hash === '#diagnostico') open();
