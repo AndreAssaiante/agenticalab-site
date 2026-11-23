@@ -12,7 +12,7 @@ export const CATEGORIAS = [
 ];
 export const POR_PAGINA = 9;
 export const IMG_PADRAO = '/assets/img/agentes-painel-time.jpg';
-const AUTOR_PADRAO = 'Andre Assaiante';
+const AUTOR_PADRAO = 'André Assaiante';
 const EQUIPE = 'Equipe AgenticaLab';
 const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 

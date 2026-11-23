@@ -16,7 +16,7 @@ titulo: Atendimento no WhatsApp com agente: o que automatizar primeiro
 descricao: As perguntas que se repetem, quando passar para um humano e como não perder o tom da marca.
 data: 2026-12-01
 atualizado: 2026-12-03
-autor: Andre Assaiante
+autor: André Assaiante
 categoria: atendimento
 tags: [whatsapp, atendimento, primeiros passos]
 capa: /assets/img/blog/atendimento-no-whatsapp.jpg
@@ -34,7 +34,7 @@ faq:
 | `descricao` | sim | Resumo que aparece no Google e nos cards. Entre 120 e 160 caracteres. |
 | `data` | sim | Data de publicação (AAAA-MM-DD). Se faltar, vale a data do nome do arquivo. |
 | `atualizado` | não | Data da última revisão. Aparece na página e no sitemap. |
-| `autor` | não | Padrão: Andre Assaiante. Precisa estar em `data/autores.json` (vira link para a página do autor e o Person do Google) ou ser "Equipe AgenticaLab". |
+| `autor` | não | Padrão: André Assaiante. Precisa estar em `data/autores.json` (vira link para a página do autor e o Person do Google) ou ser "Equipe AgenticaLab". |
 | `categoria` | sim | Uma destas: `atendimento`, `comercial`, `marketing`, `operacoes`, `casos`. |
 | `tags` | não | Palavras-chave. Ajudam nos posts relacionados. |
 | `capa` | não | Capa própria, 1200x630, em `src/assets/img/blog/`. Sem ela, o build gera uma capa na identidade da marca com o título do post (`/blog/<slug>/capa.png`). |

@@ -2,7 +2,7 @@
 titulo: O que é um agente de IA e onde ele cabe na sua operação
 descricao: A diferença entre chatbot, automação e agente de IA, e como o Dono de Negócio escolhe a primeira tarefa para entregar a um agente.
 data: 2026-11-24
-autor: Andre Assaiante
+autor: André Assaiante
 categoria: operacoes
 tags: [agentes de ia, primeiros passos, processos]
 draft: true
