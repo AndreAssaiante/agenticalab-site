@@ -15,6 +15,8 @@
 //      Só manda e-mail e nome, para não sobrescrever as respostas e tags que o /api/lead já gravou.
 //   2. Evento na linha do tempo do contato (diagnostico_agendado, _remarcado ou _cancelado), que pode disparar
 //      automações no CRM, como mover o negócio para "Diagnóstico agendado". Data, link do Meet e status vão no evento.
+//   3. Reunião nova marcada pelo popup, com cookies aceitos: o CRM manda o "Schedule" à API de Conversões da Meta
+//      com o mesmo evento_id do pixel do navegador (vem nos metadados da reunião).
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json' } });
 const MOMENTO = {
   BOOKING_CREATED: ['agendado', 'diagnostico_agendado'],
@@ -32,7 +34,7 @@ async function assinaturaOk(secret, raw, recebida) {
   return diff === 0;
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   const raw = await request.text();
   if (!env.CAL_WEBHOOK_SECRET) return json({ ok: false, erro: 'sem segredo configurado' }, 503);
   if (!(await assinaturaOk(env.CAL_WEBHOOK_SECRET, raw, request.headers.get('x-cal-signature-256')))) return json({ ok: false, erro: 'assinatura' }, 401);
@@ -66,5 +68,17 @@ export async function onRequestPost({ request, env }) {
   if (!c.ok) { console.log('CRM contato falhou', c.status, await c.text()); return json({ ok: false }, 502); }
   const e = await api('/events', { email, name: evento, data: dados });
   if (!e.ok) console.log('CRM evento falhou', e.status, await e.text());
+
+  const m = p.metadata || {}, eventId = String(m.evento_id || '');
+  if (b.triggerEvent === 'BOOKING_CREATED' && m.consentimento === '1' && /^agenda-[\w-]{8,80}$/.test(eventId)) {
+    const tel = String(quem.phoneNumber || p.responses?.attendeePhoneNumber?.value || '');
+    const conv = api('/conversions', {
+      event: 'Schedule', eventId, email, firstName: firstName || undefined, lastName: resto.join(' ') || undefined, phone: tel || undefined,
+      fbp: typeof m.fbp === 'string' && m.fbp ? m.fbp.slice(0, 200) : undefined, fbc: typeof m.fbc === 'string' && m.fbc ? m.fbc.slice(0, 500) : undefined,
+      sourceUrl: new URL(request.url).origin + '/',
+    }).then(async r => { const t = await r.text(); if (!r.ok || !t.includes('"sent":true')) console.log('API de Conversões não enviou', r.status, t.slice(0, 300)); })
+      .catch(err => console.log('API de Conversões erro', String(err)));
+    if (waitUntil) waitUntil(conv); else await conv;
+  }
   return json({ ok: true, salvo: true });
 }

@@ -3,7 +3,9 @@
    - "simples": Form Simples, só nome, WhatsApp e e-mail.
    - "contato" (padrão): Form Qualificação; o qualificado recebe "vamos chamar você no WhatsApp".
    - "agenda": Form Qualificação + Agenda; o qualificado já escolhe o horário (Cal.diy), com nome e e-mail preenchidos.
-   Para testar um modo sem mexer no CRM: ?entrada=simples, ?entrada=contato ou ?entrada=agenda no endereço da página. */
+   Para testar um modo sem mexer no CRM: ?entrada=simples, ?entrada=contato ou ?entrada=agenda no endereço da página.
+   Conversões (pixels.js): a tela de obrigado marca "lead" e a reunião marcada marca "agendamento", cada um com um
+   evento_id que também vai ao servidor (API de Conversões da Meta pelo CRM), para a Meta contar uma vez só. */
 (() => {
   const AGENDA = { origin: 'https://agenda.agenticalab.com.br', link: 'agenticalab/diagnostico-gratis' };
   const TAREFAS = {
@@ -31,7 +33,8 @@
   const MODOS = ['simples', 'contato', 'agenda'];
   const s = {}, pts = {}; let i = 0, dlg, body, modo = 'contato', steps = STEPS;
   const forcado = new URLSearchParams(location.search).get('entrada');
-  const modoPronto = fetch('/api/config?' + new URLSearchParams({ p: location.pathname }), { cache: 'no-store' }).then(r => r.json()).catch(() => ({}))
+  // pixels.js já busca a mesma configuração: aproveita a resposta em vez de pedir de novo
+  const modoPronto = (window.AL_CONFIG || fetch('/api/config?' + new URLSearchParams({ p: location.pathname }), { cache: 'no-store' }).then(r => r.json())).catch(() => ({}))
     .then(c => { if (c.agendaLink) AGENDA.link = c.agendaLink; modo = MODOS.includes(forcado) ? forcado : MODOS.includes(c.entrada) ? c.entrada : 'contato'; });
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const score = () => Object.values(pts).reduce((a, b) => a + b, 0);
@@ -114,7 +117,10 @@
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
       const { nome: _n, whatsapp: _w, email: _e, instagram: _i, site: _s, ...resp } = s;
       const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
-      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, ...(simples ? { status: 'simples' } : { nota, status: qualificado ? 'qualificado' : 'nutrir' }), entrada: modo, pagina: location.pathname, ...utm }) }); } catch (_) {}
+      const px = window.alPixels, evento_id = px ? px.novoId('lead') : '', status = simples ? 'simples' : qualificado ? 'qualificado' : 'nutrir';
+      const FORM = { simples: 'form-simples', contato: 'form-qualificacao', agenda: 'form-qualificacao-agenda' };
+      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, ...(simples ? { status } : { nota, status }), entrada: modo, pagina: location.pathname, ...utm, ...(px ? { evento_id, ...px.capi() } : {}) }) }); } catch (_) {}
+      px?.track('lead', { eventId: evento_id, status, formulario: FORM[modo] });
       done(d.nome.split(' ')[0], qualificado || simples, d);
     };
   }
@@ -140,10 +146,13 @@
         if (typeof ns === 'string') { cal.ns[ns] = cal.ns[ns] || api; p(cal.ns[ns], ar); p(cal, ['initNamespace', ns]); } else p(cal, ar); return; }
       p(cal, ar); }; })(window, AGENDA.origin + '/embed/embed.js', 'init');
     Cal('init', 'dg', { origin: AGENDA.origin });
+    // o evento_id e os cookies da Meta vão junto com a reunião: o aviso da agenda (/api/agendamento) manda o mesmo id à API de Conversões
+    const px = window.alPixels, evento_id = px ? px.novoId('agenda') : '', capi = px ? px.capi() : {};
+    const meta = capi.consentimento ? { 'metadata[evento_id]': evento_id, 'metadata[consentimento]': '1', ...(capi.fbp ? { 'metadata[fbp]': capi.fbp } : {}), ...(capi.fbc ? { 'metadata[fbc]': capi.fbc } : {}) } : {};
     Cal.ns.dg('inline', { elementOrSelector: '#dg-cal', calLink: AGENDA.link,
-      config: { name: d.nome.trim(), email: d.email.trim(), layout: 'month_view', theme: 'dark', 'metadata[origem]': 'site-diagnostico' } });
+      config: { name: d.nome.trim(), email: d.email.trim(), layout: 'month_view', theme: 'dark', 'metadata[origem]': 'site-diagnostico', ...meta } });
     Cal.ns.dg('ui', { theme: 'dark', hideEventTypeDetails: false, layout: 'month_view' });
-    Cal.ns.dg('on', { action: 'bookingSuccessful', callback: () => { const alt = body.querySelector('.dg-cal-alt'); if (alt) alt.textContent = 'Reunião marcada. O convite com o link do Google Meet foi para o seu e-mail.'; } });
+    Cal.ns.dg('on', { action: 'bookingSuccessful', callback: () => { px?.track('agendamento', { eventId: evento_id }); const alt = body.querySelector('.dg-cal-alt'); if (alt) alt.textContent = 'Reunião marcada. O convite com o link do Google Meet foi para o seu e-mail.'; } });
   }
 
   async function open(e) {

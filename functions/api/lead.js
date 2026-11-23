@@ -12,12 +12,14 @@
 //   2. Se veio "qualificado" (ou do Form Simples): negócio no funil.
 //   Tags pelo formulário usado: form-simples, form-qualificacao ou form-qualificacao-agenda.
 //   3. Evento "diagnostico_site" na linha do tempo, que pode disparar automações (ex.: avisar a equipe).
+//   4. Se a pessoa aceitou os cookies e a API de Conversões está ligada no CRM: o CRM manda o "Lead" à Meta
+//      com o mesmo evento_id do pixel do navegador (deduplicação). O token da Meta fica só no CRM.
 const ANSWERS = ['negocio', 'papel', 'faturamento', 'area', 'tarefas', 'prazo', 'nota', 'status', 'entrada', 'pagina',
   'instagram', 'site', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json' } });
 const clip = v => Array.isArray(v) ? v.map(x => String(x).slice(0, 80)).slice(0, 4) : String(v).slice(0, 200);
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   let b; try { b = await request.json(); } catch { return json({ ok: false, erro: 'json' }, 400); }
   if (b.empresa_site) return json({ ok: true }); // robô preencheu o campo escondido
   const nome = String(b.nome || '').trim().slice(0, 120), email = String(b.email || '').trim().toLowerCase().slice(0, 160);
@@ -49,5 +51,19 @@ export async function onRequestPost({ request, env }) {
   }
   const e = await api('/events', { email, name: 'diagnostico_site', data: respostas });
   if (!e.ok) console.log('CRM evento falhou', e.status, await e.text());
+
+  const eventId = String(b.evento_id || '');
+  if (b.consentimento === true && /^lead-[\w-]{8,80}$/.test(eventId)) {
+    const origem = new URL(request.url).origin, pagina = String(respostas.pagina || '/');
+    const conv = api('/conversions', {
+      event: 'Lead', eventId, email, phone: whatsapp, firstName, lastName: resto.join(' ') || undefined,
+      ip: request.headers.get('cf-connecting-ip') || undefined, userAgent: (request.headers.get('user-agent') || '').slice(0, 500) || undefined,
+      fbp: typeof b.fbp === 'string' && b.fbp ? b.fbp.slice(0, 200) : undefined, fbc: typeof b.fbc === 'string' && b.fbc ? b.fbc.slice(0, 500) : undefined,
+      sourceUrl: pagina.startsWith('/') ? origem + pagina : undefined,
+      customData: { lead_status: String(respostas.status || ''), formulario: tags[1] },
+    }).then(async r => { const t = await r.text(); if (!r.ok || !t.includes('"sent":true')) console.log('API de Conversões não enviou', r.status, t.slice(0, 300)); })
+      .catch(err => console.log('API de Conversões erro', String(err)));
+    if (waitUntil) waitUntil(conv); else await conv;
+  }
   return json({ ok: true, salvo: true });
 }
