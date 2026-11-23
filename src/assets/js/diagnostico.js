@@ -1,103 +1,122 @@
-/* Diagnóstico gratuito: popup conversacional com filtro. Abre em qualquer link para #contato ou [data-diag]. */
+/* Diagnóstico gratuito: popup em etapas com filtro. Abre em qualquer link para #contato ou [data-diag]. */
 (() => {
-  const AREAS = [
-    { v: 'marketing', t: 'Marketing', p: 2 }, { v: 'comercial', t: 'Comercial e vendas', p: 2 },
-    { v: 'escritorio', t: 'Escritório e operações', p: 2 }, { v: 'nao-sei', t: 'Ainda não sei', p: 1 }];
   const TAREFAS = {
     marketing: ['Posts e conteúdo', 'Anúncios', 'Páginas e textos', 'Relatórios e números'],
     comercial: ['Responder quem chega', 'Propostas e orçamentos', 'Follow-up', 'Pós-venda'],
     escritorio: ['Agenda e prazos', 'Documentos e contratos', 'Cobranças', 'Atendimento a clientes'],
     'nao-sei': ['Atendimento', 'Propostas', 'Documentos', 'Conteúdo e redes'] };
+  const FASES = ['Empresa', 'Necessidade', 'Momento', 'Contato'];
   const STEPS = [
-    { k: 'negocio', q: 'Oi! Sou o coordenador do time de IA. Em 1 minuto entendo o seu caso. Qual é o seu negócio?', o: [
-      { v: 'advocacia', t: 'Advocacia', p: 2 }, { v: 'engenharia-arquitetura', t: 'Engenharia ou arquitetura', p: 2 },
-      { v: 'agencia-viagens', t: 'Agência de viagens', p: 2 }, { v: 'clinica', t: 'Clínica ou consultório', p: 2 },
-      { v: 'loja-ecommerce', t: 'Loja ou e-commerce', p: 2 }, { v: 'outro', t: 'Outro', p: 1 }] },
-    { k: 'papel', q: 'Qual é o seu papel no negócio? Assim eu já sei com quem estou falando.', o: [
-      { v: 'dono', t: 'Sócio ou dono', p: 3 }, { v: 'gestor', t: 'Gerente ou líder', p: 2 },
-      { v: 'autonomo', t: 'Autônomo', p: 2 }, { v: 'colaborador', t: 'Colaborador', p: 0 }] },
-    { k: 'faturamento', q: 'Quanto o negócio fatura por mês, em média? Isso só serve para indicar o tamanho certo de solução.', o: [
-      { v: 'ate-20k', t: 'Até R$ 20 mil', p: 0 }, { v: '20-50k', t: 'R$ 20 mil a R$ 50 mil', p: 2 },
-      { v: '50-100k', t: 'R$ 50 mil a R$ 100 mil', p: 3 }, { v: '100-300k', t: 'R$ 100 mil a R$ 300 mil', p: 3 },
-      { v: '300k+', t: 'Acima de R$ 300 mil', p: 3 }] },
-    { k: 'area', q: 'Qual área mais toma o seu tempo hoje?', o: AREAS },
-    { k: 'tarefas', multi: 2, q: 'O que você mais quer tirar das suas mãos? Escolha até 2.', o: s => TAREFAS[s.area || 'nao-sei'].map(t => ({ v: t, t, p: 0 })) },
-    { k: 'prazo', q: 'Quando você quer começar?', o: [
-      { v: 'agora', t: 'O quanto antes', p: 3 }, { v: '3-meses', t: 'Nos próximos 3 meses', p: 2 }, { v: 'pesquisando', t: 'Só estou pesquisando', p: 0 }] },
-    { k: 'contato', q: 'Perfeito. Para onde mando o próximo passo? Um especialista fala com você pelo WhatsApp para entender a operação. Sem spam.', form: true }];
+    { k: 'negocio', f: 0, tag: 'Segmento', q: 'Qual é o seu negócio?', sub: 'Escolha a opção que mais se parece com a sua empresa.', o: [
+      ['advocacia', 'Advocacia', 2], ['engenharia-arquitetura', 'Engenharia ou arquitetura', 2], ['agencia-viagens', 'Agência de viagens', 2],
+      ['clinica', 'Clínica ou consultório', 2], ['loja-ecommerce', 'Loja ou e-commerce', 2], ['outro', 'Outro', 1]] },
+    { k: 'papel', f: 0, tag: 'Perfil', q: 'Qual é o seu papel no negócio?', sub: 'Assim a conversa já começa com a pessoa certa.', o: [
+      ['dono', 'Sócio ou dono', 3], ['gestor', 'Gerente ou líder', 2], ['autonomo', 'Autônomo', 2], ['colaborador', 'Colaborador', 0]] },
+    { k: 'faturamento', f: 0, tag: 'Faturamento', q: 'Quanto o negócio fatura por mês, em média?', sub: 'Serve só para indicar o tamanho certo de solução.', cols: 1, o: [
+      ['ate-20k', 'Até R$ 20 mil', 0], ['20-50k', 'R$ 20 mil a R$ 50 mil', 2], ['50-100k', 'R$ 50 mil a R$ 100 mil', 3],
+      ['100-300k', 'R$ 100 mil a R$ 300 mil', 3], ['300k+', 'Acima de R$ 300 mil', 3]] },
+    { k: 'area', f: 1, tag: 'Área', q: 'Qual área mais toma o seu tempo hoje?', sub: 'É por ela que o seu time de IA começa.', o: [
+      ['marketing', 'Marketing', 2], ['comercial', 'Comercial e vendas', 2], ['escritorio', 'Escritório e operações', 2], ['nao-sei', 'Ainda não sei', 1]] },
+    { k: 'tarefas', f: 1, tag: 'Tarefas', multi: 2, q: 'O que você mais quer tirar das suas mãos?', sub: 'Escolha até 2.', o: s => TAREFAS[s.area || 'nao-sei'].map(t => [t, t, 0]) },
+    { k: 'prazo', f: 2, tag: 'Momento', q: 'Quando você quer começar?', sub: 'Sem pressão: é só para organizarmos a agenda.', cols: 1, o: [
+      ['agora', 'O quanto antes', 3], ['3-meses', 'Nos próximos 3 meses', 2], ['pesquisando', 'Só estou pesquisando', 0]] },
+    { k: 'contato', f: 3, tag: 'Contato', q: 'Para onde mandamos o próximo passo?', form: true }];
 
-  const s = {}; let i = 0, score = 0, dlg, log, foot;
-  const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+  const s = {}, pts = {}; let i = 0, dlg, body;
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const score = () => Object.values(pts).reduce((a, b) => a + b, 0);
 
   function build() {
-    dlg = el('dialog', 'dg');
-    dlg.setAttribute('aria-label', 'Diagnóstico gratuito');
-    dlg.innerHTML = `<div class="dg-box"><header class="dg-hd"><span class="dg-av" aria-hidden="true">CO</span><div><b>Coordenador · AgenticaLab</b><small class="dg-step">Diagnóstico gratuito · cerca de 1 minuto</small></div><button class="dg-x" type="button" aria-label="Fechar">×</button></header><div class="dg-bar"><i></i></div><div class="dg-log" aria-live="polite"></div><div class="dg-foot"></div><p class="dg-trust">Sem compromisso · Resposta em até 1 dia útil · Seus dados ficam só com a gente</p></div>`;
+    dlg = document.createElement('dialog'); dlg.className = 'dg'; dlg.setAttribute('aria-label', 'Diagnóstico gratuito');
+    dlg.innerHTML = `<div class="dg-box">
+      <header class="dg-hd">
+        <img class="dg-av" src="/assets/img/coordenador.jpg" alt="" width="48" height="48">
+        <div class="dg-who"><b>Coordenador do time de IA</b><small><i class="dg-on"></i>AgenticaLab · diagnóstico gratuito</small></div>
+        <button class="dg-x" type="button" aria-label="Fechar">×</button>
+        <ol class="dg-steps">${FASES.map((f, n) => `<li><span>${n + 1}</span>${f}</li>`).join('')}</ol>
+        <div class="dg-meta"><span class="dg-count"></span><span>cerca de 1 minuto</span></div>
+      </header>
+      <div class="dg-body" aria-live="polite"></div>
+      <footer class="dg-ft"><span>Sem compromisso</span><span>Resposta em até 1 dia útil</span><span>Seus dados ficam só com a gente</span></footer>
+    </div>`;
     document.body.appendChild(dlg);
-    log = dlg.querySelector('.dg-log'); foot = dlg.querySelector('.dg-foot');
+    body = dlg.querySelector('.dg-body');
     dlg.querySelector('.dg-x').onclick = () => dlg.close();
     dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
   }
-  const down = () => requestAnimationFrame(() => log.scrollTop = log.scrollHeight);
-  const say = (html, who = 'bot') => { log.appendChild(el('div', 'dg-msg ' + who, html)); down(); };
-  const progress = () => { dlg.querySelector('.dg-bar i').style.width = Math.round(i / STEPS.length * 100) + '%'; dlg.querySelector('.dg-step').textContent = i < STEPS.length ? `Passo ${i + 1} de ${STEPS.length} · cerca de 1 minuto` : 'Diagnóstico gratuito'; };
 
-  function ask() {
-    progress(); foot.innerHTML = '';
-    const st = STEPS[i];
-    say(esc(st.q));
-    if (st.form) return contactForm();
-    const opts = typeof st.o === 'function' ? st.o(s) : st.o;
-    const wrap = el('div', 'dg-opts'); const picked = new Set();
-    opts.forEach(o => {
-      const b = el('button', 'dg-opt', esc(o.t)); b.type = 'button';
-      b.onclick = () => {
-        if (!st.multi) return answer(st, o.v, o.t, o.p);
-        picked.has(o.v) ? picked.delete(o.v) : picked.size < st.multi && picked.add(o.v);
-        wrap.querySelectorAll('.dg-opt').forEach(x => x.classList.toggle('on', picked.has(x.textContent)));
-        ok.disabled = !picked.size;
-      };
-      wrap.appendChild(b);
-    });
-    foot.appendChild(wrap);
-    let ok; if (st.multi) { ok = el('button', 'btn dg-go', 'Continuar →'); ok.type = 'button'; ok.disabled = true; ok.onclick = () => answer(st, [...picked], [...picked].join(' e '), 1); foot.appendChild(ok); }
-    wrap.querySelector('button')?.focus({ preventScroll: true }); down();
+  function chrome(st) {
+    const f = st ? st.f : FASES.length;
+    dlg.querySelectorAll('.dg-steps li').forEach((li, n) => { li.className = n < f ? 'done' : n === f ? 'on' : ''; });
+    dlg.style.setProperty('--prog', (st ? (i + 1) / STEPS.length : 1) * 100 + '%');
+    dlg.querySelector('.dg-count').textContent = st ? `Passo ${i + 1} de ${STEPS.length}` : 'Concluído';
   }
-  function answer(st, v, t, p) { s[st.k] = v; score += p; say(esc(t), 'me'); i++; setTimeout(ask, 350); }
+  const head = st => `<p class="dg-kick">Passo ${i + 1} de ${STEPS.length} · ${st.tag}</p><h3 class="dg-q">${esc(st.q)}</h3>${st.sub ? `<p class="dg-sub">${esc(st.sub)}</p>` : ''}`;
+  const back = () => i > 0 ? `<button type="button" class="dg-back">← Voltar</button>` : '';
 
-  function contactForm() {
-    const f = el('form', 'dg-form');
-    f.innerHTML = `<label>Nome<input name="nome" autocomplete="name" required></label>
-      <label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" required></label>
-      <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
-      <input name="empresa_site" class="dg-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn" type="submit">Ver meu próximo passo →</button><p class="dg-err" hidden></p>`;
-    foot.appendChild(f); f.nome.focus({ preventScroll: true }); down();
+  function render() {
+    const st = STEPS[i]; chrome(st);
+    if (st.form) return contactForm(st);
+    const opts = typeof st.o === 'function' ? st.o(s) : st.o;
+    const sel = new Set(st.multi ? (s[st.k] || []) : [s[st.k]]);
+    body.innerHTML = head(st) + `<div class="dg-opts${st.cols === 1 ? ' one' : ''}" role="${st.multi ? 'group' : 'radiogroup'}">` +
+      opts.map(([v, t]) => `<button type="button" class="dg-opt${sel.has(v) ? ' on' : ''}${st.multi ? ' multi' : ''}" data-v="${esc(v)}" aria-pressed="${sel.has(v)}"><i></i>${esc(t)}</button>`).join('') +
+      `</div><div class="dg-nav">${back()}${st.multi ? `<button type="button" class="btn dg-go"${sel.size && s[st.k] ? '' : ' disabled'}>Continuar →</button>` : ''}</div>`;
+    body.querySelectorAll('.dg-opt').forEach(b => b.onclick = () => {
+      const v = b.dataset.v, o = opts.find(x => x[0] === v);
+      if (!st.multi) { s[st.k] = v; pts[st.k] = o[2]; b.classList.add('on'); return setTimeout(next, 180); }
+      const cur = new Set(s[st.k] || []); cur.has(v) ? cur.delete(v) : cur.size < st.multi && cur.add(v);
+      s[st.k] = [...cur]; pts[st.k] = cur.size ? 1 : 0;
+      body.querySelectorAll('.dg-opt').forEach(x => { const on = cur.has(x.dataset.v); x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
+      body.querySelector('.dg-go').disabled = !cur.size;
+    });
+    body.querySelector('.dg-go')?.addEventListener('click', next);
+    body.querySelector('.dg-back')?.addEventListener('click', prev);
+    body.querySelector('.dg-opt')?.focus({ preventScroll: true });
+  }
+  const next = () => { i++; if (STEPS[i]?.k === 'tarefas' && s.tarefas && !s.tarefas.every(t => TAREFAS[s.area || 'nao-sei'].includes(t))) delete s.tarefas; render(); body.scrollTop = 0; };
+  const prev = () => { i--; render(); };
+
+  function contactForm(st) {
+    body.innerHTML = head(st) + `<div class="dg-note"><b>O que acontece agora:</b> um especialista fala com você pelo WhatsApp para entender a operação e mostrar por onde começar. Sem spam.</div>
+      <form class="dg-form" novalidate>
+        <label>Nome<input name="nome" autocomplete="name" placeholder="Seu nome" required value="${esc(s.nome || '')}"></label>
+        <label>WhatsApp com DDD<input name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" required value="${esc(s.whatsapp || '')}"></label>
+        <label>E-mail<input name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required value="${esc(s.email || '')}"></label>
+        <input name="empresa_site" class="dg-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="dg-err" hidden></p>
+        <div class="dg-nav">${back()}<button class="btn dg-go" type="submit">Enviar →</button></div>
+      </form>`;
+    const f = body.querySelector('form');
+    body.querySelector('.dg-back')?.addEventListener('click', () => { Object.assign(s, Object.fromEntries(new FormData(f))); prev(); });
+    f.nome.focus({ preventScroll: true });
     f.onsubmit = async e => {
       e.preventDefault();
-      const d = Object.fromEntries(new FormData(f));
-      const err = f.querySelector('.dg-err');
-      if (!d.nome.trim() || d.whatsapp.replace(/\D/g, '').length < 10 || !/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = 'Confira nome, WhatsApp com DDD e e-mail.'; err.hidden = false; return; }
-      const qualificado = s.prazo !== 'pesquisando' && s.faturamento !== 'ate-20k' && score >= 9;
+      const d = Object.fromEntries(new FormData(f)), err = f.querySelector('.dg-err');
+      if (!d.nome.trim() || d.whatsapp.replace(/\D/g, '').length < 10 || !/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = 'Confira o nome, o WhatsApp com DDD e o e-mail.'; err.hidden = false; return; }
+      const nota = score(), qualificado = s.prazo !== 'pesquisando' && s.faturamento !== 'ate-20k' && nota >= 9;
       const q = new URLSearchParams(location.search), utm = {};
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
-      const payload = { ...s, ...d, nota: score, status: qualificado ? 'qualificado' : 'nutrir', pagina: location.pathname, ...utm };
-      f.querySelector('button').disabled = true;
-      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }); } catch (_) {}
-      i = STEPS.length; progress(); foot.innerHTML = '';
-      say(esc(d.nome.split(' ')[0]), 'me');
-      say(qualificado
-        ? '<b>Seu caso tem tudo a ver com o que fazemos.</b> Vamos chamar você no WhatsApp em até 1 dia útil para marcar a conversa de 30 minutos.'
-        : '<b>Obrigado!</b> Vamos mandar no seu e-mail exemplos de como um time de IA assume essas tarefas. Quando fizer sentido, é só responder.');
-      const c = el('button', 'btn dg-go', 'Fechar'); c.type = 'button'; c.onclick = () => dlg.close(); foot.appendChild(c); down();
+      const { nome: _n, whatsapp: _w, email: _e, ...resp } = s;
+      const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
+      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, nota, status: qualificado ? 'qualificado' : 'nutrir', pagina: location.pathname, ...utm }) }); } catch (_) {}
+      done(d.nome.split(' ')[0], qualificado);
     };
+  }
+
+  function done(nome, ok) {
+    chrome(null);
+    body.innerHTML = `<div class="dg-done"><span class="dg-check" aria-hidden="true">✓</span>
+      <h3 class="dg-q">${ok ? `Tudo certo, ${esc(nome)}. Seu caso tem tudo a ver com o que fazemos.` : `Obrigado, ${esc(nome)}!`}</h3>
+      <p class="dg-sub">${ok ? 'Vamos chamar você no WhatsApp em até 1 dia útil para marcar a conversa de 30 minutos. Fique de olho no celular.' : 'Vamos mandar no seu e-mail exemplos de como um time de IA assume essas tarefas. Quando fizer sentido, é só responder.'}</p>
+      <button type="button" class="btn dg-go">Fechar</button></div>`;
+    body.querySelector('.dg-go').onclick = () => dlg.close();
   }
 
   function open(e) {
     e?.preventDefault();
     if (!dlg) build();
-    if (!dlg.open) { log.innerHTML = ''; Object.keys(s).forEach(k => delete s[k]); i = 0; score = 0; dlg.showModal(); ask(); }
+    if (!dlg.open) { Object.keys(s).forEach(k => delete s[k]); Object.keys(pts).forEach(k => delete pts[k]); i = 0; render(); dlg.showModal(); }
   }
   document.addEventListener('click', e => { const a = e.target.closest('a[href$="#contato"],[data-diag]'); if (a) open(e); });
   if (location.hash === '#diagnostico') open();
