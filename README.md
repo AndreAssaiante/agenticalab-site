@@ -1,7 +1,7 @@
 # agenticalab.com.br
 
 Site estático da AgenticaLab: Landing, Brandbook, Soluções e uma página por produto.
-Não precisa instalar nada. Só Node 18 ou mais novo.
+Só Node 18 ou mais novo. `npm install` é opcional: instala o gerador das capas PNG dos posts (o Cloudflare Pages faz isso sozinho).
 
 ## Estrutura
 
@@ -17,6 +17,8 @@ partials/             head, header (menu) e footer, compartilhados
 data/produtos.json    conteúdo dos produtos (1 entrada = 1 página)
 content/blog/         posts do Blog em Markdown (1 arquivo = 1 post; veja content/blog/README.md)
 blog.mjs              gera Blog, categorias, paginação, RSS, llms.txt e llms-full.txt
+capa.mjs              capa 1200x630 de cada post (PNG com o título; precisa de npm install)
+data/autores.json     autores do Blog (página /autor/<slug>/ e Person no Google)
 templates/produto.html layout das páginas de produto
 build.mjs             gera o site em dist/
 ```

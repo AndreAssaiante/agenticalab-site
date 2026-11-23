@@ -16,11 +16,11 @@ titulo: Atendimento no WhatsApp com agente: o que automatizar primeiro
 descricao: As perguntas que se repetem, quando passar para um humano e como não perder o tom da marca.
 data: 2026-12-01
 atualizado: 2026-12-03
-autor: Equipe AgenticaLab
+autor: Andre Assaiante
 categoria: atendimento
 tags: [whatsapp, atendimento, primeiros passos]
-imagem: /assets/img/agenticalab-shop-whatsapp.jpg
-imagem_alt: Conversa de atendimento no WhatsApp
+capa: /assets/img/blog/atendimento-no-whatsapp.jpg
+capa_alt: Conversa de atendimento no WhatsApp
 draft: false
 faq:
   - q: O agente responde sozinho a qualquer pergunta?
@@ -34,11 +34,11 @@ faq:
 | `descricao` | sim | Resumo que aparece no Google e nos cards. Entre 120 e 160 caracteres. |
 | `data` | sim | Data de publicação (AAAA-MM-DD). Se faltar, vale a data do nome do arquivo. |
 | `atualizado` | não | Data da última revisão. Aparece na página e no sitemap. |
-| `autor` | não | Padrão: Equipe AgenticaLab. |
+| `autor` | não | Padrão: Andre Assaiante. Precisa estar em `data/autores.json` (vira link para a página do autor e o Person do Google) ou ser "Equipe AgenticaLab". |
 | `categoria` | sim | Uma destas: `atendimento`, `comercial`, `marketing`, `operacoes`, `casos`. |
 | `tags` | não | Palavras-chave. Ajudam nos posts relacionados. |
-| `imagem` | não | Capa (1200x630 de preferência) em `src/assets/img/`. Padrão: imagem do painel de agentes. |
-| `imagem_alt` | não | Descrição da capa, para acessibilidade. |
+| `capa` | não | Capa própria, 1200x630, em `src/assets/img/blog/`. Sem ela, o build gera uma capa na identidade da marca com o título do post (`/blog/<slug>/capa.png`). |
+| `capa_alt` | não | Descrição da capa, para acessibilidade. |
 | `draft` | não | `true` = rascunho: aparece só na prévia do PR, nunca no site, no sitemap ou no RSS. |
 | `faq` | não | Perguntas e respostas no fim do post. Viram o bloco "Perguntas frequentes" e o FAQPage para o Google. |
 

@@ -11,8 +11,9 @@ export const CATEGORIAS = [
   { slug: 'casos', nome: 'Casos' },
 ];
 export const POR_PAGINA = 9;
-const IMG_PADRAO = '/assets/img/agentes-painel-time.jpg';
-const AUTOR_PADRAO = 'Equipe AgenticaLab';
+export const IMG_PADRAO = '/assets/img/agentes-painel-time.jpg';
+const AUTOR_PADRAO = 'Andre Assaiante';
+const EQUIPE = 'Equipe AgenticaLab';
 const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
 export const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -87,7 +88,15 @@ export function markdown(md) {
 const textoPuro = md => md.replace(/```[\s\S]*?```/g, ' ').replace(/[#>*`_\[\]()!-]/g, ' ');
 
 // ---------- leitura dos posts ----------
+// Autores em data/autores.json: { "slug": { nome, cargo, ... } }. O post aponta pelo nome (campo autor).
+export function lerAutores(root) {
+  const f = join(root, 'data', 'autores.json');
+  if (!existsSync(f)) return {};
+  return Object.fromEntries(JSON.parse(readFileSync(f, 'utf8')).map(a => [a.slug, { ...a, url: `/autor/${a.slug}/` }]));
+}
+
 export function lerPosts(root, { incluirRascunhos = false } = {}) {
+  const autores = lerAutores(root);
   const dir = join(root, 'content', 'blog');
   if (!existsSync(dir)) return [];
   const cats = Object.fromEntries(CATEGORIAS.map(c => [c.slug, c]));
@@ -104,8 +113,9 @@ export function lerPosts(root, { incluirRascunhos = false } = {}) {
       autor: meta.autor || meta.author || AUTOR_PADRAO,
       categoria: slugify(meta.categoria || meta.category || ''),
       tags: Array.isArray(meta.tags) ? meta.tags : meta.tags ? [meta.tags] : [],
-      imagem: meta.imagem || meta.image || IMG_PADRAO,
-      imagemAlt: meta.imagem_alt || meta.titulo || '',
+      imagem: meta.capa || meta.imagem || meta.image || '', // vazio = capa gerada no build
+      capaPropria: !!(meta.capa || meta.imagem || meta.image),
+      imagemAlt: meta.capa_alt || meta.imagem_alt || meta.titulo || '',
       faq: Array.isArray(meta.faq) ? meta.faq.filter(x => x && x.q && x.a) : [],
       rascunho: meta.draft === true || meta.rascunho === true,
       slug: slugify(meta.slug || nomeArq.replace(/^\d{4}-\d{2}-\d{2}-/, '')),
@@ -116,6 +126,8 @@ export function lerPosts(root, { incluirRascunhos = false } = {}) {
     if (!p.descricao) erros.push('falta "descricao"');
     if (!/^\d{4}-\d{2}-\d{2}/.test(p.data)) erros.push('falta "data" (AAAA-MM-DD)');
     if (!cats[p.categoria]) erros.push(`categoria "${p.categoria}" não existe (use: ${CATEGORIAS.map(c => c.slug).join(', ')})`);
+    p.autorInfo = autores[slugify(p.autor)] || null;
+    if (p.autor !== EQUIPE && !p.autorInfo) erros.push(`autor "${p.autor}" não está em data/autores.json (ou use "${EQUIPE}")`);
     if (erros.length) throw new Error(`content/blog/${f}: ${erros.join('; ')}`);
     if (p.rascunho && !incluirRascunhos) continue;
     const { html, toc } = markdown(body);
@@ -155,11 +167,22 @@ export function sumario(toc) {
 export const faqHtml = faq => faq.length ? `<section class="post-faq" aria-labelledby="perguntas"><h2 id="perguntas">Perguntas frequentes</h2>${faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</section>` : '';
 
 // ---------- metadados para buscadores e IAs ----------
+export const organizacao = SITE => ({ '@type': 'Organization', '@id': `${SITE}/#organizacao`, name: 'AgenticaLab', url: SITE + '/', logo: { '@type': 'ImageObject', url: `${SITE}/assets/brand/vertice.svg` } });
+export function pessoa(a, SITE) {
+  const o = { '@type': 'Person', '@id': `${SITE}${a.url}#pessoa`, name: a.nome, jobTitle: a.cargo, url: SITE + a.url, worksFor: { '@id': `${SITE}/#organizacao` } };
+  const links = (a.links || []).filter(Boolean);
+  if (links.length) o.sameAs = links;
+  if (a.foto) o.image = /^https?:/.test(a.foto) ? a.foto : SITE + a.foto;
+  return o;
+}
+export const jsonLdTag = jsonLd;
 export function headPost(p, SITE) {
   const url = SITE + p.url, img = /^https?:/.test(p.imagem) ? p.imagem : SITE + p.imagem;
-  const org = { '@type': 'Organization', name: 'AgenticaLab', url: SITE, logo: { '@type': 'ImageObject', url: `${SITE}/assets/brand/vertice.svg` } };
+  const org = organizacao(SITE);
   const blocos = [
     `<meta property="og:image" content="${esc(img)}">`,
+    p.capaGerada ? '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">' : '',
+    `<meta property="og:image:alt" content="${esc(p.imagemAlt)}">`,
     `<meta name="twitter:card" content="summary_large_image">`,
     `<meta property="article:published_time" content="${esc(p.data.slice(0, 10))}">`,
     p.atualizado ? `<meta property="article:modified_time" content="${esc(p.atualizado.slice(0, 10))}">` : '',
@@ -170,7 +193,7 @@ export function headPost(p, SITE) {
     jsonLd({
       '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.titulo, description: p.descricao, image: img,
       datePublished: p.data.slice(0, 10), dateModified: (p.atualizado || p.data).slice(0, 10), inLanguage: 'pt-BR',
-      author: p.autor === AUTOR_PADRAO ? org : { '@type': 'Person', name: p.autor }, publisher: org,
+      author: p.autorInfo ? pessoa(p.autorInfo, SITE) : org, publisher: org,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url }, articleSection: p.cat.nome, keywords: p.tags.join(', '),
       wordCount: textoPuro(p.md).split(/\s+/).filter(Boolean).length,
     }),

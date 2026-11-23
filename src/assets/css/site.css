@@ -465,3 +465,28 @@ section.block.blog-list{padding-block:72px 96px}
 .related-title{font-size:clamp(26px,3vw,34px);letter-spacing:-.03em;margin-bottom:28px;color:var(--ink)}
 @media (max-width:900px){.post-layout{grid-template-columns:1fr;gap:28px}.post-toc{position:static;border-left:0;padding:16px 18px;background:var(--card);border:1px solid var(--soft)}}
 @media (max-width:600px){.post-head{padding-block:40px 20px}.post-content{font-size:17px}.post-cover img{aspect-ratio:16/10}}
+
+/* Sobre */
+.sobre-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.sobre-cols>div{background:linear-gradient(150deg,#24232D,var(--panel));border:1px solid var(--line);padding:26px 24px}
+.sobre-cols h3{font-size:21px;letter-spacing:-.02em;margin-bottom:10px}
+.sobre-cols p{margin:0;color:var(--muted);font-size:15.5px}
+.sobre-cols a{color:var(--accent);text-decoration:underline}
+@media (max-width:900px){.sobre-cols{grid-template-columns:1fr}}
+
+/* Autor */
+.autor-grid{display:grid;grid-template-columns:180px minmax(0,1fr);gap:40px;align-items:start}
+.autor-foto img,.autor-foto span{display:grid;place-items:center;width:180px;height:180px;object-fit:cover;background:#1E1E25;color:#F4F2F7;font:800 56px/1 var(--font-logo);border:1px solid var(--soft)}
+.autor-hero h1{font-size:clamp(36px,4.6vw,58px);line-height:1.04;letter-spacing:-.04em;margin:14px 0 8px;color:var(--ink)}
+.autor-cargo{margin:0 0 18px;font-weight:600;color:var(--ink-2)}
+.autor-cargo a{color:var(--primary)}
+.autor-bio p{margin:0 0 12px;color:var(--ink-2);max-width:62ch;font-size:17px}
+.autor-links{display:flex;flex-wrap:wrap;gap:12px}.autor-links a{color:var(--primary);text-decoration:underline}
+.autor-box{display:flex;gap:18px;align-items:flex-start;margin-top:40px;padding:22px;background:var(--card);border:1px solid var(--soft)}
+.autor-ini{flex:none;display:grid;place-items:center;width:64px;height:64px;background:#1E1E25;color:#F4F2F7;font:800 22px/1 var(--font-logo);overflow:hidden}
+.autor-ini img{width:100%;height:100%;object-fit:cover}
+.autor-box strong a{color:var(--ink);text-decoration:none;font-size:17px}
+.autor-box div>span{display:block;font-size:14px;color:var(--ink-2);margin:2px 0 8px}
+.autor-box p{margin:0;font-size:15px;color:var(--ink-2);line-height:1.6}
+.post-byline a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+@media (max-width:640px){.autor-grid{grid-template-columns:1fr;gap:20px}.autor-foto img,.autor-foto span{width:120px;height:120px;font-size:40px}}

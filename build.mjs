@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, st
 import { join, relative, dirname } from 'node:path';
 import { createHash } from 'node:crypto';
 import * as blog from './blog.mjs';
+import { pngCapa } from './capa.mjs';
 
 const ROOT = new URL('.', import.meta.url).pathname;
 const SRC = join(ROOT, 'src'), DIST = join(ROOT, 'dist');
@@ -55,7 +56,9 @@ for (const file of walk(DIST)) {
   const path = rel.replace(/index\.html$/, '');
   const fonte = readFileSync(file, 'utf8'), fmSrc = frontMatter(fonte);
   if (fmSrc && !rel.endsWith('404.html')) paginasSite.push({ titulo: fmSrc.meta.title, descricao: fmSrc.meta.description, path });
-  writeFileSync(file, page(fonte, path));
+  // Home: dados da empresa para o Google e as IAs (Organization + WebSite)
+  const extraHome = path === '/' ? { head_extra: blog.jsonLdTag({ '@context': 'https://schema.org', ...blog.organizacao(SITE), email: 'contato.agenticalab@gmail.com', description: 'Agentes de IA que executam etapas repetitivas da operação de Donos de Negócio, dentro das ferramentas que a equipe já usa.', areaServed: 'BR', knowsLanguage: 'pt-BR' }) + '\n' + blog.jsonLdTag({ '@context': 'https://schema.org', '@type': 'WebSite', name: 'AgenticaLab', url: SITE + '/', inLanguage: 'pt-BR', publisher: { '@id': `${SITE}/#organizacao` } }) } : {};
+  writeFileSync(file, page(fonte, path, extraHome));
   if (!rel.endsWith('404.html')) urls.push(path);
 }
 
@@ -81,6 +84,16 @@ for (const p of produtos) {
 const RASCUNHOS = process.env.BLOG_DRAFTS === '1' || (!!process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main');
 const todosPosts = blog.lerPosts(ROOT, { incluirRascunhos: RASCUNHOS });
 const publicados = todosPosts.filter(p => !p.rascunho), rascunhos = todosPosts.filter(p => p.rascunho);
+// Capa padrão (1200x630, com o título) para quem não tem "capa" no front-matter
+for (const p of todosPosts) {
+  if (p.capaPropria) continue;
+  const png = await pngCapa(ROOT, { titulo: p.titulo, categoria: p.cat.nome });
+  if (png) {
+    mkdirSync(join(DIST, 'blog', p.slug), { recursive: true });
+    writeFileSync(join(DIST, 'blog', p.slug, 'capa.png'), png);
+    p.imagem = `/blog/${p.slug}/capa.png`; p.capaGerada = true;
+  } else p.imagem = blog.IMG_PADRAO;
+}
 const tplBlog = read('templates/blog.html'), tplPost = read('templates/post.html');
 const emBreve = read('templates/blog-em-breve.html').replace(/^<!--[\s\S]*?-->\n/, '');
 const fillHtml = (tpl, v) => tpl.replace(/\{\{\{(\w+)\}\}\}/g, (_, k) => v[k] ?? '').replace(/\{\{(\w+)\}\}/g, (_, k) => blog.esc(v[k]));
@@ -129,6 +142,8 @@ for (const p of todosPosts) {
     cat_slug: p.cat.slug, cat_nome: p.cat.nome, data_iso: p.data.slice(0, 10), data_br: blog.dataBR(p.data), minutos: p.minutos,
     atualizado: p.atualizado && p.atualizado !== p.data ? ` · Atualizado em <time datetime="${blog.esc(p.atualizado.slice(0, 10))}">${blog.dataBR(p.atualizado)}</time>` : '',
     imagem: p.imagem, imagem_alt: p.imagemAlt, html: p.html, sumario: blog.sumario(p.toc), faq: blog.faqHtml(p.faq),
+    autor_link: p.autorInfo ? `<a href="${p.autorInfo.url}" rel="author">${blog.esc(p.autor)}</a>` : blog.esc(p.autor),
+    autor_box: p.autorInfo ? `<aside class="autor-box"><span class="autor-ini" aria-hidden="true">${p.autorInfo.foto ? `<img src="${blog.esc(p.autorInfo.foto)}" alt="">` : blog.esc(p.autor.split(' ').map(x => x[0]).slice(0, 2).join(''))}</span><div><strong><a href="${p.autorInfo.url}" rel="author">${blog.esc(p.autor)}</a></strong><span>${blog.esc(p.autorInfo.cargo)} · AgenticaLab</span><p>${blog.esc(p.autorInfo.resumo || '')}</p></div></aside>` : '',
     tags: p.tags.length ? `<p class="post-tags">${p.tags.map(t => `<span>#${blog.esc(t)}</span>`).join(' ')}</p>` : '',
     aviso_rascunho: p.rascunho ? '<p class="blog-soon">Rascunho: esta página só aparece na prévia. Ela vai ao ar quando o arquivo tiver draft: false.</p>' : '',
     relacionados_titulo: rel.length ? 'Leia também' : 'Mais artigos em breve',
@@ -136,6 +151,22 @@ for (const p of todosPosts) {
   };
   emitir(p.url, fillHtml(tplPost, v), { og_type: 'article', head_extra: blog.headPost(p, SITE) });
   if (!p.rascunho) urls.push(p.url);
+}
+
+// ---------- Páginas de autor (data/autores.json) ----------
+const tplAutor = read('templates/autor.html');
+for (const a of Object.values(blog.lerAutores(ROOT))) {
+  const seus = publicados.filter(p => p.autorInfo?.slug === a.slug);
+  const bio = (a.bio && a.bio.length ? a.bio : [a.resumo]).map(t => `<p>${blog.esc(t)}</p>`).join('');
+  const v = {
+    nome: a.nome, cargo: a.cargo, primeiro_nome: a.nome.split(' ')[0], descricao: `${a.nome}, ${a.cargo} na AgenticaLab. ${a.resumo || ''}`.trim(),
+    foto: a.foto ? `<img src="${blog.esc(a.foto)}" alt="${blog.esc(a.nome)}">` : `<span aria-hidden="true">${blog.esc(a.nome.split(' ').map(x => x[0]).slice(0, 2).join(''))}</span>`,
+    bio, links: (a.links || []).length ? `<p class="autor-links">${a.links.map(u => `<a href="${blog.esc(u)}" rel="me noopener">${blog.esc(u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</a>`).join('')}</p>` : '',
+    posts: seus.length ? `<div class="post-grid">${seus.map(blog.card).join('')}</div>` : '<p class="blog-empty">Os primeiros artigos estão sendo preparados. <a href="/blog/">Ir para o Blog</a></p>',
+  };
+  const path = a.url;
+  emitir(path, fillHtml(tplAutor, v), { og_type: 'profile', head_extra: blog.jsonLdTag({ '@context': 'https://schema.org', '@type': 'ProfilePage', mainEntity: blog.pessoa(a, SITE) }) + '\n' + blog.jsonLdTag({ '@context': 'https://schema.org', ...blog.organizacao(SITE) }) });
+  urls.push(path);
 }
 
 mkdirSync(join(DIST, 'blog'), { recursive: true });
