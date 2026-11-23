@@ -12,7 +12,7 @@
 //   2. Se veio "qualificado": negócio no funil.
 //   3. Evento "diagnostico_site" na linha do tempo, que pode disparar automações (ex.: avisar a equipe).
 const ANSWERS = ['negocio', 'papel', 'faturamento', 'area', 'tarefas', 'prazo', 'nota', 'status', 'pagina',
-  'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+  'instagram', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json' } });
 const clip = v => Array.isArray(v) ? v.map(x => String(x).slice(0, 80)).slice(0, 4) : String(v).slice(0, 200);
 
