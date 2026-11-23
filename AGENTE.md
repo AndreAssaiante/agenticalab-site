@@ -30,6 +30,8 @@ Você edita o site agenticalab.com.br a pedido do Andre. Toda mudança vira um p
 | Menu | `partials/header.html` |
 | Rodapé | `partials/footer.html` |
 | Cores, fontes, espaçamentos | `src/assets/css/site.css` |
+| Post do Blog | `content/blog/AAAA-MM-DD-slug.md` (formato em `content/blog/README.md`) |
+| Layout do Blog e dos posts | `templates/blog.html`, `templates/post.html`, `blog.mjs` |
 | Imagens | `src/assets/img/` |
 | Página nova | `src/<nome>/index.html`, começando pelo bloco de configuração (veja `README.md`) |
 
