@@ -9,7 +9,8 @@
 //
 // O que acontece em cada envio:
 //   1. Contato criado ou atualizado pelo e-mail (sem duplicar), com as respostas em campos e tags.
-//   2. Se veio "qualificado": negócio no funil.
+//   2. Se veio "qualificado" (ou do Form Simples): negócio no funil.
+//   Tags pelo formulário usado: form-simples, form-qualificacao ou form-qualificacao-agenda.
 //   3. Evento "diagnostico_site" na linha do tempo, que pode disparar automações (ex.: avisar a equipe).
 const ANSWERS = ['negocio', 'papel', 'faturamento', 'area', 'tarefas', 'prazo', 'nota', 'status', 'entrada', 'pagina',
   'instagram', 'site', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
@@ -31,16 +32,19 @@ export async function onRequestPost({ request, env }) {
     method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${env.CRM_API_KEY}` }, body: JSON.stringify(body) });
 
   const [firstName, ...resto] = nome.split(/\s+/);
-  const tags = ['site-diagnostico', qualificado ? 'lead-qualificado' : 'lead-nutrir'];
+  const simples = respostas.status === 'simples';
+  const FORM = { simples: 'form-simples', contato: 'form-qualificacao', agenda: 'form-qualificacao-agenda' };
+  const tags = ['site-diagnostico', FORM[respostas.entrada] || 'form-qualificacao'];
+  if (!simples) tags.push(qualificado ? 'lead-qualificado' : 'lead-nutrir');
   if (respostas.area) tags.push(`area-${respostas.area}`);
   if (respostas.negocio) tags.push(`segmento-${respostas.negocio}`);
 
   const c = await api('/contacts', { email, firstName, lastName: resto.join(' ') || undefined, phone: whatsapp, source: 'site-diagnostico', fields: Object.fromEntries(Object.entries(respostas).map(([k, v]) => [`diagnostico_${k}`, Array.isArray(v) ? v.join(', ') : v])), tags });
   if (!c.ok) { console.log('CRM contato falhou', c.status, await c.text()); return json({ ok: false, salvo: false }, 502); }
 
-  if (qualificado) {
+  if (qualificado || simples) { // Form Simples: todo mundo vai para o funil, a equipe liga para todos
     const notes = Object.entries(respostas).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('\n');
-    const d = await api('/deals', { title: `Diagnóstico · ${nome}`, contactEmail: email, pipelineId: env.CRM_PIPELINE_ID || undefined, stageId: env.CRM_STAGE_ID || undefined, tagNames: ['site-diagnostico'], notes });
+    const d = await api('/deals', { title: `${simples ? 'Contato' : 'Diagnóstico'} · ${nome}`, contactEmail: email, pipelineId: env.CRM_PIPELINE_ID || undefined, stageId: env.CRM_STAGE_ID || undefined, tagNames: ['site-diagnostico'], notes });
     if (!d.ok) console.log('CRM negócio falhou', d.status, await d.text());
   }
   const e = await api('/events', { email, name: 'diagnostico_site', data: respostas });
