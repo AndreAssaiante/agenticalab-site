@@ -1,7 +1,46 @@
 [
   {
-    "slug": "automacao-whatsapp",
+    "slug": "agenticalab-shop",
     "ordem": 1,
+    "nome": "AgenticaLab Shop",
+    "categoria": "E-commerce",
+    "resumo": "Plataforma de e-commerce white-label para o mercado LATAM: construtor de páginas, traqueamento, mini CRM, importação por SKU e os agentes de IA já plugados.",
+    "titulo": "Uma loja virtual que é sua de verdade, <span>sem depender de plataforma de fora.</span>",
+    "lead": "A AgenticaLab Shop é uma plataforma de e-commerce white-label, criada sob medida para um cliente e hoje disponível para venda. Uma alternativa ao Shopify e ao WooCommerce para quem quer personalização total e menos dependência das plataformas líderes, com construtor de páginas, traqueamento, mini CRM e os agentes de IA já integrados.",
+    "imagens": [
+      {
+        "src": "/assets/img/agenticalab-shop-loja.jpg",
+        "alt": "AgenticaLab Shop: vitrine da loja (exemplo ilustrativo)",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/agenticalab-shop-gestao.jpg",
+        "alt": "AgenticaLab Shop: painel de gestão com pedidos e indicadores (dados ilustrativos)",
+        "classe": "s2"
+      }
+    ],
+    "problema": [
+      "Montar uma loja em plataforma líder significa jogar pelas regras, taxas e limites de personalização de quem é dono da plataforma. Você adapta a sua operação ao template, e não o contrário.",
+      "E, mesmo assim, traqueamento, CRM, gestão de pedidos e atendimento no WhatsApp acabam espalhados em ferramentas soltas que não conversam entre si."
+    ],
+    "processos": "Implantamos a plataforma com a sua marca (white-label) e configuramos a loja, as páginas e as regras do seu mercado.",
+    "agentes": "Você opera com construtor de páginas, traqueamento, mini CRM em Kanban e importação por SKU, e pluga os agentes de IA e o follow-up no WhatsApp.",
+    "resultados": "Uma loja personalizável de ponta a ponta, com gestão e automação no mesmo lugar, sem depender de plataforma de fora.",
+    "entregas": [
+      "Plataforma white-label, com a sua marca",
+      "Construtor de páginas interno",
+      "Traqueamento de UTMs, no padrão de ferramentas como a UTMFY",
+      "Mini CRM com acompanhamento de pedidos em Kanban",
+      "Importação por SKU, que já gera uma página de vendas template",
+      "Integrações por API, MCP e CLI, e acesso de API para times e agentes",
+      "Follow-up de pedidos no WhatsApp com agentes de IA"
+    ],
+    "prova": "Plataforma white-label em operação no mercado LATAM",
+    "prova_nota": "Projeto exclusivo para um cliente, hoje disponível para venda"
+  },
+  {
+    "slug": "automacao-whatsapp",
+    "ordem": 2,
     "nome": "Automação de WhatsApp",
     "categoria": "Atendimento",
     "resumo": "Seu cliente quer saber do pedido. Deixe o agente buscar a etapa e preparar o aviso no WhatsApp, sem escrever a mesma resposta toda vez.",
@@ -9,13 +48,18 @@
     "lead": "O cliente pergunta pelo pedido bem na hora em que você está cuidando da loja. Em vez de parar para buscar a etapa e escrever mais um aviso, deixe essa parte com o agente. Ele prepara a mensagem; você decide o envio. Comece com um diagnóstico gratuito.",
     "imagens": [
       {
-        "src": "/assets/img/minimalista-pedido.jpg",
-        "alt": "Formulário de pedido na loja",
+        "src": "/assets/img/agenticalab-shop-painel.jpg",
+        "alt": "Painel do atendimento acompanhando um pedido da AgenticaLab Shop (exemplo ilustrativo)",
         "classe": "s1"
       },
       {
-        "src": "/assets/img/minimalista-whatsapp.jpg",
-        "alt": "Aviso sobre o pedido no WhatsApp",
+        "src": "/assets/img/agenticalab-shop-pedido.jpg",
+        "alt": "Pedido na loja AgenticaLab Shop (exemplo ilustrativo)",
+        "classe": "s3"
+      },
+      {
+        "src": "/assets/img/agenticalab-shop-whatsapp.jpg",
+        "alt": "Confirmação automática do pedido no WhatsApp (exemplo ilustrativo)",
         "classe": "s2 phone"
       }
     ],
@@ -33,12 +77,12 @@
       "Mensagens prontas para você aprovar antes do envio",
       "Menos respostas escritas do zero na rotina da loja"
     ],
-    "prova": "",
-    "prova_nota": ""
+    "prova": "Mais segurança para o cliente e maior taxa de recompra para a loja",
+    "prova_nota": "Objetivo da automação nas lojas atendidas"
   },
   {
     "slug": "discover-launch",
-    "ordem": 2,
+    "ordem": 3,
     "nome": "Discover Launch",
     "categoria": "Inteligência de mercado",
     "resumo": "Para quem trabalha com lançamentos: os agentes buscam anúncios dos concorrentes que você escolher e reúnem o que encontrar em um lugar só.",
@@ -51,8 +95,8 @@
         "classe": "s1"
       },
       {
-        "src": "/assets/img/discover-ads-2.jpg",
-        "alt": "Discover Launch: anúncios reunidos para conferência",
+        "src": "/assets/img/discover-ads-linha-cards.jpg",
+        "alt": "Discover Launch: cards de anúncios de lançamento encontrados",
         "classe": "s2"
       }
     ],
@@ -70,44 +114,44 @@
       "Material reunido para você escolher o que investigar",
       "Mais tempo para estudar a próxima campanha, em vez de abrir anúncios"
     ],
-    "prova": "",
-    "prova_nota": ""
+    "prova": "22 mil vídeos e 926 anúncios analisados",
+    "prova_nota": "Volume coletado pelo sistema em operação"
   },
   {
     "slug": "discover-ads-cod",
-    "ordem": 3,
+    "ordem": 4,
     "nome": "Discover Ads COD",
     "categoria": "E-commerce",
-    "resumo": "Vende com pagamento na entrega? Os agentes buscam anúncios e separam produtos para você estudar, sem fazer toda a procura na mão.",
-    "titulo": "Ache produtos para pagamento na entrega <span>sem garimpar anúncios na mão</span>",
-    "lead": "Você vende com pagamento na entrega e quer achar produtos para estudar. Mas acaba abrindo anúncios, anotando nomes e voltando para descobrir onde viu cada um. No Discover Ads COD, os agentes fazem a busca e separam os achados. Você escolhe o que vale testar. Comece pelo diagnóstico gratuito.",
+    "resumo": "Garimpo de produtos físicos que estão escalando contra entrega em 7 países da América Latina, ranqueados por crescimento de anúncios.",
+    "titulo": "Os produtos que estão escalando, <span>ranqueados todo dia.</span>",
+    "lead": "Agentes varrem os anúncios de produtos contra entrega em 7 países da América Latina, ranqueiam pelo crescimento e organizam os testes numa esteira.",
     "imagens": [
       {
         "src": "/assets/img/discover-ads-cod.jpg",
-        "alt": "Discover Ads COD: anúncios de produtos com pagamento na entrega",
+        "alt": "Discover Ads COD: produtos escalando por país",
         "classe": "s1"
       },
       {
         "src": "/assets/img/discover-ads-cod-2.jpg",
-        "alt": "Discover Ads COD: produtos reunidos para conferência",
+        "alt": "Discover Ads COD: vitrine de produtos com crescimento de anúncios",
         "classe": "s2"
       }
     ],
     "problema": [
-      "Você abre um anúncio, anota o produto, passa ao seguinte e depois tenta lembrar qual deles queria olhar de novo.",
-      "A busca toma o tempo que você poderia usar para estudar os produtos e decidir o próximo teste."
+      "Encontrar produto vencedor para contra entrega significa horas na biblioteca de anúncios, país por país, tentando adivinhar o que está crescendo de verdade.",
+      "Sem critério, os testes viram aposta e o dinheiro de tráfego vai embora."
     ],
-    "processos": "Você conta que tipo de produto procura e onde costuma buscar anúncios. Combinamos o que os agentes devem separar para você olhar.",
-    "agentes": "Os agentes buscam anúncios e juntam os produtos que seguem o que você escolheu. Eles fazem a procura; você decide quais produtos quer estudar para testar.",
-    "resultados": "Você recebe os produtos reunidos para estudar, sem abrir cada anúncio por conta própria. Seu tempo fica para avaliar o próximo teste.",
+    "processos": "Definimos países, critérios de crescimento e o que faz um produto entrar na esteira de testes.",
+    "agentes": "Os agentes coletam os anúncios, medem o crescimento de cada produto e montam o ranking diário.",
+    "resultados": "Você testa primeiro o que mais cresce e acompanha cada teste na mesma esteira.",
     "entregas": [
-      "Produtos encontrados nos anúncios, reunidos para você estudar",
-      "Busca feita a partir do tipo de produto que você procura",
-      "Agentes encarregados de abrir e separar os anúncios",
-      "Achados prontos para você escolher o próximo teste",
-      "Menos tempo anotando produtos e procurando o mesmo anúncio de novo"
+      "Varredura de anúncios contra entrega em 7 países da América Latina",
+      "Ranking diário por crescimento de anúncios",
+      "Vitrine de produtos com histórico de cada um",
+      "Esteira para organizar e acompanhar os testes",
+      "Filtros por país e categoria"
     ],
-    "prova": "",
-    "prova_nota": ""
+    "prova": "922 produtos mapeados na Colômbia",
+    "prova_nota": "Volume coletado pelo sistema em operação"
   }
 ]
