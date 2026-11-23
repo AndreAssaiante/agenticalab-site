@@ -15,6 +15,8 @@ src/                  páginas e arquivos do site
   assets/img/         imagens
 partials/             head, header (menu) e footer, compartilhados
 data/produtos.json    conteúdo dos produtos (1 entrada = 1 página)
+content/blog/         posts do Blog em Markdown (1 arquivo = 1 post; veja content/blog/README.md)
+blog.mjs              gera Blog, categorias, paginação, RSS, llms.txt e llms-full.txt
 templates/produto.html layout das páginas de produto
 build.mjs             gera o site em dist/
 ```
