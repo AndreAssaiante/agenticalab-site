@@ -19,7 +19,9 @@ const fill = (tpl, v) => tpl
 const ver = p => createHash('sha1').update(readFileSync(join(SRC, p))).digest('hex').slice(0, 8);
 const bust = html => html
   .replace('/assets/css/site.css"', `/assets/css/site.css?v=${ver('assets/css/site.css')}"`)
-  .replace('/assets/js/diagnostico.js"', `/assets/js/diagnostico.js?v=${ver('assets/js/diagnostico.js')}"`);
+  .replace('/assets/js/diagnostico.js"', `/assets/js/diagnostico.js?v=${ver('assets/js/diagnostico.js')}"`)
+  .replace('/assets/css/chat-vitoria.css"', `/assets/css/chat-vitoria.css?v=${ver('assets/css/chat-vitoria.css')}"`)
+  .replace('/assets/js/chat-vitoria.js"', `/assets/js/chat-vitoria.js?v=${ver('assets/js/chat-vitoria.js')}"`);
 const partial = { head: bust(read('partials/head.html')), header: read('partials/header.html'), footer: bust(read('partials/footer.html')) };
 const produtos = JSON.parse(read('data/produtos.json')).sort((a, b) => a.ordem - b.ordem);
 const footer_produtos = produtos.map(p => `<a href="/solucoes/${p.slug}/">${esc(p.nome)}</a>`).join('\n      ');
