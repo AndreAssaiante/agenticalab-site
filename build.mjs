@@ -2,6 +2,7 @@
 // Uso: node build.mjs    → Cloudflare Pages: build command "node build.mjs", output "dist"
 import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
+import { createHash } from 'node:crypto';
 
 const ROOT = new URL('.', import.meta.url).pathname;
 const SRC = join(ROOT, 'src'), DIST = join(ROOT, 'dist');
@@ -12,7 +13,12 @@ const fill = (tpl, v) => tpl
   .replace(/\{\{\{(\w+)\}\}\}/g, (_, k) => v[k] ?? '')
   .replace(/\{\{(\w+)\}\}/g, (_, k) => esc(v[k]));
 
-const partial = { head: read('partials/head.html'), header: read('partials/header.html'), footer: read('partials/footer.html') };
+// Versão dos arquivos pelo conteúdo: o navegador baixa o CSS/JS novo a cada mudança, sem ficar com cópia antiga em cache.
+const ver = p => createHash('sha1').update(readFileSync(join(SRC, p))).digest('hex').slice(0, 8);
+const bust = html => html
+  .replace('/assets/css/site.css"', `/assets/css/site.css?v=${ver('assets/css/site.css')}"`)
+  .replace('/assets/js/diagnostico.js"', `/assets/js/diagnostico.js?v=${ver('assets/js/diagnostico.js')}"`);
+const partial = { head: bust(read('partials/head.html')), header: read('partials/header.html'), footer: bust(read('partials/footer.html')) };
 const produtos = JSON.parse(read('data/produtos.json')).sort((a, b) => a.ordem - b.ordem);
 const footer_produtos = produtos.map(p => `<a href="/solucoes/${p.slug}/">${esc(p.nome)}</a>`).join('\n      ');
 const produtos_cards = produtos.map(p => `<a class="app" href="/solucoes/${p.slug}/"><div class="art shot"><img class="s1" src="${p.imagens[0].src}" alt="${esc(p.imagens[0].alt)}" loading="lazy"></div><div class="app-copy"><span class="kicker">${esc(p.categoria)}</span><h3>${esc(p.nome)}</h3><p>${esc(p.resumo)}</p><p class="stat">${esc(p.prova)}</p><span class="more">Ver solução →</span></div></a>`).join('\n');
