@@ -67,16 +67,16 @@ nav: inicio
           <li>Estimativa de horas economizadas</li>
         </ul>
       </div>
-      <form id="lead-form" novalidate>
-        <div class="row">
-          <div class="f"><label for="nome">Nome</label><input id="nome" autocomplete="name" placeholder="Seu nome"></div>
-          <div class="f"><label for="whats">WhatsApp</label><input id="whats" type="tel" autocomplete="tel" placeholder="(11) 90000-0000"></div>
-        </div>
-        <div class="f"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br"></div>
-        <div class="f"><label for="tarefa">Qual tarefa você quer automatizar?</label><textarea id="tarefa" placeholder="Ex.: preencho na mão os dados de cada cliente no sistema e depois mando por WhatsApp"></textarea></div>
-        <button class="btn" type="submit" style="justify-self:start">Quero um diagnóstico gratuito <span aria-hidden="true">→</span></button>
-        <div class="form-msg" id="form-msg" hidden></div>
-      </form>
+      <div class="contact-start">
+        <span class="kicker">1 minuto · 6 perguntas</span>
+        <h3>Conte o seu caso para o nosso coordenador</h3>
+        <ol>
+          <li>A área e a tarefa que mais pesam</li>
+          <li>O tamanho da sua operação</li>
+          <li>Quando você quer começar</li>
+        </ol>
+        <button class="btn" type="button" data-diag style="justify-self:start">Quero um diagnóstico gratuito <span aria-hidden="true">→</span></button>
+      </div>
     </div>
   </section>
 </main>
@@ -113,12 +113,4 @@ document.querySelectorAll("[data-brand]").forEach(el => el.textContent = BRAND);
   requestAnimationFrame(frame);
 })();
 
-/* Formulário (prévia: ainda sem destino) */
-document.getElementById("lead-form").addEventListener("submit", e => {
-  e.preventDefault();
-  const msg=document.getElementById("form-msg"), nome=document.getElementById("nome").value.trim(), email=document.getElementById("email").value.trim(), whats=document.getElementById("whats").value.trim();
-  msg.hidden=false;
-  if(!nome || (!/^\S+@\S+\.\S+$/.test(email) && whats.length<8)){ msg.textContent="Preencha seu nome e um e-mail ou WhatsApp para continuar."; return; }
-  msg.textContent=`Obrigado, ${nome.split(" ")[0]}! Esta é uma versão de prévia: o formulário ainda não está conectado, então nenhum dado foi enviado.`;
-});
 </script>
