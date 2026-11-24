@@ -352,11 +352,12 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 @media (max-width:600px){.dg.dg-wide .dg-box{width:100%}.dg-done .dg-cal{min-height:640px}}
 
 /* Rodapé padrão (todas as páginas) */
-footer.site-footer{padding-block:64px 28px;font-size:14.5px}
+footer.site-footer{padding-block:64px 28px;font-size:14.5px;background:#141418;border-top:1px solid var(--line)}
 footer.site-footer .wrap{display:block}
 .ft-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px}
 .ft-brand .brand{margin-bottom:16px;color:var(--paper)}
-.ft-brand p{margin:0 0 22px;max-width:38ch;color:var(--muted)}
+.ft-brand .brand{margin-bottom:8px}
+.ft-brand .ft-sign{margin:0 0 24px 43px;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
 .ft-cta{height:46px;padding:0 18px;font-size:14px}
 .ft-col{display:grid;align-content:start;gap:10px}
 .ft-col h2{font:800 12px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:var(--paper);margin:6px 0 8px}
