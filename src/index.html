@@ -5,23 +5,32 @@ nav: inicio
 -->
 <!-- Home (/). Até 24/11/2026 esta era a página /agentes/; a home anterior está guardada em src/home-anterior/ (escondida). -->
 <main id="topo">
-  <section class="page-hero">
+  <section class="lh" aria-labelledby="lh-titulo">
     <div class="hero-grid-bg" aria-hidden="true"></div>
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="wrap split">
-      <div>
+    <figure class="lh-fig">
+      <img src="/assets/img/hero-lideres.jpg" srcset="/assets/img/hero-lideres-1000.jpg 1000w, /assets/img/hero-lideres.jpg 1672w" sizes="(max-width:1100px) 135vw, 1200px" width="1672" height="941" fetchpriority="high" alt="Os cinco líderes do time de agentes da AgenticaLab: VitorIA (Comercial), SofIA (Operações), Dante (Marketing), Atlas (Diretor Geral) e Axel (Engenharia) (imagem ilustrativa)">
+      <ul class="lh-tags" aria-hidden="true">
+        <li class="t-vitoria"><b>VitorIA</b><span>Comercial</span></li>
+        <li class="t-sofia"><b>SofIA</b><span>Operações</span></li>
+        <li class="t-dante"><b>Dante</b><span>Marketing</span></li>
+        <li class="t-atlas"><b>Atlas</b><span>Diretor Geral</span></li>
+        <li class="t-axel"><b>Axel</b><span>Engenharia</span></li>
+      </ul>
+    </figure>
+    <div class="wrap lh-wrap">
+      <div class="lh-copy">
         <span class="kicker">Agentes de IA para Donos de Negócio</span>
-        <h1>Uma equipe de agentes trabalhando no seu negócio. <span>Você só revisa e aprova.</span></h1>
-        <p class="lead">Montamos um agente, ou um time inteiro de agentes coordenados, para assumir as tarefas repetitivas do seu escritório, do comercial e do marketing. Eles trabalham nas ferramentas que você já usa e trazem o resultado pronto para o seu ok.</p>
+        <h1 id="lh-titulo">Uma equipe de agentes trabalhando no seu negócio. <span>Você só revisa e aprova.</span></h1>
+        <p class="lead">Montamos um time de agentes especializados em marketing, vendas, operações e tecnologia para executar as tarefas do seu dia a dia, gerar resultado e dar mais tempo para você focar no que realmente importa.</p>
+        <ul class="lh-benefits">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>Mais produtividade</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V14M9.3 20V10M14.6 20V6M20 20V3"/></svg>Menos retrabalho</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Mais tempo para crescer</li>
+        </ul>
         <div class="hero-actions">
-          <a class="btn" href="#contato">Quero um diagnóstico gratuito <span aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="#times">Ver o que o time faz</a>
+          <a class="btn" href="#times">Conheça os agentes <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#como-funciona">Ver como funciona</a>
         </div>
-        <p class="dl-micro">Nada sai sem a sua aprovação · Telas ilustrativas</p>
-      </div>
-      <div class="shots">
-        <img class="s1" src="/assets/img/agentes-painel-time.jpg" alt="Painel de um time de agentes: o coordenador divide o pedido e os agentes entregam proposta e post para aprovar (exemplo ilustrativo)">
-        <img class="s2 phone" src="/assets/img/agentes-celular.jpg" alt="Resumo da manhã e pedido de aprovação do time no celular (exemplo ilustrativo)">
       </div>
     </div>
   </section>
