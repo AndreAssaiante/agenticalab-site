@@ -132,18 +132,35 @@
     if (comAgenda) { dlg.classList.add('dg-wide'); agenda(d); }
   }
 
-  // Agenda embutida: script oficial do próprio Cal.diy, carregado só quando um qualificado chega aqui.
-  function agenda(d) {
+  // Agenda embutida: script oficial do próprio Cal.diy, com as cores e o acabamento do site (tema escuro da marca).
+  // Também usada pela página /agendar/ (window.agenticaAgenda.montar).
+  const TEMA = { // variáveis do Cal.diy → paleta do brandbook (chumbo, painel, roxo, laranja, off-white)
+    '--cal-bg': '#18181F', '--cal-bg-muted': '#1E1E25', '--cal-bg-subtle': '#22212B', '--cal-bg-emphasis': '#34323F',
+    '--cal-bg-inverted': '#F4F2F7', '--cal-border': '#34323F', '--cal-border-subtle': '#2A2833', '--cal-border-emphasis': '#4A4757',
+    '--cal-border-booker': '#34323F', '--cal-text': '#F4F2F7', '--cal-text-emphasis': '#FFFFFF', '--cal-text-subtle': '#B7AAC4',
+    '--cal-text-muted': '#8E849C', '--cal-text-inverted': '#1E1E25', '--cal-brand': '#FF6B2C', '--cal-brand-emphasis': '#FF8F5A',
+    '--cal-brand-text': '#1E1E25', '--cal-brand-subtle': '#3A2A2A',
+    '--cal-radius': '0px', '--cal-radius-sm': '0px', '--cal-radius-md': '0px', '--cal-radius-lg': '0px', '--cal-radius-xl': '0px', '--cal-radius-2xl': '0px', '--cal-radius-full': '0px' };
+  function carregarCal() {
     (function (C, A, L) { const p = (a, ar) => a.q.push(ar), doc = C.document; C.Cal = C.Cal || function () { const cal = C.Cal, ar = arguments;
       if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; doc.head.appendChild(doc.createElement('script')).src = A; cal.loaded = true; }
       if (ar[0] === L) { const api = function () { p(api, arguments); }, ns = ar[1]; api.q = api.q || [];
         if (typeof ns === 'string') { cal.ns[ns] = cal.ns[ns] || api; p(cal.ns[ns], ar); p(cal, ['initNamespace', ns]); } else p(cal, ar); return; }
       p(cal, ar); }; })(window, AGENDA.origin + '/embed/embed.js', 'init');
-    Cal('init', 'dg', { origin: AGENDA.origin });
-    Cal.ns.dg('inline', { elementOrSelector: '#dg-cal', calLink: AGENDA.link,
-      config: { name: d.nome.trim(), email: d.email.trim(), layout: 'month_view', theme: 'dark', 'metadata[origem]': 'site-diagnostico' } });
-    Cal.ns.dg('ui', { theme: 'dark', hideEventTypeDetails: false, layout: 'month_view' });
-    Cal.ns.dg('on', { action: 'bookingSuccessful', callback: () => { const alt = body.querySelector('.dg-cal-alt'); if (alt) alt.textContent = 'Reunião marcada. O convite com o link do Google Meet foi para o seu e-mail.'; } });
+  }
+  // Monta a agenda num elemento. ns: nome único por agenda na página; extra: nome/e-mail/origem; aoMarcar: callback.
+  function montar(sel, ns, extra = {}, aoMarcar) {
+    carregarCal();
+    Cal('init', ns, { origin: AGENDA.origin });
+    Cal.ns[ns]('inline', { elementOrSelector: sel, calLink: AGENDA.link, config: { layout: 'month_view', theme: 'dark', ...extra } });
+    Cal.ns[ns]('ui', { theme: 'dark', hideEventTypeDetails: false, layout: 'month_view', cssVarsPerTheme: { dark: TEMA, light: TEMA }, styles: { branding: { brandColor: '#FF6B2C' } } });
+    if (aoMarcar) Cal.ns[ns]('on', { action: 'bookingSuccessful', callback: aoMarcar });
+  }
+  window.agenticaAgenda = { montar, pronto: () => modoPronto.then(() => AGENDA) };
+
+  function agenda(d) {
+    montar('#dg-cal', 'dg', { name: d.nome.trim(), email: d.email.trim(), 'metadata[origem]': 'site-diagnostico' },
+      () => { const alt = body.querySelector('.dg-cal-alt'); if (alt) alt.textContent = 'Reunião marcada. O convite com o link do Google Meet foi para o seu e-mail.'; });
   }
 
   async function open(e) {
