@@ -1,5 +1,42 @@
 [
   {
+    "slug": "delegra",
+    "ordem": 0,
+    "nome": "Delegra CRM",
+    "categoria": "CRM com agentes de IA",
+    "resumo": "CRM da AgenticaLab com funil de vendas, WhatsApp e Instagram, email marketing, automações e agentes de IA que atendem e qualificam os leads para a sua equipe.",
+    "titulo": "Enquanto os agentes cuidam da operação, <span>você cuida do crescimento.</span>",
+    "lead": "Funil de vendas, WhatsApp, Instagram, email marketing, automações e agentes de IA no mesmo lugar.",
+    "imagens": [
+      {
+        "src": "/assets/img/delegra-funil.jpg",
+        "alt": "Delegra CRM: funil de vendas com agente de IA qualificando leads (dados ilustrativos)",
+        "classe": "s1"
+      },
+      {
+        "src": "/assets/img/delegra-conversas.jpg",
+        "alt": "Delegra CRM: caixa de conversas do WhatsApp com assistente virtual (dados ilustrativos)",
+        "classe": "s2"
+      }
+    ],
+    "problema": [
+      "Conversas no WhatsApp, emails e planilhas espalhados fazem o lead esfriar sem resposta."
+    ],
+    "processos": "Configuramos funis, canais, formulários e automações com a sua equipe.",
+    "agentes": "Os agentes de IA atendem, qualificam e passam a conversa pronta para a equipe.",
+    "resultados": "Comercial organizado num só lugar, com o histórico de cada cliente.",
+    "entregas": [
+      "Funil de vendas em Kanban",
+      "WhatsApp e Instagram numa caixa só",
+      "Email marketing",
+      "Automações visuais",
+      "Agentes de IA",
+      "Score do lead"
+    ],
+    "prova": "Em uso na própria AgenticaLab",
+    "prova_nota": "CRM desenvolvido pela AgenticaLab"
+  },
+  {
     "slug": "agenticalab-shop",
     "ordem": 1,
     "nome": "AgenticaLab Shop",
