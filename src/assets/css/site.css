@@ -238,6 +238,10 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .ag-built{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .ag-built a{border:1px solid var(--line);background:linear-gradient(150deg,#24232D,var(--panel));padding:24px 22px;display:grid;gap:10px;align-content:start;transition:border-color .2s ease,transform .2s ease}
 .ag-built a:hover{border-color:var(--primary-2);transform:translateY(-2px)}
+.ag-flow .ag-coord{width:56px;height:56px;border-radius:50%;border:2px solid var(--primary-2);object-fit:cover}
+.ag-contact-side{display:grid;gap:28px;align-content:start}
+.contact .ag-popup{display:block;width:100%;height:auto;border:1px solid var(--line-2);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.contact-start .dl-note{margin-top:4px}
 .ag-built h3{font-size:19px;letter-spacing:-.02em}
 .ag-built p{color:var(--muted);font-size:14.5px}
 .ag-built .more{font-weight:700;font-size:14px;color:var(--accent)}

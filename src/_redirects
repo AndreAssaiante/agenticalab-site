@@ -1,0 +1,4 @@
+# Redirecionamentos do Cloudflare Pages
+# A página dos agentes virou a home em 24/11/2026.
+/agentes/  /  301
+/agentes   /  301

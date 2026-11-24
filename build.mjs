@@ -62,6 +62,9 @@ for (const file of walk(DIST)) {
   if (rel.startsWith('/brandbook/')) { continue; } // o brandbook tem layout próprio
   const path = rel.replace(/index\.html$/, '');
   const fonte = readFileSync(file, 'utf8'), fmSrc = frontMatter(fonte);
+  // "noindex: sim" no bloco de configuração = página escondida: fica no ar pelo endereço, mas fora do sitemap, do llms.txt e do Google.
+  const escondida = /^(sim|true)$/i.test(fmSrc?.meta.noindex || '');
+  if (escondida) { writeFileSync(file, page(fonte, path, { head_extra: '<meta name="robots" content="noindex, nofollow">' })); continue; }
   if (fmSrc && !rel.endsWith('404.html')) paginasSite.push({ titulo: fmSrc.meta.title, descricao: fmSrc.meta.description, path });
   // Home: dados da empresa para o Google e as IAs (Organization + WebSite)
   const extraHome = path === '/' ? { head_extra: blog.jsonLdTag({ '@context': 'https://schema.org', ...blog.organizacao(SITE), email: 'contato.agenticalab@gmail.com', description: 'Agentes de IA que executam etapas repetitivas da operação de Donos de Negócio, dentro das ferramentas que a equipe já usa.', areaServed: 'BR', knowsLanguage: 'pt-BR' }) + '\n' + blog.jsonLdTag({ '@context': 'https://schema.org', '@type': 'WebSite', name: 'AgenticaLab', url: SITE + '/', inLanguage: 'pt-BR', publisher: { '@id': `${SITE}/#organizacao` } }) } : {};
