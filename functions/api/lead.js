@@ -24,6 +24,8 @@ export async function onRequestPost({ request, env }) {
   const whatsapp = String(b.whatsapp || '').replace(/[^\d+]/g, '').slice(0, 20);
   if (!nome || !/^\S+@\S+\.\S+$/.test(email) || whatsapp.replace(/\D/g, '').length < 10) return json({ ok: false, erro: 'campos' }, 422);
 
+  if (b.origem === 'delegra-demo') return demoDelegra(b, env, { nome, email, whatsapp });
+
   const respostas = {}; for (const k of ANSWERS) if (b[k] != null && b[k] !== '') respostas[k] = clip(b[k]);
   const qualificado = respostas.status === 'qualificado';
 
@@ -49,5 +51,25 @@ export async function onRequestPost({ request, env }) {
   }
   const e = await api('/events', { email, name: 'diagnostico_site', data: respostas });
   if (!e.ok) console.log('CRM evento falhou', e.status, await e.text());
+  return json({ ok: true, salvo: true });
+}
+
+// Pedido de demonstração da página do Delegra CRM (/solucoes/delegra/). Não é o diagnóstico da AgenticaLab:
+// contato com as tags site-delegra e delegra-demo, negócio "Demo Delegra" no funil e evento "delegra_demo".
+const DEMO = ['empresa', 'equipe', 'plano', 'pagina', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+async function demoDelegra(b, env, { nome, email, whatsapp }) {
+  const r = {}; for (const k of DEMO) if (b[k] != null && b[k] !== '') r[k] = String(b[k]).slice(0, 200);
+  if (!env.CRM_API_URL || !env.CRM_API_KEY) { console.log('DEMO DELEGRA sem CRM configurado', JSON.stringify({ nome, email, whatsapp, ...r })); return json({ ok: true, salvo: false }); }
+  const api = (path, body) => fetch(env.CRM_API_URL.replace(/\/$/, '') + path, {
+    method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${env.CRM_API_KEY}` }, body: JSON.stringify(body) });
+  const [firstName, ...resto] = nome.split(/\s+/);
+  const tags = ['site-delegra', 'delegra-demo']; if (r.plano) tags.push(`delegra-plano-${r.plano}`);
+  const c = await api('/contacts', { email, firstName, lastName: resto.join(' ') || undefined, phone: whatsapp, source: 'site-delegra', fields: Object.fromEntries(Object.entries(r).map(([k, v]) => [`delegra_${k}`, v])), tags });
+  if (!c.ok) { console.log('CRM contato (demo Delegra) falhou', c.status, await c.text()); return json({ ok: false, salvo: false }, 502); }
+  const notes = Object.entries(r).map(([k, v]) => `${k}: ${v}`).join('\n');
+  const d = await api('/deals', { title: `Demo Delegra · ${nome}${r.empresa ? ` (${r.empresa})` : ''}`, contactEmail: email, pipelineId: env.CRM_PIPELINE_ID || undefined, stageId: env.CRM_STAGE_ID || undefined, tagNames: ['site-delegra'], notes });
+  if (!d.ok) console.log('CRM negócio (demo Delegra) falhou', d.status, await d.text());
+  const e = await api('/events', { email, name: 'delegra_demo', data: r });
+  if (!e.ok) console.log('CRM evento (demo Delegra) falhou', e.status, await e.text());
   return json({ ok: true, salvo: true });
 }
