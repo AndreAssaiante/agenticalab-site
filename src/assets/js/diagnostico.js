@@ -154,6 +154,7 @@
     Cal('init', ns, { origin: AGENDA.origin });
     Cal.ns[ns]('inline', { elementOrSelector: sel, calLink: AGENDA.link, config: { layout: 'month_view', theme: 'dark', ...extra } });
     Cal.ns[ns]('ui', { theme: 'dark', hideEventTypeDetails: false, layout: 'month_view', cssVarsPerTheme: { dark: TEMA, light: TEMA }, styles: { branding: { brandColor: '#FF6B2C' } } });
+    Cal.ns[ns]('on', { action: 'linkReady', callback: () => { const l = document.querySelector(sel + ' .dg-cal-load'); if (l) l.remove(); } });
     if (aoMarcar) Cal.ns[ns]('on', { action: 'bookingSuccessful', callback: aoMarcar });
   }
   window.agenticaAgenda = { montar, pronto: () => modoPronto.then(() => AGENDA) };
