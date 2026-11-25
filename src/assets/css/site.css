@@ -597,3 +597,5 @@ section.block.blog-list{padding-block:72px 96px}
 .ag-agent .ag-agent-photo img{aspect-ratio:1/1;object-position:center top}
 @media (max-width:820px){.ag-agent .ag-agent-photo img{aspect-ratio:1/1}}
 @media (max-width:700px){.ag-lead-photo img{aspect-ratio:1/1}}
+.ag-mission{margin:0;color:var(--paper);font-size:15.5px;line-height:1.5;padding-left:12px;border-left:2px solid var(--c,var(--accent))}
+.ag-lead .ag-mission{--c:var(--accent);font-size:16.5px}
