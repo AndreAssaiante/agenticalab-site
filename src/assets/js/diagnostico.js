@@ -1,7 +1,7 @@
 /* Popup de entrada do lead. Abre em qualquer link para #contato ou [data-diag].
    Três formulários, escolhidos no CRM (Configurações → Site), lidos em /api/config:
    - "simples": Form Simples, só nome, WhatsApp e e-mail.
-   - "contato" (padrão): Form Qualificação; o qualificado recebe "vamos chamar você no WhatsApp".
+   - "contato" (padrão): Form Qualificação; a equipe pode entrar em contato pelo e-mail informado.
    - "agenda": Form Qualificação + Agenda; o qualificado já escolhe o horário (Cal.diy), com nome e e-mail preenchidos.
    Para testar um modo sem mexer no CRM: ?entrada=simples, ?entrada=contato ou ?entrada=agenda no endereço da página. */
 (() => {
@@ -40,14 +40,14 @@
     dlg = document.createElement('dialog'); dlg.className = 'dg'; dlg.setAttribute('aria-label', 'Diagnóstico gratuito');
     dlg.innerHTML = `<div class="dg-box">
       <header class="dg-hd">
-        <img class="dg-av" src="/assets/img/noah.svg" alt="Noah" width="48" height="48">
-        <div class="dg-who"><b>Noah</b><small><i class="dg-on"></i>Atendimento · AgenticaLab</small></div>
+        <img class="dg-av" src="/assets/img/vitoria.jpg" alt="Noah, assistente virtual da AgenticaLab" width="48" height="48">
+        <div class="dg-who"><b>Noah</b><small><i class="dg-on"></i>Assistente virtual · AgenticaLab</small></div>
         <button class="dg-x" type="button" aria-label="Fechar">×</button>
         <ol class="dg-steps">${FASES.map((f, n) => `<li><span>${n + 1}</span>${f}</li>`).join('')}</ol>
         <div class="dg-meta"><span class="dg-count"></span><span>cerca de 1 minuto</span></div>
       </header>
       <div class="dg-body" aria-live="polite"></div>
-      <footer class="dg-ft"><span>Sem compromisso</span><span>Resposta em até 1 dia útil</span><span>Seus dados ficam só com a gente</span></footer>
+      <footer class="dg-ft"><span>Sem compromisso</span><span>Nossa equipe recebe seu pedido</span><span>Seus dados ficam só com a gente</span></footer>
     </div>`;
     document.body.appendChild(dlg);
     body = dlg.querySelector('.dg-body');
@@ -89,10 +89,10 @@
   const prev = () => { i--; render(); };
 
   function contactForm(st) {
-    body.innerHTML = head(st) + `<div class="dg-note"><b>O que acontece agora:</b> ${modo === 'agenda' ? 'se o seu caso tiver a ver com o que fazemos, você já escolhe o horário da conversa de 30 minutos na tela seguinte.' : 'um especialista fala com você pelo WhatsApp para entender a operação e mostrar por onde começar.'} Sem spam.</div>
+    body.innerHTML = head(st) + `<div class="dg-note"><b>O que acontece agora:</b> ${modo === 'agenda' ? 'se o seu caso tiver a ver com o que fazemos, você já escolhe o horário da conversa de 30 minutos na tela seguinte.' : 'nossa equipe recebe suas respostas e pode entrar em contato pelo e-mail informado para combinar o próximo passo.'} Sem spam.</div>
       <form class="dg-form" novalidate>
         <label>Nome<input name="nome" autocomplete="name" placeholder="Seu nome" required value="${esc(s.nome || '')}"></label>
-        <label>WhatsApp com DDD<input name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" required value="${esc(s.whatsapp || '')}"></label>
+        <label>Telefone com DDD<input name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" required value="${esc(s.whatsapp || '')}"></label>
         <label>E-mail<input name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required value="${esc(s.email || '')}"></label>
         ${modo === 'simples' ? '' : `<div class="dg-row">
           <label><span>Instagram <em>(opcional)</em></span><input name="instagram" autocomplete="off" placeholder="@suaempresa" value="${esc(s.instagram || '')}"></label>
@@ -108,7 +108,7 @@
     f.onsubmit = async e => {
       e.preventDefault();
       const d = Object.fromEntries(new FormData(f)), err = f.querySelector('.dg-err');
-      if (!d.nome.trim() || d.whatsapp.replace(/\D/g, '').length < 10 || !/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = 'Confira o nome, o WhatsApp com DDD e o e-mail.'; err.hidden = false; return; }
+      if (!d.nome.trim() || d.whatsapp.replace(/\D/g, '').length < 10 || !/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = 'Confira o nome, o telefone com DDD e o e-mail.'; err.hidden = false; return; }
       const simples = modo === 'simples', nota = score(), qualificado = !simples && s.prazo !== 'pesquisando' && s.faturamento !== 'ate-20k' && nota >= 9;
       const q = new URLSearchParams(location.search), utm = {};
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
@@ -125,9 +125,9 @@
     const url = `${AGENDA.origin}/${AGENDA.link}?` + new URLSearchParams({ name: d.nome.trim(), email: d.email.trim() });
     body.innerHTML = `<div class="dg-done"><span class="dg-check" aria-hidden="true">✓</span>
       <h3 class="dg-q">${modo === 'simples' ? `Recebemos seu contato, ${esc(nome)}.` : ok ? `Tudo certo, ${esc(nome)}. Seu caso tem tudo a ver com o que fazemos.` : `Obrigado, ${esc(nome)}!`}</h3>
-      <p class="dg-sub">${comAgenda ? 'Escolha agora o melhor horário para a conversa de 30 minutos, por Google Meet. A confirmação chega no seu e-mail.' : ok ? 'Vamos chamar você no WhatsApp em até 1 dia útil para marcar a conversa de 30 minutos. Fique de olho no celular.' : 'Vamos mandar no seu e-mail exemplos de como um time de IA assume essas tarefas. Quando fizer sentido, é só responder.'}</p>
+      <p class="dg-sub">${comAgenda ? 'Escolha agora o melhor horário para a conversa de 30 minutos, por Google Meet. A confirmação chega no seu e-mail.' : ok ? 'Recebemos suas respostas. Se for preciso conversar, nossa equipe pode entrar em contato pelo e-mail informado para combinar o próximo passo.' : 'Recebemos suas respostas. Se houver um próximo passo, nossa equipe pode entrar em contato pelo e-mail informado.'}</p>
       ${comAgenda ? `<div class="dg-cal" id="dg-cal"><p class="dg-cal-load">Carregando a agenda…</p></div>
-      <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> ou aguarde: chamamos você no WhatsApp em até 1 dia útil.</p>` : '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
+      <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> para escolher o horário.</p>` : '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
     body.querySelector('.dg-go')?.addEventListener('click', () => dlg.close());
     if (comAgenda) { dlg.classList.add('dg-wide'); agenda(d); }
   }
