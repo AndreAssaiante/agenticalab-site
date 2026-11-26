@@ -58,7 +58,7 @@ function inline(t) {
   const codes = [];
   t = t.replace(/`([^`]+)`/g, (_, c) => `\u0000${codes.push(esc(c)) - 1}\u0000`);
   t = esc(t)
-    .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img src="$2" alt="$1" loading="lazy">')
+    .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img src="$2" alt="$1" width="1200" height="675" loading="lazy" decoding="async">')
     .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, txt, url) => `<a href="${url}"${/^https?:/.test(url) && !url.includes('agenticalab.com.br') ? ' rel="noopener"' : ''}>${txt}</a>`)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[^*])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>');
@@ -76,11 +76,18 @@ export function markdown(md) {
     if (h) { const n = h[1].length, txt = h[2].trim(), id = idDe(txt); if (n <= 3) toc.push({ n, txt, id }); out.push(`<h${n} id="${id}">${inline(txt)}</h${n}>`); i++; continue; }
     if (/^#\s+/.test(l)) { i++; continue; } // o título (h1) vem do front-matter
     if (/^>\s?/.test(l)) { const buf = []; while (i < L.length && /^>\s?/.test(L[i])) buf.push(L[i++].replace(/^>\s?/, '')); out.push(`<blockquote><p>${inline(buf.join(' '))}</p></blockquote>`); continue; }
+    if (/^\|/.test(l) && i + 1 < L.length && /^\|\s*:?-{3,}/.test(L[i + 1])) {
+      const cells = line => line.replace(/^\||\|$/g, '').split('|').map(x => x.trim());
+      const header = cells(l).map(x => `<th scope="col">${inline(x)}</th>`).join('');
+      i += 2; const rows = [];
+      while (i < L.length && /^\|/.test(L[i])) rows.push(`<tr>${cells(L[i++]).map(x => `<td>${inline(x)}</td>`).join('')}</tr>`);
+      out.push(`<div class="post-table-scroll"><table><thead><tr>${header}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`); continue;
+    }
     if (/^\s*[-*]\s+/.test(l)) { const buf = []; while (i < L.length && /^\s*[-*]\s+/.test(L[i])) buf.push(`<li>${inline(L[i++].replace(/^\s*[-*]\s+/, ''))}</li>`); out.push(`<ul>${buf.join('')}</ul>`); continue; }
     if (/^\s*\d+[.)]\s+/.test(l)) { const buf = []; while (i < L.length && /^\s*\d+[.)]\s+/.test(L[i])) buf.push(`<li>${inline(L[i++].replace(/^\s*\d+[.)]\s+/, ''))}</li>`); out.push(`<ol>${buf.join('')}</ol>`); continue; }
     if (/^(-{3,}|\*{3,})$/.test(l.trim())) { out.push('<hr>'); i++; continue; }
     const buf = [];
-    while (i < L.length && L[i].trim() && !/^(#{1,4}\s|```|>|\s*[-*]\s+|\s*\d+[.)]\s+)/.test(L[i])) buf.push(L[i++].trim());
+    while (i < L.length && L[i].trim() && !/^(#{1,4}\s|```|>|\||\s*[-*]\s+|\s*\d+[.)]\s+)/.test(L[i])) buf.push(L[i++].trim());
     out.push(`<p>${inline(buf.join(' '))}</p>`);
   }
   return { html: out.join('\n'), toc };
@@ -107,6 +114,8 @@ export function lerPosts(root, { incluirRascunhos = false } = {}) {
     const p = {
       arquivo: f,
       titulo: meta.titulo || meta.title,
+      seoTitulo: meta.seo_title || meta.titulo || meta.title,
+      subhead: meta.subhead || meta.descricao || meta.description || '',
       descricao: meta.descricao || meta.description || '',
       data: String(meta.data || meta.date || dataArq || ''),
       atualizado: String(meta.atualizado || meta.updated || ''),
@@ -117,6 +126,7 @@ export function lerPosts(root, { incluirRascunhos = false } = {}) {
       capaPropria: !!(meta.capa || meta.imagem || meta.image),
       imagemAlt: meta.capa_alt || meta.imagem_alt || meta.titulo || '',
       faq: Array.isArray(meta.faq) ? meta.faq.filter(x => x && x.q && x.a) : [],
+      icones: Array.isArray(meta.icones) ? meta.icones : [],
       rascunho: meta.draft === true || meta.rascunho === true,
       slug: slugify(meta.slug || nomeArq.replace(/^\d{4}-\d{2}-\d{2}-/, '')),
       md: body,
@@ -124,14 +134,19 @@ export function lerPosts(root, { incluirRascunhos = false } = {}) {
     const erros = [];
     if (!p.titulo) erros.push('falta "titulo"');
     if (!p.descricao) erros.push('falta "descricao"');
-    if (!/^\d{4}-\d{2}-\d{2}/.test(p.data)) erros.push('falta "data" (AAAA-MM-DD)');
+    if (!/^\d{4}-\d{2}-\d{2}/.test(p.data) && !p.rascunho) erros.push('falta "data" (AAAA-MM-DD)');
     if (!cats[p.categoria]) erros.push(`categoria "${p.categoria}" não existe (use: ${CATEGORIAS.map(c => c.slug).join(', ')})`);
     p.autorInfo = autores[slugify(p.autor)] || null;
     if (p.autor !== EQUIPE && !p.autorInfo) erros.push(`autor "${p.autor}" não está em data/autores.json (ou use "${EQUIPE}")`);
     if (erros.length) throw new Error(`content/blog/${f}: ${erros.join('; ')}`);
     if (p.rascunho && !incluirRascunhos) continue;
     const { html, toc } = markdown(body);
-    p.html = html; p.toc = toc;
+    let iconIndex = 0;
+    p.html = html.replace(/<h2(\s[^>]*)>([\s\S]*?)<\/h2>/g, (full, attrs, text) => {
+      const icon = p.icones[iconIndex++];
+      return icon ? `<h2${attrs}><img class="post-heading-icon" src="/assets/img/blog/icone-${esc(icon)}.svg" alt="" width="40" height="40" loading="lazy">${text}</h2>` : full;
+    });
+    p.toc = toc;
     p.cat = cats[p.categoria];
     p.minutos = Math.max(1, Math.round(textoPuro(body).split(/\s+/).filter(Boolean).length / 200));
     p.url = `/blog/${p.slug}/`;
@@ -143,7 +158,7 @@ export function lerPosts(root, { incluirRascunhos = false } = {}) {
 }
 
 // ---------- pedaços de HTML ----------
-const metaLinha = p => `<span class="post-meta"><a class="post-cat" href="/blog/categoria/${p.cat.slug}/">${esc(p.cat.nome)}</a> · <time datetime="${p.data.slice(0, 10)}">${dataBR(p.data)}</time> · ${p.minutos} min de leitura${p.rascunho ? ' · <span class="post-draft">Rascunho</span>' : ''}</span>`;
+const metaLinha = p => `<span class="post-meta"><a class="post-cat" href="/blog/categoria/${p.cat.slug}/">${esc(p.cat.nome)}</a>${p.data ? ` · <time datetime="${p.data.slice(0, 10)}">${dataBR(p.data)}</time>` : ''} · ${p.minutos} min de leitura${p.rascunho ? ' · <span class="post-draft">Rascunho</span>' : ''}</span>`;
 export const card = p => `<article class="post-card"><a class="post-img" href="${p.url}" tabindex="-1" aria-hidden="true"><img src="${esc(p.imagem)}" alt="" loading="lazy"></a><div class="post-body">${metaLinha(p)}<h3><a href="${p.url}">${esc(p.titulo)}</a></h3><p>${esc(p.descricao)}</p></div></article>`;
 export const destaque = p => `<article class="post-feat"><a class="post-img" href="${p.url}" tabindex="-1" aria-hidden="true"><img src="${esc(p.imagem)}" alt="" loading="lazy"></a><div class="post-body">${metaLinha(p)}<h2><a href="${p.url}">${esc(p.titulo)}</a></h2><p>${esc(p.descricao)}</p><a class="post-more" href="${p.url}">Ler artigo →</a></div></article>`;
 export const navCategorias = atual => `<nav class="blog-cats" aria-label="Categorias"><a href="/blog/"${!atual ? ' class="on" aria-current="page"' : ''}>Todos</a>${CATEGORIAS.map(c => `<a href="/blog/categoria/${c.slug}/"${atual === c.slug ? ' class="on" aria-current="page"' : ''}>${esc(c.nome)}</a>`).join('')}</nav>`;
@@ -164,7 +179,7 @@ export function sumario(toc) {
   if (toc.filter(t => t.n === 2).length < 2) return '';
   return `<nav class="post-toc" aria-label="Neste artigo"><strong>Neste artigo</strong><ol>${toc.map(t => `<li class="toc-${t.n}"><a href="#${t.id}">${esc(t.txt)}</a></li>`).join('')}</ol></nav>`;
 }
-export const faqHtml = faq => faq.length ? `<section class="post-faq" aria-labelledby="perguntas"><h2 id="perguntas">Perguntas frequentes</h2>${faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</section>` : '';
+export const faqHtml = faq => faq.length ? `<section class="post-faq" aria-labelledby="perguntas"><h2 id="perguntas">Perguntas frequentes</h2>${faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${inline(f.a)}</p></details>`).join('')}</section>` : '';
 
 // ---------- metadados para buscadores e IAs ----------
 export const organizacao = SITE => ({ '@type': 'Organization', '@id': `${SITE}/#organizacao`, name: 'AgenticaLab', url: SITE + '/', logo: { '@type': 'ImageObject', url: `${SITE}/assets/brand/vertice.svg` } });
@@ -184,15 +199,15 @@ export function headPost(p, SITE) {
     p.capaGerada ? '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">' : '',
     `<meta property="og:image:alt" content="${esc(p.imagemAlt)}">`,
     `<meta name="twitter:card" content="summary_large_image">`,
-    `<meta property="article:published_time" content="${esc(p.data.slice(0, 10))}">`,
+    p.data ? `<meta property="article:published_time" content="${esc(p.data.slice(0, 10))}">` : '',
     p.atualizado ? `<meta property="article:modified_time" content="${esc(p.atualizado.slice(0, 10))}">` : '',
     `<meta property="article:section" content="${esc(p.cat.nome)}">`,
     ...p.tags.map(t => `<meta property="article:tag" content="${esc(t)}">`),
     `<link rel="alternate" type="application/rss+xml" title="Blog AgenticaLab" href="${SITE}/blog/feed.xml">`,
     p.rascunho ? '<meta name="robots" content="noindex,nofollow">' : '',
     jsonLd({
-      '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.titulo, description: p.descricao, image: img,
-      datePublished: p.data.slice(0, 10), dateModified: (p.atualizado || p.data).slice(0, 10), inLanguage: 'pt-BR',
+      '@context': 'https://schema.org', '@type': 'Article', headline: p.titulo, description: p.descricao, image: img,
+      ...(p.data ? { datePublished: p.data.slice(0, 10), dateModified: (p.atualizado || p.data).slice(0, 10) } : {}), inLanguage: 'pt-BR',
       author: p.autorInfo ? pessoa(p.autorInfo, SITE) : org, publisher: org,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url }, articleSection: p.cat.nome, keywords: p.tags.join(', '),
       wordCount: textoPuro(p.md).split(/\s+/).filter(Boolean).length,

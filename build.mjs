@@ -125,7 +125,7 @@ function listas(base, lista, cat) {
     const path = n === 1 ? base : `${base}pagina/${n}/`;
     const fatia = lista.slice((n - 1) * blog.POR_PAGINA, n * blog.POR_PAGINA);
     let conteudo;
-    if (!publicados.length) conteudo = emBreve; // enquanto não houver post publicado, mostra os cards "Em breve"
+    if (!publicados.length && !RASCUNHOS) conteudo = emBreve;
     else if (!lista.length) conteudo = `${blog.navCategorias(cat?.slug)}\n<p class="blog-empty">Ainda não há artigos em ${blog.esc(cat.nome)}. <a href="/blog/">Ver todos os artigos</a></p>`;
     else {
       const [primeiro, ...resto] = fatia;
@@ -137,19 +137,20 @@ function listas(base, lista, cat) {
       ? { titulo_pagina: `${cat.nome} · Blog AgenticaLab${sufixo}`, descricao: `Artigos da AgenticaLab sobre agentes de IA em ${cat.nome.toLowerCase()} para pequenas e médias empresas.`, crumbs: crumbsBlog(cat.nome), kicker: 'Blog · Categoria', h1: `${blog.esc(cat.nome)}<span>.</span>`, lead: `Agentes de IA aplicados a ${cat.nome.toLowerCase()}: casos, passo a passo e o que medir antes e depois.`, aviso: '', conteudo }
       : { titulo_pagina: `Blog · AgenticaLab${sufixo}`, descricao: 'Conteúdos da AgenticaLab sobre agentes de IA na operação de pequenas e médias empresas: atendimento, comercial, marketing e gestão.', crumbs: crumbsBlog(), kicker: 'Blog', h1: 'Agentes de IA <span>na prática.</span>', lead: 'Como pequenas e médias empresas colocam agentes para trabalhar no atendimento, no comercial, no marketing e na gestão. Casos, passo a passo e o que medir antes e depois.', aviso: (publicados.length ? '' : '<p class="blog-soon">Os primeiros artigos estão sendo preparados.</p>') + avisoRascunhos, conteudo };
     const vazia = !!cat && !lista.length;
-    emitir(path, fillHtml(tplBlog, v), { head_extra: blog.headLista(SITE, path, cat?.nome, { noindex: vazia }) });
-    if (n === 1 && !vazia) urls.push(path);
+    emitir(path, fillHtml(tplBlog, v), { head_extra: blog.headLista(SITE, path, cat?.nome, { noindex: vazia || (RASCUNHOS && !publicados.some(p => !cat || p.categoria === cat.slug)) }) });
+    if (n === 1 && !vazia && (publicados.some(p => !cat || p.categoria === cat.slug) || !RASCUNHOS)) urls.push(path);
   }
 }
 
-listas('/blog/', publicados);
-for (const cat of blog.CATEGORIAS) listas(`/blog/categoria/${cat.slug}/`, publicados.filter(p => p.categoria === cat.slug), cat);
+listas('/blog/', RASCUNHOS ? todosPosts : publicados);
+for (const cat of blog.CATEGORIAS) listas(`/blog/categoria/${cat.slug}/`, (RASCUNHOS ? todosPosts : publicados).filter(p => p.categoria === cat.slug), cat);
 
 for (const p of todosPosts) {
   const rel = blog.relacionados(p, publicados);
   const v = {
-    titulo_pagina: `${p.titulo} · AgenticaLab`, descricao: p.descricao, titulo: p.titulo, autor: p.autor,
+    titulo_pagina: p.seoTitulo, descricao: p.descricao, titulo: p.titulo, subhead: p.subhead, autor: p.autor,
     cat_slug: p.cat.slug, cat_nome: p.cat.nome, data_iso: p.data.slice(0, 10), data_br: blog.dataBR(p.data), minutos: p.minutos,
+    byline: `<p class="post-byline">${p.rascunho ? 'Texto em revisão · ' : ''}${p.data ? `Publicado em <time datetime="${p.data.slice(0, 10)}">${blog.dataBR(p.data)}</time> · ` : ''}${p.minutos} min de leitura</p>`,
     atualizado: p.atualizado && p.atualizado !== p.data ? ` · Atualizado em <time datetime="${blog.esc(p.atualizado.slice(0, 10))}">${blog.dataBR(p.atualizado)}</time>` : '',
     imagem: p.imagem, imagem_alt: p.imagemAlt, html: p.html, sumario: blog.sumario(p.toc), faq: blog.faqHtml(p.faq),
     autor_link: p.autorInfo ? `<a href="${p.autorInfo.url}" rel="author">${blog.esc(p.autor)}</a>` : blog.esc(p.autor),
