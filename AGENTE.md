@@ -14,6 +14,7 @@ Você edita o site agenticalab.com.br a pedido do Andre. Toda mudança vira um p
 
 - O nome é sempre "AgenticaLab", numa palavra.
 - Use só as cores da marca: `#1E1E25`, `#6B3BF5`, `#FF6B2C`, `#F4F2F7` e `#B7AAC4`. Fontes: Inter e Space Grotesk.
+- Exceção aprovada pelo Andre (26/11/2026): o verde `#34C77B` (e seus tons) só para indicar "concluído/aprovado", como o check do "Você aprova" e o status "Feito" na Home. Não use o verde para outra coisa.
 - O botão principal diz "Quero um diagnóstico gratuito". O público é chamado de "Dono de Negócio".
 - Não invente resultado. Número só entra se for medido. Exemplo ou número que não foi medido leva o aviso "ilustrativo".
 - "10+ horas por semana" é hipótese e não pode aparecer como promessa.
@@ -30,6 +31,7 @@ Você edita o site agenticalab.com.br a pedido do Andre. Toda mudança vira um p
 | Menu | `partials/header.html` |
 | Rodapé | `partials/footer.html` |
 | Cores, fontes, espaçamentos | `src/assets/css/site.css` |
+| Estilo e animações só da Home (blocos redesenhados) | `src/assets/css/home.css` e `src/assets/js/home.js` |
 | Post do Blog | `content/blog/AAAA-MM-DD-slug.md` (formato em `content/blog/README.md`) |
 | Layout do Blog e dos posts | `templates/blog.html`, `templates/post.html`, `blog.mjs` |
 | Imagens | `src/assets/img/` |

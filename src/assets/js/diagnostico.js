@@ -170,7 +170,11 @@
     if (dlg.open) return;
     await Promise.race([modoPronto, new Promise(r => setTimeout(r, 1500))]); // a escolha do CRM normalmente já chegou
     steps = modo === 'simples' ? [{ ...STEPS[STEPS.length - 1], f: 0, tag: 'Fale com a gente', q: 'Deixe seu contato e falamos com você' }] : STEPS;
-    dlg.classList.remove('dg-wide'); Object.keys(s).forEach(k => delete s[k]); Object.keys(pts).forEach(k => delete pts[k]); i = 0; render(); dlg.showModal();
+    dlg.classList.remove('dg-wide'); Object.keys(s).forEach(k => delete s[k]); Object.keys(pts).forEach(k => delete pts[k]); i = 0;
+    // Home: o botão do Noah pode chegar com o negócio já escolhido (data-negocio); aí começa no passo 2.
+    const pre = e?.target?.closest?.('[data-negocio]')?.dataset.negocio, op = pre && steps[0].k === 'negocio' && steps[0].o.find(x => x[0] === pre);
+    if (op) { s.negocio = op[0]; pts.negocio = op[2]; i = 1; }
+    render(); dlg.showModal();
   }
   document.addEventListener('click', e => { const a = e.target.closest('a[href$="#contato"],[data-diag]'); if (a) open(e); });
   if (location.hash === '#diagnostico') open();
