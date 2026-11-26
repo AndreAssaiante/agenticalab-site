@@ -1,12 +1,17 @@
 import assert from 'node:assert/strict';
 import { onRequestGet, onRequestPost } from '../functions/api/chat.js';
 const store = new Map(), calls = [];
+let rejectImage = false;
 const kv = { get: async k => store.get(k), put: async (k,v) => store.set(k,v) };
 const env = { AI_API_KEY: 'mock-only', CHAT_SESSIONS: kv, CRM_API_URL: 'https://crm.invalid/api/v1', CRM_API_KEY: 'mock-only' };
 const original = globalThis.fetch;
 globalThis.fetch = async (url, options) => {
-  calls.push([url, JSON.parse(options.body)]);
-  if (url.includes('anthropic.com')) return new Response(JSON.stringify({ content: [{ type: 'text', text: 'Posso ajudar. Qual tarefa repetitiva toma mais seu tempo?' }] }), { status: 200 });
+  const body = JSON.parse(options.body);
+  calls.push([url, body, options.headers]);
+  if (url.includes('openrouter.ai')) {
+    if (rejectImage && Array.isArray(body.messages.at(-1).content)) return new Response('{}', { status: 400 });
+    return new Response(JSON.stringify({ choices: [{ message: { content: 'Posso ajudar. Qual tarefa repetitiva toma mais seu tempo?' } }] }), { status: 200 });
+  }
   return new Response('{}', { status: 200 });
 };
 const post = (body, cookie = '') => onRequestPost({ env, request: new Request('https://agenticalab.com.br/api/chat', { method:'POST', headers: { 'content-type':'application/json', origin:'https://agenticalab.com.br', cookie }, body: JSON.stringify(body) }) });
@@ -21,12 +26,28 @@ try {
   const cookie = first.headers.get('set-cookie').split(';')[0];
   const second = await post({ acao:'mensagem', mensagem:'Preciso automatizar atendimento' }, cookie);
   assert.equal(second.status, 200);
-  assert.equal(calls.filter(x => x[0].includes('anthropic.com'))[1][1].messages.length, 3);
+  const providerCalls = () => calls.filter(x => x[0] === 'https://openrouter.ai/api/v1/chat/completions');
+  assert.equal(providerCalls()[1][1].messages.length, 4);
+  assert.equal(providerCalls()[1][1].messages[0].role, 'system');
+  assert.match(providerCalls()[1][1].messages[0].content, /Você é Noah/);
+  assert.equal(providerCalls()[1][1].model, 'deepseek/deepseek-chat');
+  assert.equal(providerCalls()[1][2].Authorization, 'Bearer mock-only');
+  assert.equal(providerCalls()[1][2]['HTTP-Referer'], 'https://agenticalab.com.br');
+  assert.equal(providerCalls()[1][2]['X-Title'], 'AgenticaLab');
+  assert.equal(providerCalls()[1][2]['anthropic-version'], undefined);
   const image = await post({ acao:'mensagem', mensagem:'Ajuda com este print', imagem:{type:'image/png',data:png} }, cookie);
   assert.equal(image.status, 200);
-  const provider = calls.filter(x => x[0].includes('anthropic.com')).at(-1)[1];
-  assert.equal(provider.messages.at(-1).content[1].type, 'image');
-  assert.equal(provider.messages.at(-1).content[1].source.data, png);
+  const provider = providerCalls().at(-1)[1];
+  assert.equal(provider.messages.at(-1).content[1].type, 'image_url');
+  assert.equal(provider.messages.at(-1).content[1].image_url.url, `data:image/png;base64,${png}`);
+  rejectImage = true;
+  const beforeRetry = providerCalls().length;
+  const noVision = await post({ acao:'mensagem', mensagem:'Explique o print', imagem:{type:'image/png',data:png} }, cookie);
+  assert.equal(noVision.status, 200);
+  assert.match((await noVision.json()).resposta, /Não consegui analisar o print/);
+  assert.equal(providerCalls().length, beforeRetry + 2);
+  assert.equal(providerCalls().at(-1)[1].messages.at(-1).content, 'Explique o print');
+  rejectImage = false;
   assert.equal(JSON.stringify([...store.values()]).includes(png), false, 'KV não guarda imagem');
   assert.equal((await post({acao:'mensagem', mensagem:'Print', imagem:{type:'image/png',data:Buffer.from('conteudo invalido').toString('base64')}}, cookie)).status, 422);
   assert.equal((await post({acao:'mensagem', mensagem:'Print', imagem:{type:'image/gif',data:png}}, cookie)).status, 422);
@@ -56,5 +77,5 @@ try {
   globalThis.fetch = failedProvider;
   const noKey = await onRequestPost({ env: {}, request: new Request('https://agenticalab.com.br/api/chat', { method:'POST', body:'{}' }) });
   assert.equal(noKey.status, 503);
-  console.log('OK: fallback, histórico, imagem ao provedor apenas, rejeição de formato e tamanho, resumo seguro, contato, evento e falhas');
+  console.log('OK: OpenRouter e DeepSeek, fallback, histórico, imagem só ao provedor, aviso sem visão, formatos, resumo seguro, contato, evento e falhas');
 } finally { globalThis.fetch = original; }

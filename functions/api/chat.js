@@ -17,7 +17,7 @@ const decodeImage = image => {
   const starts = (...values) => values.every((v, i) => bytes[i] === v);
   const ascii = (start, value) => [...value].every((c, i) => bytes[start + i] === c.charCodeAt(0));
   const valid = image.type === 'image/png' ? starts(137,80,78,71,13,10,26,10) : image.type === 'image/jpeg' ? starts(255,216,255) : ascii(0, 'RIFF') && ascii(8, 'WEBP');
-  return valid ? { type: 'image', source: { type: 'base64', media_type: image.type, data: image.data } } : null;
+  return valid ? { type: 'image_url', image_url: { url: `data:${image.type};base64,${image.data}` } } : null;
 };
 // Somente rótulos fechados, nunca palavras do visitante, do modelo ou do print no CRM.
 const resumoSeguro = messages => {
@@ -89,14 +89,23 @@ export async function onRequestPost({ request, env }) {
   try {
     // O print só vai ao provedor nesta chamada. O histórico persistido abaixo é texto.
     const providerMessages = image ? [...messages.slice(0, -1), { role: 'user', content: [{ type: 'text', text: message }, image] }] : messages;
-    const response = await fetch(env.AI_API_URL || 'https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': env.AI_API_KEY, 'anthropic-version': '2023-06-01' }, body: JSON.stringify({ model: env.AI_MODEL || 'claude-3-5-haiku-20241022', max_tokens: 350, system: SYSTEM, messages: providerMessages }) });
+    const ask = providerMessages => fetch(env.AI_API_URL || 'https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', Authorization: `Bearer ${env.AI_API_KEY}`, 'HTTP-Referer': 'https://agenticalab.com.br', 'X-Title': 'AgenticaLab' },
+      body: JSON.stringify({ model: env.AI_MODEL || 'deepseek/deepseek-chat', max_tokens: 350, messages: [{ role: 'system', content: SYSTEM }, ...providerMessages] })
+    });
+    let response = await ask(providerMessages);
+    // Se o provedor recusar o print, responda ao texto sem enviar a imagem outra vez.
+    const imageUnsupported = !!image && [400, 415, 422].includes(response.status);
+    if (imageUnsupported) response = await ask(messages);
     if (!response.ok) return fail(502, 'provedor');
     const data = await response.json();
-    const answer = data.content?.filter(x => x.type === 'text').map(x => x.text).join(' ').slice(0, 1400);
+    const content = data.choices?.[0]?.message?.content;
+    const answer = typeof content === 'string' ? content.slice(0, 1400) : '';
     if (!answer) return fail(502, 'resposta');
     state.messages = [...messages, { role: 'assistant', content: answer }].slice(-16);
     state.count++;
     await env.CHAT_SESSIONS.put(key, JSON.stringify(state), { expirationTtl: 3600 });
-    return json({ ok: true, resposta: answer, restantes: 16 - state.count }, 200, headers);
+    return json({ ok: true, resposta: imageUnsupported ? `Não consegui analisar o print. Respondo só ao seu texto: ${answer}` : answer, restantes: 16 - state.count }, 200, headers);
   } catch { return fail(503, 'integracao'); }
 }
