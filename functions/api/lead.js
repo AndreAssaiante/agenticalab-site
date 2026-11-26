@@ -12,6 +12,7 @@
 //   2. Se veio "qualificado" (ou do Form Simples): negócio no funil.
 //   Tags pelo formulário usado: form-simples, form-qualificacao ou form-qualificacao-agenda.
 //   3. Evento "diagnostico_site" na linha do tempo, que pode disparar automações (ex.: avisar a equipe).
+// Também recebe o pedido de demo do Delegra (origem "delegra-demo") e o cadastro do balão do Noah (origem "chat-site").
 const ANSWERS = ['negocio', 'papel', 'faturamento', 'area', 'tarefas', 'prazo', 'nota', 'status', 'entrada', 'pagina',
   'instagram', 'site', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json' } });
@@ -25,6 +26,7 @@ export async function onRequestPost({ request, env }) {
   if (!nome || !/^\S+@\S+\.\S+$/.test(email) || whatsapp.replace(/\D/g, '').length < 10) return json({ ok: false, erro: 'campos' }, 422);
 
   if (b.origem === 'delegra-demo') return demoDelegra(b, env, { nome, email, whatsapp });
+  if (b.origem === 'chat-site') return chatSite(b, env, { nome, email, whatsapp });
 
   const respostas = {}; for (const k of ANSWERS) if (b[k] != null && b[k] !== '') respostas[k] = clip(b[k]);
   const qualificado = respostas.status === 'qualificado';
@@ -71,5 +73,31 @@ async function demoDelegra(b, env, { nome, email, whatsapp }) {
   if (!d.ok) console.log('CRM negócio (demo Delegra) falhou', d.status, await d.text());
   const e = await api('/events', { email, name: 'delegra_demo', data: r });
   if (!e.ok) console.log('CRM evento (demo Delegra) falhou', e.status, await e.text());
+  return json({ ok: true, salvo: true });
+}
+
+// Cadastro pelo balão do Noah (chat do site). O balão é só a porta: a conversa continua no WhatsApp com o SDR da casa,
+// que o Delegra liga a este mesmo contato pelo telefone. Contato com as tags site-chat e lead-site, negócio
+// "Novo lead" no funil (todo cadastro entra) e evento "chat_site", que pode disparar automações (ex.: follow-up).
+const CHAT = ['assunto', 'pagina', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+const ASSUNTOS = ['atendimento', 'vendas', 'operacao', 'diagnostico'];
+async function chatSite(b, env, { nome, email, whatsapp }) {
+  if (b.aceite !== true) return json({ ok: false, erro: 'aceite' }, 422);
+  const r = {}; for (const k of CHAT) if (b[k] != null && b[k] !== '') r[k] = String(b[k]).slice(0, 200);
+  if (r.assunto && !ASSUNTOS.includes(r.assunto)) delete r.assunto;
+  if (r.pagina) r.pagina = r.pagina.replace(/[^\w\/-]/g, '').slice(0, 120);
+  r.aceite = new Date().toISOString();
+  if (!env.CRM_API_URL || !env.CRM_API_KEY) { console.log('CHAT SITE sem CRM configurado', JSON.stringify({ nome, email, whatsapp, ...r })); return json({ ok: true, salvo: false }); }
+  const api = (path, body) => fetch(env.CRM_API_URL.replace(/\/$/, '') + path, {
+    method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${env.CRM_API_KEY}` }, body: JSON.stringify(body) });
+  const [firstName, ...resto] = nome.split(/\s+/);
+  const tags = ['site-chat', 'lead-site']; if (r.assunto) tags.push(`assunto-${r.assunto}`);
+  const c = await api('/contacts', { email, firstName, lastName: resto.join(' ') || undefined, phone: whatsapp, source: 'site-chat', fields: Object.fromEntries(Object.entries(r).map(([k, v]) => [`chat_${k}`, v])), tags });
+  if (!c.ok) { console.log('CRM contato (chat do site) falhou', c.status, await c.text()); return json({ ok: false, salvo: false }, 502); }
+  const notes = Object.entries(r).map(([k, v]) => `${k}: ${v}`).join('\n');
+  const d = await api('/deals', { title: `Novo lead · ${nome}`, contactEmail: email, pipelineId: env.CRM_PIPELINE_ID || undefined, stageId: env.CRM_STAGE_ID || undefined, tagNames: ['site-chat'], notes });
+  if (!d.ok) console.log('CRM negócio (chat do site) falhou', d.status, await d.text());
+  const e = await api('/events', { email, name: 'chat_site', data: r });
+  if (!e.ok) console.log('CRM evento (chat do site) falhou', e.status, await e.text());
   return json({ ok: true, salvo: true });
 }
