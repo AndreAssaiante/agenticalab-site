@@ -14,9 +14,9 @@
   const utm = () => { try { return JSON.parse(sessionStorage.getItem('al_utm') || '{}'); } catch (_) { return {}; } };
 
   const root = document.createElement('section'); root.className = 'vc'; root.setAttribute('aria-label', 'Conversa com o Noah');
-  root.innerHTML = `<button class="vc-launch" type="button" aria-expanded="false" aria-controls="vc-panel"><img src="/assets/img/vitoria.jpg" width="42" height="42" alt=""><span>Fale com o Noah</span></button>
+  root.innerHTML = `<button class="vc-launch" type="button" aria-expanded="false" aria-controls="vc-panel"><img src="/assets/img/noah-chat.jpg" width="42" height="42" alt=""><span>Fale com o Noah</span></button>
     <div class="vc-panel" id="vc-panel" role="dialog" aria-label="Conversa com o Noah" hidden>
-      <header class="vc-header"><img src="/assets/img/vitoria.jpg" width="48" height="48" alt=""><div><strong>Noah</strong><span>Assistente virtual da AgenticaLab</span></div><button type="button" class="vc-close" aria-label="Fechar conversa">×</button></header>
+      <header class="vc-header"><img src="/assets/img/noah-chat.jpg" width="48" height="48" alt=""><div><strong>Noah</strong><span>Assistente virtual da AgenticaLab</span></div><button type="button" class="vc-close" aria-label="Fechar conversa">×</button></header>
       <div class="vc-messages"><div class="vc-thread" role="log" aria-live="polite">
         <p class="vc-bubble">Oi! Sou o Noah, assistente virtual da AgenticaLab. Em que posso te ajudar?</p>
         <div class="vc-topics">${Object.entries(ASSUNTOS).map(([k, v]) => `<button type="button" data-assunto="${k}">${v}</button>`).join('')}</div>

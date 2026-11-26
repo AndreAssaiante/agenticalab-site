@@ -40,7 +40,7 @@
     dlg = document.createElement('dialog'); dlg.className = 'dg'; dlg.setAttribute('aria-label', 'Diagnóstico gratuito');
     dlg.innerHTML = `<div class="dg-box">
       <header class="dg-hd">
-        <img class="dg-av" src="/assets/img/vitoria.jpg" alt="Noah, assistente virtual da AgenticaLab" width="48" height="48">
+        <img class="dg-av" src="/assets/img/noah-chat.jpg" alt="Noah, assistente virtual da AgenticaLab" width="48" height="48">
         <div class="dg-who"><b>Noah</b><small><i class="dg-on"></i>Assistente virtual · AgenticaLab</small></div>
         <button class="dg-x" type="button" aria-label="Fechar">×</button>
         <ol class="dg-steps">${FASES.map((f, n) => `<li><span>${n + 1}</span>${f}</li>`).join('')}</ol>
