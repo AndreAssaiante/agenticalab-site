@@ -9,7 +9,7 @@
   // Atendimento prioritário: quem fatura a partir de R$ 50 mil vê, no fim, o botão do WhatsApp com a mensagem pronta.
   // A pessoa manda o primeiro "oi" (no WhatsApp por QR code o agente só responde quem escreveu primeiro: protege o número).
   const WHATSAPP = '551151073939'; // número agenticalab (+55 11 5107-3939), o mesmo do balão do Noah
-  const PRIORIDADE = ['50-100k', '100-300k', '300k+'];
+  const PRIORIDADE = ['50-100k', '100-300k', '300-500k', '500k+'];
   const TAREFAS = {
     marketing: ['Posts e conteúdo', 'Anúncios', 'Páginas e textos', 'Relatórios e números'],
     comercial: ['Responder quem chega', 'Propostas e orçamentos', 'Follow-up', 'Pós-venda'],
@@ -24,7 +24,7 @@
       ['dono', 'Sócio ou dono', 3], ['gestor', 'Gerente ou líder', 2], ['autonomo', 'Autônomo', 2], ['colaborador', 'Colaborador', 0]] },
     { k: 'faturamento', f: 0, tag: 'Faturamento', q: 'Quanto o negócio fatura por mês, em média?', sub: 'Serve só para indicar o tamanho certo de solução.', cols: 1, o: [
       ['ate-30k', 'Até R$ 30 mil', 0], ['30-50k', 'R$ 30 mil a R$ 50 mil', 2], ['50-100k', 'R$ 50 mil a R$ 100 mil', 3],
-      ['100-300k', 'R$ 100 mil a R$ 300 mil', 3], ['300k+', 'Acima de R$ 300 mil', 3]] },
+      ['100-300k', 'R$ 100 mil a R$ 300 mil', 3], ['300-500k', 'R$ 300 mil a R$ 500 mil', 3], ['500k+', 'Acima de R$ 500 mil', 3]] },
     { k: 'area', f: 1, tag: 'Área', q: 'Qual área mais toma o seu tempo hoje?', sub: 'É por ela que o seu time de IA começa.', o: [
       ['marketing', 'Marketing', 2], ['comercial', 'Comercial e vendas', 2], ['escritorio', 'Escritório e operações', 2], ['nao-sei', 'Ainda não sei', 1]] },
     { k: 'tarefas', f: 1, tag: 'Tarefas', multi: 2, q: 'O que você mais quer tirar das suas mãos?', sub: 'Escolha até 2.', o: s => TAREFAS[s.area || 'nao-sei'].map(t => [t, t, 0]) },
