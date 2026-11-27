@@ -264,6 +264,12 @@ Só que agora você sabe o preço desse terceiro caminho, porque fez a conta. E 
 
 **[Quero um diagnóstico gratuito](/#contato)**
 
+## Para continuar
+
+- Se a sua lista começou por propostas paradas: [orçamento sem resposta, o follow-up que ninguém faz](/blog/follow-up-de-orcamento/).
+- Se tudo ainda passa por você: [quando o dono vira o gargalo do negócio](/blog/dono-gargalo-do-negocio/).
+- Se a dúvida é contratar ou não: [crescer sem contratar](/blog/crescer-sem-contratar/).
+
 ## Fontes
 
 - Estudo "Tempo é dinheiro", Bridge Research para o Nu Empresas, 1.200 donos de pequenos negócios, 2026. Divulgado pela [Exame](https://exame.com/negocios/burocracia-financeira-toma-9-horas-por-semana-dos-pequenos-empreendedores-aponta-estudo/) e pela [Consumidor Moderno](https://consumidormoderno.com.br/expediente-invisivel-empreendedor-brasileiro/).
