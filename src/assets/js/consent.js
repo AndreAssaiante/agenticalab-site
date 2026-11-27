@@ -38,8 +38,8 @@
   function aviso() {
     if (document.querySelector('.ck')) return;
     const el = document.createElement('section'); el.className = 'ck'; el.setAttribute('aria-label', 'Aviso de cookies');
-    el.innerHTML = `<p>Usamos cookies da Meta para medir de onde vêm os cadastros e melhorar nossos anúncios. Você escolhe.
-      <a href="/privacidade/#cookies">Saiba mais</a>.</p>
+    el.innerHTML = `<p><span class="ck-ic" aria-hidden="true">🔒</span>Seus dados ficam protegidos. Usamos cookies para entender como o site é usado, só se você aceitar.
+      <a href="/privacidade/#cookies">Privacidade</a></p>
       <div class="ck-acoes"><button type="button" class="ck-nao">Recusar</button><button type="button" class="ck-sim">Aceitar</button></div>`;
     document.body.append(el);
     el.querySelector('.ck-sim').onclick = () => { gravar('sim'); el.remove(); ligarPixel(); };
