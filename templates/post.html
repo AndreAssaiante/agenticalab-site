@@ -5,16 +5,20 @@ nav: blog
 -->
 <main class="theme-light">
   <article class="post-page">
-    <header class="post-head">
-      <div class="wrap">
-        <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a><span aria-hidden="true">/</span><a href="/blog/categoria/{{cat_slug}}/">{{cat_nome}}</a></nav>
-        {{{aviso_rascunho}}}
-        <h1>{{titulo}}</h1>
-        <p class="lead">{{descricao}}</p>
-        <p class="post-byline">Por <strong>{{{autor_link}}}</strong> · Publicado em <time datetime="{{data_iso}}">{{data_br}}</time>{{{atualizado}}} · {{minutos}} min de leitura</p>
+    <div class="post-progress" aria-hidden="true"><span></span></div>
+    <header class="post-head{{com_foto}}">
+      <div class="wrap post-head-grid">
+        <div class="post-head-txt">
+          <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a></nav>
+          {{{aviso_rascunho}}}
+          <a class="post-cat post-head-cat" href="/blog/categoria/{{cat_slug}}/">{{cat_nome}}</a>
+          <h1>{{titulo}}</h1>
+          <p class="lead">{{descricao}}</p>
+          <div class="post-byline"><span class="autor-ini" aria-hidden="true">{{{autor_ini}}}</span><p><strong>{{{autor_link}}}</strong><span><time datetime="{{data_iso}}">{{data_br}}</time>{{{atualizado}}} · {{minutos}} min de leitura</span></p></div>
+        </div>
+        {{{foto_html}}}
       </div>
     </header>
-    <figure class="post-cover wrap"><img src="{{imagem}}" alt="{{imagem_alt}}"></figure>
     <div class="wrap post-layout">
       {{{sumario}}}
       <div class="post-content">
@@ -24,6 +28,7 @@ nav: blog
         {{{autor_box}}}
       </div>
     </div>
+    <script src="/assets/js/blog.js" defer></script>
   </article>
 
   <section class="block blog-list post-related">

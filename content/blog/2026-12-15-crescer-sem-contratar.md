@@ -3,6 +3,8 @@ titulo: "Crescer sem contratar: como um escritório pequeno ganha capacidade com
 descricao: Atender mais clientes sem aumentar a folha é possível quando a rotina sai das mãos da equipe. Veja a conta da contratação e um plano de 30 dias.
 data: 2026-12-15
 autor: André Assaiante
+foto: /assets/img/hero-lideres.jpg
+foto_alt: Time de cinco profissionais reunidos
 categoria: operacoes
 tags: [crescimento, time de ia, agentes de ia, escritório, dono de negócio]
 draft: true

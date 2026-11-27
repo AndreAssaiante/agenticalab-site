@@ -3,6 +3,8 @@ titulo: "Orçamento sem resposta: o follow-up que ninguém faz e quanto ele cust
 descricao: O cliente pediu orçamento e sumiu. Veja por que isso acontece, a cadência de cinco contatos com modelos de mensagem e como não depender da sua memória.
 data: 2026-12-10
 autor: André Assaiante
+foto: /assets/img/area-comercial.jpg
+foto_alt: Profissional mostrando o celular e um relatório de vendas
 categoria: comercial
 tags: [follow-up, orçamento, vendas, agentes de ia, dono de negócio]
 draft: true

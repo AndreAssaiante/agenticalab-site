@@ -3,6 +3,8 @@ titulo: Quando o dono vira o gargalo do próprio negócio (e como sair)
 descricao: Se tudo na empresa passa por você, o crescimento para na sua agenda. Veja os sinais, o que as pesquisas mostram e como delegar sem perder o controle.
 data: 2026-12-08
 autor: André Assaiante
+foto: /assets/img/lider-atlas.jpg
+foto_alt: Dono de negócio de braços cruzados, olhando para a câmera
 categoria: operacoes
 tags: [dono de negócio, delegar, produtividade, agentes de ia, gargalo]
 draft: true

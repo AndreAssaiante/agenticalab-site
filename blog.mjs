@@ -115,6 +115,8 @@ export function lerPosts(root, { incluirRascunhos = false } = {}) {
       tags: Array.isArray(meta.tags) ? meta.tags : meta.tags ? [meta.tags] : [],
       imagem: meta.capa || meta.imagem || meta.image || '', // vazio = capa gerada no build
       capaPropria: !!(meta.capa || meta.imagem || meta.image),
+      foto: meta.foto || '', // foto sem texto para os cards e o topo do artigo; a capa (com título) fica para o compartilhamento
+      fotoAlt: meta.foto_alt || '',
       imagemAlt: meta.capa_alt || meta.imagem_alt || meta.titulo || '',
       faq: Array.isArray(meta.faq) ? meta.faq.filter(x => x && x.q && x.a) : [],
       rascunho: meta.draft === true || meta.rascunho === true,
@@ -144,8 +146,8 @@ export function lerPosts(root, { incluirRascunhos = false } = {}) {
 
 // ---------- pedaços de HTML ----------
 const metaLinha = p => `<span class="post-meta"><a class="post-cat" href="/blog/categoria/${p.cat.slug}/">${esc(p.cat.nome)}</a> · <time datetime="${p.data.slice(0, 10)}">${dataBR(p.data)}</time> · ${p.minutos} min de leitura${p.rascunho ? ' · <span class="post-draft">Rascunho</span>' : ''}</span>`;
-export const card = p => `<article class="post-card"><a class="post-img" href="${p.url}" tabindex="-1" aria-hidden="true"><img src="${esc(p.imagem)}" alt="" loading="lazy"></a><div class="post-body">${metaLinha(p)}<h3><a href="${p.url}">${esc(p.titulo)}</a></h3><p>${esc(p.descricao)}</p></div></article>`;
-export const destaque = p => `<article class="post-feat"><a class="post-img" href="${p.url}" tabindex="-1" aria-hidden="true"><img src="${esc(p.imagem)}" alt="" loading="lazy"></a><div class="post-body">${metaLinha(p)}<h2><a href="${p.url}">${esc(p.titulo)}</a></h2><p>${esc(p.descricao)}</p><a class="post-more" href="${p.url}">Ler artigo →</a></div></article>`;
+export const card = p => `<article class="post-card"><a class="post-img" href="${p.url}" tabindex="-1" aria-hidden="true"><img src="${esc(p.foto || p.imagem)}" alt="" loading="lazy"></a><div class="post-body">${metaLinha(p)}<h3><a href="${p.url}">${esc(p.titulo)}</a></h3><p>${esc(p.descricao)}</p></div></article>`;
+export const destaque = p => `<article class="post-feat"><a class="post-img" href="${p.url}" tabindex="-1" aria-hidden="true"><img src="${esc(p.foto || p.imagem)}" alt="" loading="lazy"></a><div class="post-body">${metaLinha(p)}<h2><a href="${p.url}">${esc(p.titulo)}</a></h2><p>${esc(p.descricao)}</p><a class="post-more" href="${p.url}">Ler artigo →</a></div></article>`;
 export const navCategorias = atual => `<nav class="blog-cats" aria-label="Categorias"><a href="/blog/"${!atual ? ' class="on" aria-current="page"' : ''}>Todos</a>${CATEGORIAS.map(c => `<a href="/blog/categoria/${c.slug}/"${atual === c.slug ? ' class="on" aria-current="page"' : ''}>${esc(c.nome)}</a>`).join('')}</nav>`;
 export function paginacao(atual, total, base) {
   if (total <= 1) return '';
@@ -162,7 +164,7 @@ export function relacionados(p, todos) {
 }
 export function sumario(toc) {
   if (toc.filter(t => t.n === 2).length < 2) return '';
-  return `<nav class="post-toc" aria-label="Neste artigo"><strong>Neste artigo</strong><ol>${toc.map(t => `<li class="toc-${t.n}"><a href="#${t.id}">${esc(t.txt)}</a></li>`).join('')}</ol></nav>`;
+  return `<details class="post-toc" open><summary>Neste artigo</summary><nav aria-label="Neste artigo"><ol>${toc.map(t => `<li class="toc-${t.n}"><a href="#${t.id}">${esc(t.txt)}</a></li>`).join('')}</ol></nav></details>`;
 }
 export const faqHtml = faq => faq.length ? `<section class="post-faq" aria-labelledby="perguntas"><h2 id="perguntas">Perguntas frequentes</h2>${faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</section>` : '';
 
