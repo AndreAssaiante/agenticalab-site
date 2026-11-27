@@ -1,0 +1,4 @@
+/* Acabamento: títulos (headlines) com peso mais leve (método unslop, de Damir Sokolovsky, CC BY 4.0).
+   Hierarquia pelo tamanho e pela cor, não pelo negrito. Os demais efeitos da Home ficam como estão.
+   Carregado por último na Home. Para desligar, basta tirar o <link> em build.mjs. */
+h1,h2,h3,h4{font-weight:600}
