@@ -6,6 +6,10 @@
    Para testar um modo sem mexer no CRM: ?entrada=simples, ?entrada=contato ou ?entrada=agenda no endereço da página. */
 (() => {
   const AGENDA = { origin: 'https://agenda.agenticalab.com.br', link: 'agenticalab/diagnostico-gratis' };
+  // Atendimento prioritário: quem fatura acima de R$ 20 mil vê, no fim, o botão do WhatsApp com a mensagem pronta.
+  // A pessoa manda o primeiro "oi" (no WhatsApp por QR code o agente só responde quem escreveu primeiro: protege o número).
+  const WHATSAPP = '551151073939'; // número agenticalab (+55 11 5107-3939), o mesmo do balão do Noah
+  const PRIORIDADE = ['20-50k', '50-100k', '100-300k', '300k+'];
   const TAREFAS = {
     marketing: ['Posts e conteúdo', 'Anúncios', 'Páginas e textos', 'Relatórios e números'],
     comercial: ['Responder quem chega', 'Propostas e orçamentos', 'Follow-up', 'Pós-venda'],
@@ -115,19 +119,24 @@
       const { nome: _n, whatsapp: _w, email: _e, instagram: _i, site: _s, ...resp } = s;
       const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
       try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, ...(simples ? { status: 'simples' } : { nota, status: qualificado ? 'qualificado' : 'nutrir' }), entrada: modo, pagina: location.pathname, ...utm }) }); } catch (_) {}
-      done(d.nome.split(' ')[0], qualificado || simples, d);
+      done(d.nome.split(' ')[0], qualificado || simples, d, !simples && PRIORIDADE.includes(s.faturamento));
     };
   }
 
-  function done(nome, ok, d) {
+  function done(nome, ok, d, prioridade) {
     chrome(null);
     const comAgenda = ok && modo === 'agenda';
     const url = `${AGENDA.origin}/${AGENDA.link}?` + new URLSearchParams({ name: d.nome.trim(), email: d.email.trim() });
+    const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Oi! Sou ${d.nome.trim().slice(0, 80)}, acabei de fazer o diagnóstico no site da AgenticaLab e quero o atendimento prioritário.`)}`;
+    const vip = prioridade ? `<div class="dg-vip"><p class="dg-vip-tag">Atendimento prioritário</p>
+      <p>${comAgenda ? 'Prefere adiantar a conversa? Pelo tamanho do seu negócio, você pode' : 'Pelo tamanho do seu negócio, você pode'} pular a fila e falar agora com o Noah, nosso assistente, no WhatsApp.</p>
+      <a class="btn dg-wa" href="${esc(wa)}" target="_blank" rel="noopener">Quero atendimento prioritário no WhatsApp</a>
+      <small>Abre o WhatsApp com a mensagem pronta. É só tocar em enviar.</small></div>` : '';
     body.innerHTML = `<div class="dg-done"><span class="dg-check" aria-hidden="true">✓</span>
       <h3 class="dg-q">${modo === 'simples' ? `Recebemos seu contato, ${esc(nome)}.` : ok ? `Tudo certo, ${esc(nome)}. Seu caso tem tudo a ver com o que fazemos.` : `Obrigado, ${esc(nome)}!`}</h3>
       <p class="dg-sub">${comAgenda ? 'Escolha agora o melhor horário para a conversa de 30 minutos, por Google Meet. A confirmação chega no seu e-mail.' : ok ? 'Recebemos suas respostas. Se for preciso conversar, nossa equipe pode entrar em contato pelo e-mail informado para combinar o próximo passo.' : 'Recebemos suas respostas. Se houver um próximo passo, nossa equipe pode entrar em contato pelo e-mail informado.'}</p>
       ${comAgenda ? `<div class="dg-cal" id="dg-cal"><p class="dg-cal-load">Carregando a agenda…</p></div>
-      <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> para escolher o horário.</p>` : '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
+      <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> para escolher o horário.</p>${vip}` : vip || '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
     body.querySelector('.dg-go')?.addEventListener('click', () => dlg.close());
     if (comAgenda) { dlg.classList.add('dg-wide'); agenda(d); }
   }
