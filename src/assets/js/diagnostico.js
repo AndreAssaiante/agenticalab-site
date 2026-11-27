@@ -6,6 +6,10 @@
    Para testar um modo sem mexer no CRM: ?entrada=simples, ?entrada=contato ou ?entrada=agenda no endereço da página. */
 (() => {
   const AGENDA = { origin: 'https://agenda.agenticalab.com.br', link: 'agenticalab/diagnostico-gratis' };
+  // Atendimento prioritário: quem fatura a partir de R$ 50 mil vê, no fim, o botão do WhatsApp com a mensagem pronta.
+  // A pessoa manda o primeiro "oi" (no WhatsApp por QR code o agente só responde quem escreveu primeiro: protege o número).
+  const WHATSAPP = '551151073939'; // número agenticalab (+55 11 5107-3939), o mesmo do balão do Noah
+  const PRIORIDADE = ['50-100k', '100-300k', '300-500k', '500k+'];
   const TAREFAS = {
     marketing: ['Posts e conteúdo', 'Anúncios', 'Páginas e textos', 'Relatórios e números'],
     comercial: ['Responder quem chega', 'Propostas e orçamentos', 'Follow-up', 'Pós-venda'],
@@ -19,8 +23,8 @@
     { k: 'papel', f: 0, tag: 'Perfil', q: 'Qual é o seu papel no negócio?', sub: 'Assim a conversa já começa com a pessoa certa.', o: [
       ['dono', 'Sócio ou dono', 3], ['gestor', 'Gerente ou líder', 2], ['autonomo', 'Autônomo', 2], ['colaborador', 'Colaborador', 0]] },
     { k: 'faturamento', f: 0, tag: 'Faturamento', q: 'Quanto o negócio fatura por mês, em média?', sub: 'Serve só para indicar o tamanho certo de solução.', cols: 1, o: [
-      ['ate-20k', 'Até R$ 20 mil', 0], ['20-50k', 'R$ 20 mil a R$ 50 mil', 2], ['50-100k', 'R$ 50 mil a R$ 100 mil', 3],
-      ['100-300k', 'R$ 100 mil a R$ 300 mil', 3], ['300k+', 'Acima de R$ 300 mil', 3]] },
+      ['ate-30k', 'Até R$ 30 mil', 0], ['30-50k', 'R$ 30 mil a R$ 50 mil', 2], ['50-100k', 'R$ 50 mil a R$ 100 mil', 3],
+      ['100-300k', 'R$ 100 mil a R$ 300 mil', 3], ['300-500k', 'R$ 300 mil a R$ 500 mil', 3], ['500k+', 'Acima de R$ 500 mil', 3]] },
     { k: 'area', f: 1, tag: 'Área', q: 'Qual área mais toma o seu tempo hoje?', sub: 'É por ela que o seu time de IA começa.', o: [
       ['marketing', 'Marketing', 2], ['comercial', 'Comercial e vendas', 2], ['escritorio', 'Escritório e operações', 2], ['nao-sei', 'Ainda não sei', 1]] },
     { k: 'tarefas', f: 1, tag: 'Tarefas', multi: 2, q: 'O que você mais quer tirar das suas mãos?', sub: 'Escolha até 2.', o: s => TAREFAS[s.area || 'nao-sei'].map(t => [t, t, 0]) },
@@ -109,25 +113,30 @@
       e.preventDefault();
       const d = Object.fromEntries(new FormData(f)), err = f.querySelector('.dg-err');
       if (!d.nome.trim() || d.whatsapp.replace(/\D/g, '').length < 10 || !/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = 'Confira o nome, o telefone com DDD e o e-mail.'; err.hidden = false; return; }
-      const simples = modo === 'simples', nota = score(), qualificado = !simples && s.prazo !== 'pesquisando' && s.faturamento !== 'ate-20k' && nota >= 9;
+      const simples = modo === 'simples', nota = score(), qualificado = !simples && s.prazo !== 'pesquisando' && s.faturamento !== 'ate-30k' && nota >= 9;
       const q = new URLSearchParams(location.search), utm = {};
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
       const { nome: _n, whatsapp: _w, email: _e, instagram: _i, site: _s, ...resp } = s;
       const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
       try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, ...(simples ? { status: 'simples' } : { nota, status: qualificado ? 'qualificado' : 'nutrir' }), entrada: modo, pagina: location.pathname, ...utm }) }); } catch (_) {}
-      done(d.nome.split(' ')[0], qualificado || simples, d);
+      done(d.nome.split(' ')[0], qualificado || simples, d, !simples && PRIORIDADE.includes(s.faturamento));
     };
   }
 
-  function done(nome, ok, d) {
+  function done(nome, ok, d, prioridade) {
     chrome(null);
     const comAgenda = ok && modo === 'agenda';
     const url = `${AGENDA.origin}/${AGENDA.link}?` + new URLSearchParams({ name: d.nome.trim(), email: d.email.trim() });
+    const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Oi! Sou ${d.nome.trim().slice(0, 80)}, acabei de fazer o diagnóstico no site da AgenticaLab e quero o atendimento prioritário.`)}`;
+    const vip = prioridade ? `<div class="dg-vip"><p class="dg-vip-tag">Atendimento prioritário</p>
+      <p>${comAgenda ? 'Prefere adiantar a conversa? Pelo tamanho do seu negócio, você pode' : 'Pelo tamanho do seu negócio, você pode'} pular a fila e falar agora com o Noah, nosso assistente, no WhatsApp.</p>
+      <a class="btn dg-wa" href="${esc(wa)}" target="_blank" rel="noopener">Quero atendimento prioritário no WhatsApp</a>
+      <small>Abre o WhatsApp com a mensagem pronta. É só tocar em enviar.</small></div>` : '';
     body.innerHTML = `<div class="dg-done"><span class="dg-check" aria-hidden="true">✓</span>
       <h3 class="dg-q">${modo === 'simples' ? `Recebemos seu contato, ${esc(nome)}.` : ok ? `Tudo certo, ${esc(nome)}. Seu caso tem tudo a ver com o que fazemos.` : `Obrigado, ${esc(nome)}!`}</h3>
       <p class="dg-sub">${comAgenda ? 'Escolha agora o melhor horário para a conversa de 30 minutos, por Google Meet. A confirmação chega no seu e-mail.' : ok ? 'Recebemos suas respostas. Se for preciso conversar, nossa equipe pode entrar em contato pelo e-mail informado para combinar o próximo passo.' : 'Recebemos suas respostas. Se houver um próximo passo, nossa equipe pode entrar em contato pelo e-mail informado.'}</p>
       ${comAgenda ? `<div class="dg-cal" id="dg-cal"><p class="dg-cal-load">Carregando a agenda…</p></div>
-      <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> para escolher o horário.</p>` : '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
+      <p class="dg-cal-alt">A agenda não abriu? <a href="${esc(url)}" target="_blank" rel="noopener">Abra numa nova aba</a> para escolher o horário.</p>${vip}` : vip || '<button type="button" class="btn dg-go">Fechar</button>'}</div>`;
     body.querySelector('.dg-go')?.addEventListener('click', () => dlg.close());
     if (comAgenda) { dlg.classList.add('dg-wide'); agenda(d); }
   }
