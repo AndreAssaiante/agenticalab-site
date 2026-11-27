@@ -13,17 +13,28 @@
 //   Tags pelo formulário usado: form-simples, form-qualificacao ou form-qualificacao-agenda.
 //   3. Evento "diagnostico_site" na linha do tempo, que pode disparar automações (ex.: avisar a equipe).
 // Também recebe o pedido de demo do Delegra (origem "delegra-demo") e o cadastro do balão do Noah (origem "chat-site").
+//
+// API de Conversões da Meta (sem Stape): se a pessoa aceitou os cookies, o navegador manda "pixel" com o event_id
+// e este servidor envia o mesmo evento "Lead" direto para a Meta, com e-mail, telefone e nome criptografados (SHA-256).
+// Navegador e servidor usam o mesmo event_id, então a Meta conta uma vez só (deduplicação).
+//   META_CAPI_TOKEN  token da API de Conversões, gerado no Gerenciador de Eventos (Secret). Sem ele, nada é enviado.
+//   META_PIXEL_ID    opcional (padrão: 896432615417080, "Pixel - AgenticaLab")
+//   META_TEST_CODE   opcional: código de teste do Gerenciador de Eventos, só enquanto confere a instalação
 const ANSWERS = ['negocio', 'papel', 'faturamento', 'area', 'tarefas', 'prazo', 'nota', 'status', 'entrada', 'pagina',
   'instagram', 'site', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json' } });
 const clip = v => Array.isArray(v) ? v.map(x => String(x).slice(0, 80)).slice(0, 4) : String(v).slice(0, 200);
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   let b; try { b = await request.json(); } catch { return json({ ok: false, erro: 'json' }, 400); }
   if (b.empresa_site) return json({ ok: true }); // robô preencheu o campo escondido
   const nome = String(b.nome || '').trim().slice(0, 120), email = String(b.email || '').trim().toLowerCase().slice(0, 160);
   const whatsapp = String(b.whatsapp || '').replace(/[^\d+]/g, '').slice(0, 20);
   if (!nome || !/^\S+@\S+\.\S+$/.test(email) || whatsapp.replace(/\D/g, '').length < 10) return json({ ok: false, erro: 'campos' }, 422);
+  if (b.origem !== 'chat-site' || b.aceite === true) {
+    const envio = metaLead(b, env, request, { nome, email, whatsapp }).catch(e => console.log('Meta CAPI erro', String(e)));
+    if (waitUntil) waitUntil(envio); else await envio;
+  }
 
   if (b.origem === 'delegra-demo') return demoDelegra(b, env, { nome, email, whatsapp });
   if (b.origem === 'chat-site') return chatSite(b, env, { nome, email, whatsapp });
@@ -100,4 +111,25 @@ async function chatSite(b, env, { nome, email, whatsapp }) {
   const e = await api('/events', { email, name: 'chat_site', data: r });
   if (!e.ok) console.log('CRM evento (chat do site) falhou', e.status, await e.text());
   return json({ ok: true, salvo: true });
+}
+
+// Evento "Lead" pela API de Conversões. Só com aceite de cookies (o navegador só manda "pixel" nesse caso) e com token.
+const sha = async v => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v)))].map(x => x.toString(16).padStart(2, '0')).join('');
+export async function metaLead(b, env, request, { nome, email, whatsapp }) {
+  const p = b.pixel;
+  if (!env.META_CAPI_TOKEN || !p || typeof p.event_id !== 'string' || !/^[\w.-]{8,80}$/.test(p.event_id)) return null;
+  let ph = whatsapp.replace(/\D/g, ''); if (ph.length <= 11) ph = '55' + ph;
+  const txt = (v, n) => typeof v === 'string' && v.length <= n ? v : undefined;
+  const user_data = { em: [await sha(email)], ph: [await sha(ph)], fn: [await sha(nome.split(/\s+/)[0].toLowerCase())], country: [await sha('br')],
+    client_ip_address: request.headers.get('cf-connecting-ip') || undefined, client_user_agent: request.headers.get('user-agent') || undefined,
+    fbp: txt(p.fbp, 120), fbc: txt(p.fbc, 300) };
+  const info = p.info && typeof p.info === 'object' ? p.info : {};
+  const custom_data = { content_name: txt(info.content_name, 40) || txt(b.origem, 40) || 'diagnostico', status: txt(info.status, 20) };
+  const corpo = { data: [{ event_name: 'Lead', event_time: Math.floor(Date.now() / 1000), event_id: p.event_id, action_source: 'website',
+    event_source_url: txt(p.url, 500) && /^https:\/\//.test(p.url) ? p.url : undefined, user_data, custom_data }] };
+  if (env.META_TEST_CODE) corpo.test_event_code = env.META_TEST_CODE;
+  const r = await fetch(`https://graph.facebook.com/v21.0/${env.META_PIXEL_ID || '896432615417080'}/events?access_token=${encodeURIComponent(env.META_CAPI_TOKEN)}`,
+    { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(corpo) });
+  if (!r.ok) console.log('Meta CAPI falhou', r.status, await r.text());
+  return r.status;
 }

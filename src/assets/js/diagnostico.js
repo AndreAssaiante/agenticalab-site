@@ -118,7 +118,10 @@
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => q.get(k) && (utm[k] = q.get(k)));
       const { nome: _n, whatsapp: _w, email: _e, instagram: _i, site: _s, ...resp } = s;
       const btn = f.querySelector('.dg-go'); btn.disabled = true; btn.textContent = 'Enviando…';
-      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, ...(simples ? { status: 'simples' } : { nota, status: qualificado ? 'qualificado' : 'nutrir' }), entrada: modo, pagina: location.pathname, ...utm }) }); } catch (_) {}
+      const pixel = window.alPixelLead?.() || undefined, leadInfo = { content_name: 'diagnostico', status: simples ? 'simples' : qualificado ? 'qualificado' : 'nutrir' };
+      if (pixel) pixel.info = leadInfo;
+      try { await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...resp, ...d, ...(simples ? { status: 'simples' } : { nota, status: qualificado ? 'qualificado' : 'nutrir' }), entrada: modo, pagina: location.pathname, ...utm, pixel }) }); } catch (_) {}
+      window.alPixel?.('Lead', leadInfo, pixel?.event_id);
       done(d.nome.split(' ')[0], qualificado || simples, d, !simples && PRIORIDADE.includes(s.faturamento));
     };
   }

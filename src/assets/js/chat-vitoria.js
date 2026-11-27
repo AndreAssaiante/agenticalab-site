@@ -62,10 +62,12 @@
     if (!d.nome.trim() || d.whatsapp.replace(/\D/g, '').length < 10 || !/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = 'Confira o nome, o e-mail e o WhatsApp com DDD.'; err.hidden = false; return; }
     const nome = d.nome.trim().split(/\s+/)[0].slice(0, 40), link = waLink(d.nome.trim().slice(0, 80), ASSUNTOS[assunto]);
     const btn = form.querySelector('button'); btn.disabled = true;
+    const pixel = window.alPixelLead?.() || undefined; if (pixel) pixel.info = { content_name: 'balao-noah' };
     try {
-      const r = await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ origem: 'chat-site', nome: d.nome, email: d.email, whatsapp: d.whatsapp, aceite: form.aceite.checked, empresa_site: d.empresa_site, assunto, pagina: location.pathname, ...utm() }) });
+      const r = await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ origem: 'chat-site', nome: d.nome, email: d.email, whatsapp: d.whatsapp, aceite: form.aceite.checked, empresa_site: d.empresa_site, assunto, pagina: location.pathname, ...utm(), pixel }) });
       const b = await r.json().catch(() => ({}));
       if (!r.ok || !b.ok) throw Error(b.erro || 'envio');
+      window.alPixel?.('Lead', pixel?.info, pixel?.event_id);
       try { sessionStorage.setItem('al_chat', JSON.stringify({ nome, link })); } catch (_) {}
       showDone(link, `Pronto, ${nome}! Seu cadastro foi feito. Toque no botão abaixo e envie a mensagem: eu continuo com você no WhatsApp.`);
     } catch {
