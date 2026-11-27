@@ -29,11 +29,11 @@
     </div>`;
   document.body.append(root);
 
-  // Na Home o balão só aparece a partir da 2ª dobra (depois de rolar uma tela inteira), pra não disputar com o topo.
+  // Na Home o balão só aparece depois de rolar duas telas inteiras, pra não disputar com o topo.
   // Depois que aparece, fica. Nas outras páginas aparece direto.
   if (location.pathname === '/') {
     root.classList.add('vc-oculto');
-    const mostrar = () => { if (scrollY >= innerHeight) { root.classList.remove('vc-oculto'); removeEventListener('scroll', mostrar); } };
+    const mostrar = () => { if (scrollY >= innerHeight * 2) { root.classList.remove('vc-oculto'); removeEventListener('scroll', mostrar); } };
     addEventListener('scroll', mostrar, { passive: true }); mostrar();
   }
 
