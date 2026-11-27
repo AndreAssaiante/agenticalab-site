@@ -1,7 +1,7 @@
 ---
 titulo: "Crescer sem contratar: como um escritório pequeno ganha capacidade com um time de IA"
 descricao: Atender mais clientes sem aumentar a folha é possível quando a rotina sai das mãos da equipe. Veja a conta da contratação e um plano de 30 dias.
-data: 2026-11-30
+data: 2026-12-15
 autor: André Assaiante
 categoria: operacoes
 tags: [crescimento, time de ia, agentes de ia, escritório, dono de negócio]

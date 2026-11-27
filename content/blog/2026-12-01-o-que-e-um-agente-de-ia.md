@@ -1,8 +1,7 @@
 ---
 titulo: O que é um agente de IA e o que ele faz em uma empresa pequena
 descricao: Agente de IA é um programa que recebe um objetivo e executa a tarefa nas ferramentas da empresa. Veja a diferença para chatbot e ChatGPT e por onde começar.
-data: 2026-11-24
-atualizado: 2026-11-27
+data: 2026-12-01
 autor: André Assaiante
 categoria: operacoes
 tags: [agentes de ia, primeiros passos, processos, dono de negócio]

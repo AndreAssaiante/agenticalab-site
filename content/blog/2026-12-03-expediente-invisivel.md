@@ -1,7 +1,7 @@
 ---
 titulo: O expediente invisível: para onde vão 9 horas da sua semana
 descricao: O pequeno empresário perde 9 horas por semana com tarefas repetitivas. Veja quanto isso custa, por que usar IA não resolve sozinho e como delegar a agentes de IA.
-data: 2026-11-27
+data: 2026-12-03
 autor: André Assaiante
 categoria: operacoes
 tags: [produtividade, tarefas repetitivas, agentes de ia, dono de negócio]
