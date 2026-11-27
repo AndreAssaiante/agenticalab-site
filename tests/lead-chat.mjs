@@ -39,3 +39,19 @@ assert.deepEqual(calls.find(c => c[0].endsWith('/contacts'))[1].tags, ['site-cha
 // sem CRM configurado: não quebra o balão
 assert.deepEqual(await (await post(base, {})).json(), { ok: true, salvo: false });
 console.log('lead-chat ok');
+
+// API de Conversões da Meta: só com token e com o "pixel" que o navegador manda depois do aceite
+calls.length = 0;
+const envMeta = { ...env, META_CAPI_TOKEN: 'mock-token' };
+await post({ ...base, pixel: { event_id: 'abc12345-evento', fbp: 'fb.1.1.2', url: 'https://agenticalab.com.br/', info: { content_name: 'balao-noah' } } }, envMeta);
+const meta = calls.find(c => c[0].includes('graph.facebook.com'));
+assert.ok(meta, 'manda para a Meta');
+assert.match(meta[0], /\/896432615417080\/events\?access_token=mock-token$/);
+const ev = meta[1].data[0];
+assert.equal(ev.event_name, 'Lead'); assert.equal(ev.event_id, 'abc12345-evento'); assert.equal(ev.action_source, 'website');
+assert.match(ev.user_data.em[0], /^[0-9a-f]{64}$/); assert.notEqual(ev.user_data.em[0], 'rita@exemplo.com');
+assert.equal(ev.custom_data.content_name, 'balao-noah');
+// sem aceite de cookies (sem "pixel") ou sem token: nada vai para a Meta
+calls.length = 0; await post(base, envMeta); assert.ok(!calls.some(c => c[0].includes('facebook')));
+calls.length = 0; await post({ ...base, pixel: { event_id: 'abc12345-evento' } }); assert.ok(!calls.some(c => c[0].includes('facebook')));
+console.log('meta capi ok');
