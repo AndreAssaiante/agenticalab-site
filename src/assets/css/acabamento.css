@@ -1,0 +1,36 @@
+/* Acabamento "sem cara de IA" (método unslop, de Damir Sokolovsky, CC BY 4.0).
+   Carregado por último na Home. Para desligar, basta tirar o <link> em build.mjs. */
+
+/* Tipo: hierarquia pelo tamanho e pela cor, não pelo negrito */
+h1,h2,h3{font-weight:600}
+h4{font-weight:600}
+.hero h1{letter-spacing:-.03em;line-height:1.02}
+.head h2{letter-spacing:-.025em;line-height:1.08}
+
+/* Rótulos: sem maiúsculas espaçadas */
+.kicker,.tag,.tg,.st-t,.opt-label,.lb,.dg-kick,.dg-vip-tag,.dl-tlabel,.ft-sign,.ft-col h2,
+.b6 .ba-col b,.b14-get small,.pn .tg,.mc .tg,.m .lb,.ag-agent h4,.f label,.dg-form label{
+  text-transform:none!important;letter-spacing:0!important}
+.kicker,.tag{font-size:14px!important;font-weight:500!important}
+.tg,.st-t,.lb{font-weight:500!important}
+
+/* Cor sólida no lugar de letras em degradê */
+.head h2 em,.b12 .head h2 em,.sl .tm,.dx-w>span.dx-grad{
+  background:none!important;-webkit-text-fill-color:currentColor;color:var(--accent)!important}
+
+/* Título que entrava desfocado: só aparece suave */
+.w{filter:none!important;transform:none!important;opacity:1!important;transition:none!important}
+
+/* Fundo e brilhos decorativos */
+.fx::before,.hero-grid-bg,.hero-glow,.pn::before,.pn-hi{display:none!important}
+.fx .card::after,.fx .card .glow{display:none!important}
+.fx .card:hover{transform:none}
+.ph-wrap,.ph-chat{background-image:none!important}
+
+/* Botão: laranja sólido, sem sombra colorida e sem pulo */
+.btn{background:var(--accent);box-shadow:none;letter-spacing:0;font-weight:600;transition:background-color .15s ease}
+.btn:hover{background:var(--accent-2);box-shadow:none;transform:none}
+.btn-ghost,.btn-ghost:hover{background:transparent}
+
+/* Menu: superfície sólida */
+.nav{background:rgba(24,24,31,.96)}

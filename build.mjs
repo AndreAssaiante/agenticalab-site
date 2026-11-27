@@ -67,7 +67,7 @@ for (const file of walk(DIST)) {
   if (escondida) { writeFileSync(file, page(fonte, path, { head_extra: '<meta name="robots" content="noindex, nofollow">' })); continue; }
   if (fmSrc && !rel.endsWith('404.html')) paginasSite.push({ titulo: fmSrc.meta.title, descricao: fmSrc.meta.description, path });
   // Home: CSS e JS próprios dos blocos da página inicial (só carregam aqui, depois do site.css)
-  const homeAssets = `<link rel="stylesheet" href="/assets/css/home.css?v=${ver('assets/css/home.css')}">\n<script src="/assets/js/home.js?v=${ver('assets/js/home.js')}" defer></script>\n`;
+  const homeAssets = `<link rel="stylesheet" href="/assets/css/home.css?v=${ver('assets/css/home.css')}">\n<link rel="stylesheet" href="/assets/css/acabamento.css?v=${ver('assets/css/acabamento.css')}">\n<script src="/assets/js/home.js?v=${ver('assets/js/home.js')}" defer></script>\n`;
   // Home: dados da empresa para o Google e as IAs (Organization + WebSite)
   const extraHome = path === '/' ? { head_extra: blog.jsonLdTag({ '@context': 'https://schema.org', ...blog.organizacao(SITE), email: 'contato.agenticalab@gmail.com', description: 'Agentes de IA que executam etapas repetitivas da operação de Donos de Negócio, dentro das ferramentas que a equipe já usa.', areaServed: 'BR', knowsLanguage: 'pt-BR' }) + '\n' + blog.jsonLdTag({ '@context': 'https://schema.org', '@type': 'WebSite', name: 'AgenticaLab', url: SITE + '/', inLanguage: 'pt-BR', publisher: { '@id': `${SITE}/#organizacao` } }) } : {};
   writeFileSync(file, path === '/' ? page(fonte, path, extraHome).replace('</head>', homeAssets + '</head>') : page(fonte, path, extraHome));
