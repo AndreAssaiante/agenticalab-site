@@ -149,7 +149,12 @@ const naLista = RASCUNHOS ? todosPosts : publicados;
 listas('/blog/', naLista);
 for (const cat of blog.CATEGORIAS) listas(`/blog/categoria/${cat.slug}/`, naLista.filter(p => p.categoria === cat.slug), cat);
 
+// Links para artigos que ainda não estão no ar (rascunhos) viram texto simples no site publicado, para não dar página não encontrada.
+// Quando o artigo é publicado, o link volta sozinho no build seguinte.
+const noAr = new Set((RASCUNHOS ? todosPosts : publicados).map(p => p.url));
+const semLinkMorto = html => html.replace(/<a href="(\/blog\/[a-z0-9-]+\/)"[^>]*>([\s\S]*?)<\/a>/g, (m, url, txt) => noAr.has(url) ? m : txt);
 for (const p of todosPosts) {
+  p.html = semLinkMorto(p.html);
   const rel = blog.relacionados(p, publicados);
   const v = {
     titulo_pagina: `${p.titulo} · AgenticaLab`, descricao: p.descricao, titulo: p.titulo, autor: p.autor,
