@@ -127,7 +127,7 @@ function listas(base, lista, cat) {
     const path = n === 1 ? base : `${base}pagina/${n}/`;
     const fatia = lista.slice((n - 1) * blog.POR_PAGINA, n * blog.POR_PAGINA);
     let conteudo;
-    if (!publicados.length) conteudo = emBreve; // enquanto não houver post publicado, mostra os cards "Em breve"
+    if (!naLista.length) conteudo = emBreve; // enquanto não houver post publicado, mostra os cards "Em breve"
     else if (!lista.length) conteudo = `${blog.navCategorias(cat?.slug)}\n<p class="blog-empty">Ainda não há artigos em ${blog.esc(cat.nome)}. <a href="/blog/">Ver todos os artigos</a></p>`;
     else {
       const [primeiro, ...resto] = fatia;
@@ -137,22 +137,31 @@ function listas(base, lista, cat) {
     const sufixo = n > 1 ? ` · Página ${n}` : '';
     const v = cat
       ? { titulo_pagina: `${cat.nome} · Blog AgenticaLab${sufixo}`, descricao: `Artigos da AgenticaLab sobre agentes de IA em ${cat.nome.toLowerCase()} para pequenas e médias empresas.`, crumbs: crumbsBlog(cat.nome), kicker: 'Blog · Categoria', h1: `${blog.esc(cat.nome)}<span>.</span>`, lead: `Agentes de IA aplicados a ${cat.nome.toLowerCase()}: casos, passo a passo e o que medir antes e depois.`, aviso: '', conteudo }
-      : { titulo_pagina: `Blog · AgenticaLab${sufixo}`, descricao: 'Conteúdos da AgenticaLab sobre agentes de IA na operação de pequenas e médias empresas: atendimento, comercial, marketing e gestão.', crumbs: crumbsBlog(), kicker: 'Blog', h1: 'Agentes de IA <span>na prática.</span>', lead: 'Como pequenas e médias empresas colocam agentes para trabalhar no atendimento, no comercial, no marketing e na gestão. Casos, passo a passo e o que medir antes e depois.', aviso: (publicados.length ? '' : '<p class="blog-soon">Os primeiros artigos estão sendo preparados.</p>') + avisoRascunhos, conteudo };
+      : { titulo_pagina: `Blog · AgenticaLab${sufixo}`, descricao: 'Conteúdos da AgenticaLab sobre agentes de IA na operação de pequenas e médias empresas: atendimento, comercial, marketing e gestão.', crumbs: crumbsBlog(), kicker: 'Blog', h1: 'Agentes de IA <span>na prática.</span>', lead: 'Como pequenas e médias empresas colocam agentes para trabalhar no atendimento, no comercial, no marketing e na gestão. Casos, passo a passo e o que medir antes e depois.', aviso: naLista.length ? (rascunhos.length ? '<p class="blog-soon">Prévia: os artigos com o selo Rascunho ainda não estão publicados.</p>' : '') : '<p class="blog-soon">Os primeiros artigos estão sendo preparados.</p>', conteudo };
     const vazia = !!cat && !lista.length;
     emitir(path, fillHtml(tplBlog, v), { head_extra: blog.headLista(SITE, path, cat?.nome, { noindex: vazia }) });
     if (n === 1 && !vazia) urls.push(path);
   }
 }
 
-listas('/blog/', publicados);
-for (const cat of blog.CATEGORIAS) listas(`/blog/categoria/${cat.slug}/`, publicados.filter(p => p.categoria === cat.slug), cat);
+// Na prévia, os rascunhos entram na lista como cards (com o selo Rascunho) para o layout ser conferido antes de publicar.
+const naLista = RASCUNHOS ? todosPosts : publicados;
+listas('/blog/', naLista);
+for (const cat of blog.CATEGORIAS) listas(`/blog/categoria/${cat.slug}/`, naLista.filter(p => p.categoria === cat.slug), cat);
 
+// Links para artigos que ainda não estão no ar (rascunhos) viram texto simples no site publicado, para não dar página não encontrada.
+// Quando o artigo é publicado, o link volta sozinho no build seguinte.
+const noAr = new Set((RASCUNHOS ? todosPosts : publicados).map(p => p.url));
+const semLinkMorto = html => html.replace(/<a href="(\/blog\/[a-z0-9-]+\/)"[^>]*>([\s\S]*?)<\/a>/g, (m, url, txt) => noAr.has(url) ? m : txt);
 for (const p of todosPosts) {
+  p.html = semLinkMorto(p.html);
   const rel = blog.relacionados(p, publicados);
   const v = {
     titulo_pagina: `${p.titulo} · AgenticaLab`, descricao: p.descricao, titulo: p.titulo, autor: p.autor,
     cat_slug: p.cat.slug, cat_nome: p.cat.nome, data_iso: p.data.slice(0, 10), data_br: blog.dataBR(p.data), minutos: p.minutos,
     atualizado: p.atualizado && p.atualizado !== p.data ? ` · Atualizado em <time datetime="${blog.esc(p.atualizado.slice(0, 10))}">${blog.dataBR(p.atualizado)}</time>` : '',
+    foto_html: p.foto ? `<figure class="post-foto"><img src="${blog.esc(p.foto)}" alt="${blog.esc(p.fotoAlt)}"></figure>` : '', com_foto: p.foto ? ' com-foto' : '',
+    autor_ini: p.autorInfo?.foto ? `<img src="${blog.esc(p.autorInfo.foto)}" alt="">` : blog.esc(p.autor.split(' ').map(x => x[0]).slice(0, 2).join('')),
     imagem: p.imagem, imagem_alt: p.imagemAlt, html: p.html, sumario: blog.sumario(p.toc), faq: blog.faqHtml(p.faq),
     autor_link: p.autorInfo ? `<a href="${p.autorInfo.url}" rel="author">${blog.esc(p.autor)}</a>` : blog.esc(p.autor),
     autor_box: p.autorInfo ? `<aside class="autor-box"><span class="autor-ini" aria-hidden="true">${p.autorInfo.foto ? `<img src="${blog.esc(p.autorInfo.foto)}" alt="">` : blog.esc(p.autor.split(' ').map(x => x[0]).slice(0, 2).join(''))}</span><div><strong><a href="${p.autorInfo.url}" rel="author">${blog.esc(p.autor)}</a></strong><span>${blog.esc(p.autorInfo.cargo)} · AgenticaLab</span><p>${blog.esc(p.autorInfo.resumo || '')}</p></div></aside>` : '',
