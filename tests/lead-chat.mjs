@@ -5,7 +5,7 @@ const calls = [];
 globalThis.fetch = async (url, options) => { calls.push([url, JSON.parse(options.body)]); return new Response('{}', { status: 200 }); };
 const env = { CRM_API_URL: 'https://crm.invalid/api/v1', CRM_API_KEY: 'mock-only' };
 const post = (body, e = env) => onRequestPost({ env: e, request: new Request('https://agenticalab.com.br/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }) });
-const base = { origem: 'chat-site', nome: 'Rita Lopes', email: 'Rita@Exemplo.com', whatsapp: '(11) 98888-7777', aceite: true, assunto: 'vendas', pagina: '/solucoes/<x>', utm_source: 'meta', utm_campaign: 'teste' };
+const base = { origem: 'chat-site', nome: 'Rita Lopes', email: 'Rita@Exemplo.com', whatsapp: '(11) 98888-7777', aceite: true, assunto: 'comercial', pagina: '/solucoes/<x>', utm_source: 'meta', utm_campaign: 'teste' };
 
 // sem aceite não grava
 assert.equal((await post({ ...base, aceite: false })).status, 422);
@@ -23,7 +23,7 @@ const contato = calls.find(c => c[0].endsWith('/contacts'))[1];
 assert.equal(contato.email, 'rita@exemplo.com');
 assert.equal(contato.firstName, 'Rita');
 assert.equal(contato.source, 'site-chat');
-assert.deepEqual(contato.tags, ['site-chat', 'lead-site', 'assunto-vendas']);
+assert.deepEqual(contato.tags, ['site-chat', 'lead-site', 'assunto-comercial']);
 assert.equal(contato.fields.chat_utm_source, 'meta');
 assert.equal(contato.fields.chat_pagina, '/solucoes/x');
 assert.match(contato.fields.chat_aceite, /^\d{4}-\d\d-\d\dT/);

@@ -80,7 +80,7 @@ async function demoDelegra(b, env, { nome, email, whatsapp }) {
 // que o Delegra liga a este mesmo contato pelo telefone. Contato com as tags site-chat e lead-site, negócio
 // "Novo lead" no funil (todo cadastro entra) e evento "chat_site", que pode disparar automações (ex.: follow-up).
 const CHAT = ['assunto', 'pagina', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
-const ASSUNTOS = ['atendimento', 'vendas', 'operacao', 'diagnostico'];
+const ASSUNTOS = ['marketing', 'comercial', 'operacao', 'diagnostico', 'atendimento', 'vendas']; // os 2 últimos: balão antigo ainda em cache no navegador
 async function chatSite(b, env, { nome, email, whatsapp }) {
   if (b.aceite !== true) return json({ ok: false, erro: 'aceite' }, 422);
   const r = {}; for (const k of CHAT) if (b[k] != null && b[k] !== '') r[k] = String(b[k]).slice(0, 200);

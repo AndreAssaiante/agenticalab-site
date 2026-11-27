@@ -5,7 +5,8 @@
 //    (No WhatsApp por QR code o agente só responde quem escreveu primeiro: protege o número de bloqueio.)
 (() => {
   const WHATSAPP = '551151073939'; // número agenticalab (+55 11 5107-3939)
-  const ASSUNTOS = { atendimento: 'Atendimento no WhatsApp', vendas: 'Propostas e vendas', operacao: 'Tarefas internas', diagnostico: 'Quero um diagnóstico' };
+  // Uma pergunta, quatro respostas: as mesmas áreas do formulário de diagnóstico (atrair → atender e vender → operar) + "não sei".
+  const ASSUNTOS = { marketing: 'Atrair mais clientes', comercial: 'Atender e vender mais rápido', operacao: 'Tirar tarefas do escritório', diagnostico: 'Ainda não sei, quero um diagnóstico' };
   const UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 
   // guarda a campanha da primeira página da visita (a pessoa pode abrir o balão em outra página)
@@ -18,7 +19,7 @@
     <div class="vc-panel" id="vc-panel" role="dialog" aria-label="Conversa com o Noah" hidden>
       <header class="vc-header"><img src="/assets/img/noah-chat.jpg" width="48" height="48" alt=""><div><strong>Noah</strong><span>Assistente virtual da AgenticaLab</span></div><button type="button" class="vc-close" aria-label="Fechar conversa">×</button></header>
       <div class="vc-messages"><div class="vc-thread" role="log" aria-live="polite">
-        <p class="vc-bubble">Oi! Sou o Noah, assistente virtual da AgenticaLab. Em que posso te ajudar?</p>
+        <p class="vc-bubble">Oi! Sou o Noah, assistente virtual da AgenticaLab. O que você quer resolver primeiro?</p>
         <div class="vc-topics">${Object.entries(ASSUNTOS).map(([k, v]) => `<button type="button" data-assunto="${k}">${v}</button>`).join('')}</div>
         <p class="vc-bubble">Para conversarmos, deixe seu nome, e-mail e WhatsApp. A conversa continua no WhatsApp, comigo, e você não precisa repetir nada.</p>
       </div>
@@ -50,7 +51,7 @@
     assunto = b.dataset.assunto;
     root.querySelector('.vc-topics').remove();
     add(ASSUNTOS[assunto], 'vc-user');
-    add('Ótimo! Preencha seus dados abaixo e a gente continua no WhatsApp.');
+    add(assunto === 'diagnostico' ? 'Sem problema, a gente descobre junto. Preencha seus dados abaixo e eu continuo com você no WhatsApp.' : 'Ótimo, a gente começa por aí. Preencha seus dados abaixo e eu continuo com você no WhatsApp.');
     form.querySelector('[name=nome]').focus();
   });
 
