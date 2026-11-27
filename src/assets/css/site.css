@@ -351,7 +351,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .dg-cal-alt{margin:0;color:#BDB5CA;font-size:13px}.dg-cal-alt a{color:inherit;text-decoration:underline}
 @media (max-width:600px){.dg.dg-wide .dg-box{width:100%}.dg-done .dg-cal{min-height:640px}}
 
-/* Atendimento prioritário no fim do diagnóstico (faturamento acima de R$ 20 mil) */
+/* Atendimento prioritário no fim do diagnóstico (faturamento a partir de R$ 50 mil) */
 .dg-vip{width:100%;display:grid;gap:10px;justify-items:start;padding:16px;border:1px solid var(--line-2);border-left:3px solid var(--accent);background:rgba(255,107,44,.08)}
 .dg-vip p{margin:0;color:#DCD6E4;font-size:15px}
 .dg-vip .dg-vip-tag{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
